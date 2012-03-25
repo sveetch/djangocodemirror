@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block head_title %}DjangoCodeMirror sample{% endblock %}
+{% block head_more_links %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}uni_form/uni-form.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}uni_form/default.uni-form.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}documents/css/forms.css" type="text/css" />
+    <link rel="Stylesheet" title="Normal" media="screen" type="text/css" href="{{ STATIC_URL }}documents/css/pygments.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}documents/css/restructuredtext.css" type="text/css" />
+    <link rel="Stylesheet" title="Normal" media="screen" type="text/css" href="{{ STATIC_URL }}documents/js/jquery/ui/themes/smoothness/jquery-ui-1.8.17.custom.css"/>
+{% endblock %}
+{% block head_more_js %}
+    <script type="text/javascript" src="{{ STATIC_URL }}uni_form/uni-form.jquery.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}documents/js/jquery/ui/jquery-ui-1.8.17.custom.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}documents/js/jquery/ui/jquery.ui.datepicker-fr.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}documents/js/jquery/plugins/jquery.slugify.js"></script>
+    {{ form.media }}
+    <script language="JavaScript" type="text/javascript">
+    //<![CDATA[
+    $(document).ready(function() {
+        $("#sample h2:first").after('<p><a class="demo_content_loadlink" href="">Load demo content</a></p>');
+        $("#sample a.demo_content_loadlink").click(function () {
+            id_content_codemirror_instance.setValue( $("#sample_demo_content").html() );
+            id_content_codemirror_instance.clearHistory();
+            id_content_codemirror_instance.focus();
+            return false;
+        });
+    });
+    //]]>
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div id="sample">
+        <h2>DjangoCodeMirror sample</h2>
+        <form method="post" action="">{% csrf_token %}
+            <div>{{ form.content }}</div>
+        </form>
+        <div style="display:none;">
+            <h2>Sample content</h2>
+            <div><pre id="sample_demo_content">{{ demo_content }}</pre></div>
+        </div>
+    </div>
+{% endblock %}

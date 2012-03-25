@@ -1,0 +1,284 @@
+/*
+* Styles pour DjangoCodeMirror
+* Créé par David THENON en Février 2012
+*/
+hr,
+.cale{
+    margin:0;
+    padding:0;
+    visibility:hidden;
+    width:0px;
+    height:0.05px;
+    font-size:0;
+    clear:both;
+}
+
+.DjangoCodeMirror{
+    padding:0;
+    float: left;
+    width: 63%;
+    background: #ededed;
+    border: 1px solid #d0d0d0;
+    border-radius: 5px;
+}
+
+.DjangoCodeMirror .DjangoCodeMirror_menu ul,
+.DjangoCodeMirror .DjangoCodeMirror_tabs ul{
+    margin:0;
+    padding:0;
+    float: none;
+    width: auto;
+}
+
+/*___________________________
+    Ajustements sur CodeMirror
+*/
+.CodeMirror{
+    font-size:1.1em;
+    line-height:1.1em;
+}
+.CodeMirror .activeline {
+    background-color: #e8f2ff !important;
+}
+
+.CodeMirror-scroll{
+    border: 1px solid #ffffff;
+    border-top:0;
+    border-bottom:0;
+}
+.CodeMirror-lines{
+    background-color:#ffffff;
+}
+
+/*___________________________
+    Menu des boutons
+*/
+.DjangoCodeMirror .DjangoCodeMirror_menu{
+    margin: 0;
+    padding: .2em .35em .2em .35em;
+    background: #ffffff;
+    background: -moz-linear-gradient(top,  #ffffff 0%, #f3f3f3 41%, #ededed 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(41%,#f3f3f3), color-stop(100%,#ededed));
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#f3f3f3 41%,#ededed 100%);
+    background: -o-linear-gradient(top,  #ffffff 0%,#f3f3f3 41%,#ededed 100%);
+    background: -ms-linear-gradient(top,  #ffffff 0%,#f3f3f3 41%,#ededed 100%);
+    background: linear-gradient(top,  #ffffff 0%,#f3f3f3 41%,#ededed 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+    border: 1px solid #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 5px 5px 0 0;
+}
+
+.DjangoCodeMirror .DjangoCodeMirror_menu ul li{
+    margin: 0;
+    padding: 0;
+    list-style:none;
+    float:left;
+    position:relative;
+    background-color: transparent;
+    border:1px solid transparent;
+}
+.DjangoCodeMirror .DjangoCodeMirror_menu ul li:hover{
+    background-color: #ffffff;
+    border-radius: 3px;
+    border:1px solid #dedede;
+}
+.DjangoCodeMirror .DjangoCodeMirror_menu ul .button a{
+    margin:0;
+    padding:0;
+    display:block;
+    width:22px;
+    height:22px;
+    text-indent:-10000px;
+    background-color: transparent;
+    background-repeat:no-repeat;
+    background-position: center;
+    margin:0px;
+    cursor: pointer;
+}
+.DjangoCodeMirror .DjangoCodeMirror_menu ul .separator,
+.DjangoCodeMirror .DjangoCodeMirror_menu ul .separator:hover{
+    margin:0 .4em;
+    width:1px;
+    height:22px;
+    overflow:hidden;
+    border-left:0;
+    border-top:1px solid #CCC;
+    border-right:1px solid #ffffff;
+    border-bottom:1px solid #ffffff;
+    background-color:#CCC;
+}
+.DjangoCodeMirror_menu .buttonH1 a{
+    background-image:url('images/h1.png');
+}
+.DjangoCodeMirror_menu .buttonH2 a{
+    background-image:url('images/h2.png');
+}
+.DjangoCodeMirror_menu .buttonH3 a{
+    background-image:url('images/h3.png');
+}
+.DjangoCodeMirror_menu .buttonH4 a{
+    background-image:url('images/h4.png');
+}
+.DjangoCodeMirror_menu .buttonH5 a{
+    background-image:url('images/h5.png');
+}
+.DjangoCodeMirror_menu .buttonH6 a{
+    background-image:url('images/h6.png');
+}
+
+.DjangoCodeMirror_menu .buttonBold a{
+    background-image:url('images/bold.png');
+}
+.DjangoCodeMirror_menu .buttonItalic a{
+    background-image:url('images/italic.png');
+}
+.DjangoCodeMirror_menu .buttonCode a{
+    background-image:url('images/text_allcaps.png');
+}
+
+.DjangoCodeMirror_menu .buttonBList a{
+    background-image:url('images/list-bullet.png');
+}
+.DjangoCodeMirror_menu .buttonNList a{
+    background-image:url('images/list-numeric.png');
+}
+
+.DjangoCodeMirror_menu .buttonPicture a{
+    background-image:url('images/picture.png');
+}
+.DjangoCodeMirror_menu .buttonFigure a{
+    background-image:url('images/photo.png');
+}
+.DjangoCodeMirror_menu .buttonSubPicture a{
+    background-image:url('images/bullet_picture.png');
+}
+
+.DjangoCodeMirror_menu .buttonLink a{
+    background-image:url('images/world_link.png');
+}
+.DjangoCodeMirror_menu .buttonPageLink a{
+    background-image:url('images/page_link.png');
+}
+
+.DjangoCodeMirror_menu .buttonQuotes a{
+    background-image:url('images/quotes.png');
+}
+
+.DjangoCodeMirror_menu .buttonSourcecode a{
+    background-image:url('images/sourcecode.png');
+}
+.DjangoCodeMirror_menu .buttonFullscreenEnter a{
+    background: url('images/fullscreen_enter.png');
+}
+.DjangoCodeMirror_menu .buttonFullscreenExit a{
+    background-image:url('images/fullscreen_exit.png');
+}
+.DjangoCodeMirror_menu .buttonQuickSave a{
+    background-image:url('images/disk.png');
+}
+.DjangoCodeMirror_menu .buttonQuickSave.ready a{
+    background-image:url('images/disk_star_blue.png');
+}
+.DjangoCodeMirror_menu .buttonQuickSave.error a{
+    background-color: #ee0000;
+}
+.DjangoCodeMirror_menu .buttonHelp a{
+    background-image:url('images/help.png');
+}
+.DjangoCodeMirror_menu .buttonFullscreenExit{
+    display:none;
+}
+
+/*___________________________
+    Menu des onglets
+*/
+.DjangoCodeMirror .DjangoCodeMirror_tabs{
+    border-top: 1px solid #e0e0e0;
+}
+.DjangoCodeMirror .DjangoCodeMirror_tabs ul li{
+    margin: .3em 0 .3em 0.7em;
+    padding:0;
+    list-style:none;
+    float:left;
+}
+.DjangoCodeMirror .DjangoCodeMirror_tabs ul .tab a{
+    display:block;
+    margin:0;
+    padding: .3em .5em .3em .5em;
+    font-size:0.6em;
+    text-decoration:none;
+    text-transform:uppercase;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    cursor: pointer;
+    color:#404040;
+    background-color:#ededed;
+    opacity:0.4;
+}
+.DjangoCodeMirror .DjangoCodeMirror_tabs ul .tab a:hover{
+    opacity:1.0;
+    color:#0072ff;
+}
+.DjangoCodeMirror .DjangoCodeMirror_tabs ul .tab a .error,
+.DjangoCodeMirror .DjangoCodeMirror_tabs ul .tab a:hover .error{
+    color: #FF0000;
+}
+.DjangoCodeMirror .DjangoCodeMirror_tabs ul .tabactive a{
+    background-color:#ffffff;
+    box-shadow: 0px 0px 1px #0072ff;
+    opacity:1.0;
+}
+.DjangoCodeMirror .DjangoCodeMirror_tabs ul .tabactive a:hover{
+    color:#000000;
+}
+
+/*____________________________________
+    Pour la prévisualisation
+*/
+.DjangoCodeMirrorPreviewScene{
+    border:0;
+    background-color:#ffffff;
+    border-radius: 5px 5px 0 0;
+}
+
+/*____________________________________
+    Ajustements pour le mode maximiser
+*/
+.DjangoCodeMirror.fullScreen{
+    border:0;
+    border-radius:0;
+}
+.DjangoCodeMirror.fullScreen .CodeMirror{
+    font-size:1.3em;
+    line-height:1.3em;
+}
+.DjangoCodeMirror.fullScreen .CodeMirror-scroll{
+    border:0;
+}
+.DjangoCodeMirror.fullScreen .DjangoCodeMirror_menu{
+    border-radius:0;
+}
+.DjangoCodeMirror.fullScreen .DjangoCodeMirror_menu .buttonFullscreenEnter{
+    display:none;
+}
+.DjangoCodeMirror.fullScreen .DjangoCodeMirror_menu .buttonFullscreenExit{
+    display:block;
+}
+
+
+/*____________________________________
+    Pour la démo
+*/
+#sample{
+    margin:auto;
+    width:800px;
+}
+#sample .DjangoCodeMirror{
+    padding:0;
+    float: none;
+    width: 100%;
+    background: #ededed;
+    border: 1px solid #d0d0d0;
+    border-radius: 5px;
+}
