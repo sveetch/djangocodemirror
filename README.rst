@@ -10,12 +10,15 @@
 Introduction
 ============
 
-Cettre brique pour Django permet d'utiliser l'éditeur `CodeMirror`_ sur 
+.. WARNING:: This is a temporary commit, README should be translated and references to 
+             **Sveetchies-documents** should be move to his future export in Github.
+
+Cette brique pour Django permet d'utiliser l'éditeur `CodeMirror`_ sur 
 les *Textarea* avec un widget spécifique.
 
-Prévu par défaut pour être utilisé par :page:`sveetchies-documents`, il utilise donc un environnement 
+Prévu par défaut pour être utilisé par **sveetchies-documents**, il utilise donc un environnement 
 pour `ReStructuredText`_ et une interface supplémentaire à `CodeMirror`_. Cette interface qu'on appellera 
-`DjangoCodeMirror`_ nécessite `jQuery`_ et ajouter quelques fonctionnalités supplémentaires :
+`DjangoCodeMirror`_ nécessite `jQuery`_, elle ajoute quelques fonctionnalités supplémentaires :
 
 * Une barre de boutons avec raccourcis clavier pour insérer des éléments de syntaxe;
 * Possibilité de maximiser l'éditeur à la dimension complète de la fenêtre du navigateur;
@@ -36,11 +39,7 @@ Settings
 ********
 
 Il suffit d'inscrire l'application à votre projet, en modifiant ``INSTALLED_APPS`` dans vos ``settings`` 
-en y rajoutant ces deux lignes :
-
-..  sourcecode:: python
-    :linenos:
-    :hl_lines: 3
+en y rajoutant ces deux lignes : ::
 
     INSTALLED_APPS = (
         ...
@@ -111,11 +110,8 @@ preview_borders
 
 Ces options n'ont d'intérêt que dans le contexte de `DjangoCodeMirror`_ et `CodeMirror`_ n'en a aucune utilité.
 
-Un exemple complet d'instanciation directe :
+Un exemple complet d'instanciation directe : ::
 
-..  sourcecode:: html
-    :linenos:
-    
     <div>
         <textarea id="id_content" rows="10" cols="40" name="content"></textarea>
         <script language="JavaScript" type="text/javascript">
@@ -145,11 +141,7 @@ CodeMirrorWidget
 ****************
 
 Vous pouvez déclarer le widget ``djangocodemirror.fields.CodeMirrorWidget`` sur un champ de 
-formulaire de la façon suivante :
-
-..  sourcecode:: python
-    :linenos:
-    :hl_lines: 4
+formulaire de la façon suivante : ::
 
     from djangocodemirror.fields import CodeMirrorWidget
     
@@ -165,11 +157,7 @@ optionnels supplémentaires :
 * ``codemirror_only`` désactive l'utilisation de `DjangoCodeMirror`_ et utilise à la place `CodeMirror`_;
 * ``codemirror_attrs`` : attends un dictionnaire des paramètres d'instanciation de l'éditeur.
 
-Par exemple :
-
-..  sourcecode:: python
-    :linenos:
-    :hl_lines: 4
+Par exemple : ::
 
     from djangocodemirror.fields import CodeMirrorWidget
     
@@ -198,9 +186,7 @@ Ce champ de formulaire est un héritage de ``django.forms.CharField`` qui intèg
 En outre des arguments de ``django.forms.CharField`` il accepte aussi l'argument optionnel 
 ``codemirror_attrs`` de la même manière qu'avec `CodeMirrorWidget`_.
 
-..  sourcecode:: python
-    :linenos:
-    :hl_lines: 5
+::
 
     from django import forms
     from djangocodemirror.fields import CodeMirrorField
@@ -219,9 +205,7 @@ directement le widget `CodeMirrorWidget`_ mais pour utiliser l'éditeur `DjangoC
 
 Il se comporte de la même façon que `CodeMirrorField`_ et accepte le même argument optionnel ``codemirror_attrs``.
 
-..  sourcecode:: python
-    :linenos:
-    :hl_lines: 5
+::
 
     from django import forms
     from djangocodemirror.fields import CodeMirrorField
@@ -324,11 +308,7 @@ Un ensemble de démonstration complet est inclus dans ``djangocodemirror.views``
 ``djangocodemirror.urls``.
 
 Vous pouvez l'inclure à votre projet simplement en incluant ses urls à votre fichier ``urls.py`` de votre 
-projet :
-
-..  sourcecode:: python
-    :linenos:
-    :hl_lines: 3
+projet : ::
 
     urlpatterns = patterns('',
         ...
@@ -340,9 +320,9 @@ Trois vues y sont présentes :
 
 * L'index (donc ``djangocodemirror-sample/`` si vous n'avez pas changé le point de montage des urls) qui affiche 
   la démonstration utilisant le mode de syntaxe pour `ReStructuredText`_;
-* ``preview/`` pour la prévisualisation de l'éditeur, utilise le parser de :page:`sveetchies-documents` si il est 
+* ``preview/`` pour la prévisualisation de l'éditeur, utilise le parser de **sveetchies-documents** si il est 
   disponible, sinon renvoi un contenu *bidon*. N'accepte que les requêtes de type **POST**, renverra une simple 
   réponse vide pour toute requête de type **GET**;
 * ``quicksave/`` pour simuler la sauvegarde rapide. N'effectue aucune sauvegarde mais test au moins le contenu pour 
-  renvoyer une erreur le cas échéant. La validation utilise le parser :page:`sveetchies-documents` si il est installé 
+  renvoyer une erreur le cas échéant. La validation utilise le parser **sveetchies-documents** si il est installé 
   sinon aucune réelle validation de syntaxe n'est effectuée (seulement celle du formulaire);
