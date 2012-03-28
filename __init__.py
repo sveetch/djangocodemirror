@@ -1,16 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-**Django-CodeMirror** permet d'utiliser l'éditeur "codemirror" sur les textarea avec un 
-widget spécifique.
-
-Utilise par défaut une "couche supérieure" à CodeMirror qui est un plugin jQuery rajoutant :
-
-* Une barre de boutons pour des éléments de syntaxe;
-* Mode d'édition plein écran;
-* Mode prévisualisation compatible avec le mode plein écran et le système CSRF de Django;
-* Un aspect visuel un peu plus éditeur que celui de CodeMirror par défaut;
-
-Par défaut, le plugin est prévu pour fonctionner avec le mode de syntaxe "ReStructuredText".
+App default settings
 
 TODO: * Ajout d'un css (ou modification d'un existant?) pour le cas ou 
         *DjangoCodeMirror* n'est pas utilisé (``codemirror_only=True`` avec le widget);
