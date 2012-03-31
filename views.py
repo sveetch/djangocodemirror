@@ -1,29 +1,26 @@
 # -*- coding: utf-8 -*-
 """
 Sample views
-
-TODO: Switch to the future export of **Sveetchies-documents** in Github
 """
-import json
+import json, os
 
 from django import forms
 from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import BaseFormView
 from django.http import HttpResponse
-from django.template.loader import render_to_string
 
-from djangocodemirror import CODEMIRROR_SETTINGS
+import djangocodemirror
 from djangocodemirror.fields import CodeMirrorField, DjangoCodeMirrorField
 
 try:
-    from Sveetchies.django.documents.parser import SourceParser
+    from sveedocuments.parser import SourceParser
 except ImportError:
     # Dummy fallback
     def SourceParser(source, *args, **kwargs):
-        return "<p>This a dummy preview because <tt>Sveetchies.django.documents.parser</tt> is not available.</p>"
+        return "<p>This a dummy preview because <tt>sveedocuments.parser</tt> is not available.</p>"
 
 try:
-    from Sveetchies.django.documents.parser import SourceReporter, map_parsing_errors
+    from sveedocuments.parser import SourceReporter, map_parsing_errors
 except ImportError:
     # Dummy fallback
     def map_parsing_errors(error, *args, **kwargs):
@@ -35,7 +32,7 @@ class DjangoCodeMirrorSampleForm(forms.Form):
     """
     Sample form
     """
-    content = DjangoCodeMirrorField(label=u"DjangoCodeMirror", max_length=5000, required=True, codemirror_attrs=CODEMIRROR_SETTINGS['djangocodemirror_sample_demo'])
+    content = DjangoCodeMirrorField(label=u"DjangoCodeMirror", max_length=5000, required=True, codemirror_attrs=djangocodemirror.CODEMIRROR_SETTINGS['djangocodemirror_sample_demo'])
     
     def clean_content(self):
         """
@@ -58,9 +55,14 @@ class Sample(TemplateView):
     template_name = "djangocodemirror/sample.html"
     
     def get(self, request, *args, **kwargs):
+        path_root = os.path.abspath(os.path.dirname(djangocodemirror.__file__))
+        f = open(os.path.join(path_root, "README.rst"))
+        content = f.read()
+        f.close()
+        
         context = {
             'form' : DjangoCodeMirrorSampleForm(),
-            'demo_content': render_to_string("djangocodemirror/help.rst", {}),
+            'demo_content': content,
         }
         return self.render_to_response(context)
 
