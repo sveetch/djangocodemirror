@@ -1,5 +1,5 @@
 .. _CodeMirror: http://codemirror.net/
-.. _Documentation de CodeMirror: http://codemirror.net/doc/manual.html
+.. _CodeMirror Documentation: http://codemirror.net/doc/manual.html
 .. _jQuery: http://jquery.com/
 .. _jQuery.axax(): http://api.jquery.com/jQuery.ajax/
 .. _Django CSRF: https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
@@ -10,36 +10,37 @@
 Introduction
 ============
 
-.. WARNING:: This is a temporary commit, README should be translated and references to 
-             **Sveetchies-documents** should be move to his future export in Github.
+**Django-CodeMirror** is a Django application to embed the `CodeMirror`_ editor.
 
-Cette brique pour Django permet d'utiliser l'éditeur `CodeMirror`_ sur 
-les *Textarea* avec un widget spécifique.
+It was designed to be used in **sveedocuments**, so it is suited for a `ReStructuredText`_ 
+environment but `CodeMirror`_ support a large range of syntax coloration modes (PHP, Python, Ruby, Java, 
+HTML, etc..). It is essentialy a jQuery plugin on top of `CodeMirror`_ to add some features like :
 
-Prévu par défaut pour être utilisé par **sveetchies-documents**, il utilise donc un environnement 
-pour `ReStructuredText`_ et une interface supplémentaire à `CodeMirror`_. Cette interface qu'on appellera 
-`DjangoCodeMirror`_ nécessite `jQuery`_, elle ajoute quelques fonctionnalités supplémentaires :
+* A button bar with keyboard shortcuts to use some syntax element in your text;
+* A maximize mode to resize the editor at full browser size;
+* A preview mode;
+* A quicksave option;
+* Compatibility with `Django CSRF`_.
 
-* Une barre de boutons avec raccourcis clavier pour insérer des éléments de syntaxe;
-* Possibilité de maximiser l'éditeur à la dimension complète de la fenêtre du navigateur;
-* Un mode de prévisualisation compatible avec le système `Django CSRF`_;
-* Un aspect visuel *renforcé* d'éditeur par rapport à `CodeMirror`_;
 
-Par défaut, le plugin est prévu pour fonctionner avec le mode de syntaxe `ReStructuredText`_ que vous pouvez 
-remplacer par un autre des modes de syntaxe de `CodeMirror`_ ou un des votres.
+You can download it on his `Github repository <https://github.com/sveetch/djangocodemirror>`_ and find 
+his `documentation on DjangoSveetchies <http://sveetchies.sveetch.net/djangocodemirror/>`_.
 
-Requiert :
+Requires
+========
 
 * `jQuery`_ >= 1.7;
+* `CodeMirror Version 2.23 <http://codemirror.net/codemirror-2.23.zip>`_;
 
-Installation
-============
+Install
+=======
 
 Settings
 ********
 
-Il suffit d'inscrire l'application à votre projet, en modifiant ``INSTALLED_APPS`` dans vos ``settings`` 
-en y rajoutant ces deux lignes : ::
+In your *settings* file add the app to your installed apps :
+
+::
 
     INSTALLED_APPS = (
         ...
@@ -47,71 +48,64 @@ en y rajoutant ces deux lignes : ::
         ...
     )
 
-Il est aussi nécessaire que vous installiez une copie de `CodeMirror`_ dans vos *statics* `Django staticfiles`_, 
-l'emplacement par défaut prévu est dans un répertoire ``CodeMirror/`` à la racine de vos *statics*. Vous devez 
-aussi posséder une copie de `jQuery`_ et le déclarer vous mêmes dans vos *templates*.
+And you will need to have a copy of `CodeMirror`_ in your *statics* directory (see `Django staticfiles`_). The 
+jQuery library must be called by your templates, **Django-CodeMirror** don't do this for you.
 
-Utilisation
-===========
+Usage
+=====
 
 DjangoCodeMirror
 ****************
 
-L'éditeur `DjangoCodeMirror`_ est une *surcouche* de `CodeMirror`_ et construit comme un plugin `jQuery`_. Lors 
-de son instanciation le plugin accepte les mêmes paramètres que `CodeMirror`_ avec quelques options 
-supplémentaires :
+`DjangoCodeMirror`_ is the `jQuery`_ plugin on top of `CodeMirror`_, it accepts all `CodeMirror`_ options and some 
+additional :
 
 fullscreen
-  Active le mode pour maximiser l'éditeur si ``true``, désactivé si ``false``. Il est activé par défaut.
+    This enable the maximize mode at ``true``. It is enabled by default.
 help_link
-  Lien à utiliser pour la page d'aide si rempli (par une chaîne de caractères), sinon le bouton d'aide n'est pas 
-  affiché. À noter que le lien est toujours ouvert dans une nouvelle fenêtre.
+    Help page link to put in button bar if filled. If the string is empty there will be no help button 
+    displayed. When clicked the link is opened in a new window.
 quicksave_url
-  URL où envoyer les données à travers une requête de type **POST** en utilisant l'option de ``csrf`` 
-  si il est activé. Vide et donc désactivé par défaut. 
-  
-  La requête envoi les variables suivantes :
-  
-  * ``nocache`` : un *timestamp* qui sert uniquement à empêche la mise en cache des requêtes par certains vieux 
-    navigateurs;
-  * ``content`` : le contenu du *Textarea* tel qu'il est au moment de l'envoi de la requête.
+    When the string is not empty, it is used as the URL to send data in **POST** request where the view receiver 
+    should save the data. This is disabled by default. If the ``csrf`` option is enabled, it will be used in the 
+    request.
+    
+    The default sended datas are :
+    
+    * ``nocache`` : a timestamp used to block some browser caching, this can be ignored;
+    * ``content`` : the textarea content.
+    
+    More datas can be sended with the ``quicksave_datas`` option.
 quicksave_datas
-  Objet (``{..}``) de variables à transmettre dans la requête de sauvegarde rapide. Peut être 
-  aussi une chaîne de caractères qui sera considérée comme un nom de variable à utiliser pour retrouver l'objet à 
-  transmettre, c'est la technique à préférer dans le cas d'utilisation de `DjangoCodeMirrorField`_ et `CodeMirrorWidget`_ 
-  pour éviter d'avoir à transmettre l'instance du contenu dans les options lors de l'instanciation du formulaire.
+    Expect an object ``{...}`` whose variables will be sended as data in *quicksave* request.
+    
+    Or it can be a *string* that determine a variable name to find the object in the global context. This is useful if 
+    you want to use a variable that can change and not a defined object at page load. 
 preview_url
-  Attends une chaîne de caractères, si rempli le mode de prévisualisation est utilisé et l'URL 
-  donnée sera utilisée pour envoyer une requête **POST** qui attends une réponse HTML avec le fragment HTML du rendu 
-  de prévisualisation. Utilise l'option de ``csrf`` si il est activé.
-  
-  La requête envoi les variables suivantes :
-  
-  * ``nocache`` : un *timestamp* qui sert uniquement à empêche la mise en cache des requêtes par certains vieux 
-    navigateurs;
-  * ``content`` : le contenu du *Textarea* tel qu'il est au moment de l'envoi de la requête.
+    When the string is not empty, it is used as the URL to send data in **POST** request where the view receiver should 
+    render the content with a parser. The excepted response must return the HTML fragment rendered.
+    This is disabled by default. If the ``csrf`` option is enabled, it will be used in the request.
+    
+    The default sended datas are :
+    
+    * ``nocache`` : a timestamp used to block some browser caching, this can be ignored;
+    * ``content`` : the textarea content.
 csrf
-  Attends une chaine de caractères représentant le nom de la fonction à utiliser lors de la prévisualisation 
-  pour insérer un *header* décrivant le *token* de `Django CSRF`_. Désactivé par défaut.
-  
-  La fonction attends deux arguments obligatoires :
-  
-  * xhr : une fonction de *callback* de la requête produite par `jQuery`_ qui permet de la modifier avant son envoi;
-  * settings : objet des options passées à `jQuery.axax()`_.
-  
-  Cette fonction est destinée à une utilisation dans l'option ``beforeSend`` de `jQuery.axax()`_ pour récupérer le *token csrf* 
-  dans les cookies et le transmettre dans la requête.
-preview_padding
-  Taille (en pixels) du padding de l'éditeur en mode prévisualisation. Il est déconseillé d'y toucher et 
-  il sera probablement *deprecated* d'içi peu.
-preview_borders
-  Épaisseur (en pixels) de la bordure du cadre de l'éditeur en mode prévisualisation. Il est déconseillé 
-  d'y toucher et il sera probablement *deprecated* d'içi peu.
+    Expect a *string* containing the function name which be used to modify a request to add it the needed *token* 
+    by `Django CSRF`_. The token will be injected in the request headers. A ready to use function is allready shipped.
+    
+    The function have two required arguments :
+    
+    * xhr : the `jQuery`_ XMLHTTPRequest to be modified;
+    * settings : the settings object used with `jQuery.axax()`_.
+    
+    You should see the option ``beforeSend`` of `jQuery.axax()`_ for more details, this is where the csrf function is 
+    really used.
 
-Ces options n'ont d'intérêt que dans le contexte de `DjangoCodeMirror`_ et `CodeMirror`_ n'en a aucune utilité.
+Example :
 
-Un exemple complet d'instanciation directe : ::
-
+::
+    
     <div>
         <textarea id="id_content" rows="10" cols="40" name="content"></textarea>
         <script language="JavaScript" type="text/javascript">
@@ -130,61 +124,68 @@ Un exemple complet d'instanciation directe : ::
         </script>
     </div>
 
-`DjangoCodeMirror`_ embarque :
+The plugin use some additional libraries (allready shipped) :
 
-* Une copie de `CodeMirror`_;
-* Une fonction de **csrf** pour utiliser la technique de `Django CSRF`_;
-* Une copie du plugin `jquery.cookies <http://plugins.jquery.com/project/Cookie>`_ utilisé uniquement par la fonction de **csrf**;
-* Une copie du plugin `qTip2`_;
+* `jquery.cookies <http://plugins.jquery.com/project/Cookie>`_;
+* `qTip2`_;
+
+.. NOTE:: If you directly use the plugin, you will have to load yourself all needed libaries, see 
+          `Fields medias`_ for a details of these.
 
 CodeMirrorWidget
 ****************
 
-Vous pouvez déclarer le widget ``djangocodemirror.fields.CodeMirrorWidget`` sur un champ de 
-formulaire de la façon suivante : ::
+This is the widget to use in your form fields to apply them an instance of `DjangoCodeMirror`_ or 
+`CodeMirror`_. It is accessible at ``djangocodemirror.fields.CodeMirrorWidget``.
+
+Usage example on a form field :
+
+::
 
     from djangocodemirror.fields import CodeMirrorWidget
     
     class CodeMirrorSampleForm(forms.Form):
-        content = forms.CharField(label=u"Votre texte", widget=CodeMirrorWidget)
+        content = forms.CharField(label=u"Your content", widget=CodeMirrorWidget)
         
         def save(self, *args, **kwargs):
             return
 
-En plus de l'attribut ``attrs`` habituel d'un widget, `CodeMirrorWidget`_ accepte aussi deux arguments 
-optionnels supplémentaires :
+The widget accept two additional arguments :
 
-* ``codemirror_only`` désactive l'utilisation de `DjangoCodeMirror`_ et utilise à la place `CodeMirror`_;
-* ``codemirror_attrs`` : attends un dictionnaire des paramètres d'instanciation de l'éditeur.
+* ``codemirror_only`` A *boolean* to disable the `DjangoCodeMirror`_ usage at benefit of `CodeMirror`_. It is 
+  ``False`` by default;
+* ``codemirror_attrs`` : A *dict* to define the editor settings. It is empty by default.
 
-Par exemple : ::
+Another example where the ``content`` field will be a `CodeMirror`_ editor with enabled line numbers :
+
+::
 
     from djangocodemirror.fields import CodeMirrorWidget
     
     class CodeMirrorSampleForm(forms.Form):
-        content = forms.CharField(label=u"Votre texte", widget=CodeMirrorWidget(codemirror_only=True, codemirror_attrs={'lineNumbers':True}))
+        content = forms.CharField(label="Your content", widget=CodeMirrorWidget(codemirror_only=True, codemirror_attrs={'lineNumbers':True}))
         
         def save(self, *args, **kwargs):
             return
 
-Avec ceci le champ ``content`` utilisera l'éditeur `CodeMirror`_ en activant la numérotation des lignes.
-
-Médias
+Medias
 ------
 
-Dans votre template, il faudra charger les médias liés au formulaire (et donc au widget) en utilisant par 
-exemple : ::
+The widget load automatically all his needed medias and static files, you just have to put this in your 
+templates : ::
 
   {{ form.media }}
+
+This behavior is inherited by `DjangoCodeMirrorField`_ and `CodeMirrorField`_.
 
 CodeMirrorField
 ***************
 
-Ce champ de formulaire est un héritage de ``django.forms.CharField`` qui intègre directement le widget 
-`CodeMirrorWidget`_ en y forcant l'option ``codemirror_only`` pour n'utiliser que l'éditeur `CodeMirror`_.
+This inherit from ``django.forms.CharField`` to automatically use `CodeMirrorWidget`_ as the widget field. The widget 
+set the ``codemirror_only`` attribute to ``True`` to use only the `CodeMirror`_ editor.
 
-En outre des arguments de ``django.forms.CharField`` il accepte aussi l'argument optionnel 
-``codemirror_attrs`` de la même manière qu'avec `CodeMirrorWidget`_.
+It take an additional named argument ``codemirror_attrs`` like `CodeMirrorWidget`_, his default value correspond to 
+the ``default`` setting of `CODEMIRROR_SETTINGS`_.
 
 ::
 
@@ -192,7 +193,7 @@ En outre des arguments de ``django.forms.CharField`` il accepte aussi l'argument
     from djangocodemirror.fields import CodeMirrorField
     
     class CodeMirrorSampleForm(forms.Form):
-        content_codemirror = CodeMirrorField(label=u"Votre texte", codemirror_attrs={'lineNumbers':True})
+        content_codemirror = CodeMirrorField(label=u"Your content", codemirror_attrs={'lineNumbers':True})
         
         def save(self, *args, **kwargs):
             return
@@ -200,10 +201,9 @@ En outre des arguments de ``django.forms.CharField`` il accepte aussi l'argument
 DjangoCodeMirrorField
 *********************
 
-De la même manière que `CodeMirrorField`_, ce champ est un héritage de ``django.forms.CharField`` qui intègre 
-directement le widget `CodeMirrorWidget`_ mais pour utiliser l'éditeur `DjangoCodeMirror`_.
+It is identical as `CodeMirrorField`_ but for usage of `DjangoCodeMirror`_ as the widget field.
 
-Il se comporte de la même façon que `CodeMirrorField`_ et accepte le même argument optionnel ``codemirror_attrs``.
+His default value for ``codemirror_attrs`` correspond to `DJANGOCODEMIRROR_DEFAULT_SETTING`_.
 
 ::
 
@@ -211,104 +211,108 @@ Il se comporte de la même façon que `CodeMirrorField`_ et accepte le même arg
     from djangocodemirror.fields import CodeMirrorField
     
     class CodeMirrorSampleForm(forms.Form):
-        content_djangocodemirror = DjangoCodeMirrorField(label=u"Votre texte", codemirror_attrs={'lineNumbers':True})
+        content_djangocodemirror = DjangoCodeMirrorField(label=u"Your content", codemirror_attrs={'lineNumbers':True})
         
         def save(self, *args, **kwargs):
             return
 
-Options
-=======
+App Settings
+============
 
-Il est possible de contrôler certains comportements de l'éditeur depuis vos *settings* via les variables suivantes. 
-Vous pourrez retrouver toute les valeurs par défaut de ces variables dans ``djangocodemirror``.
-
-DJANGOCODEMIRROR_FIELD_INIT_JS
-******************************
-
-Le code HTML d'instanciation de `DjangoCodeMirror`_ sur un champ de formulaire. C'est un *template* de chaîne
-de caractère utilisable avec ``String.format()`` qui recevra deux variables :
-
-* ``inputid`` : l'identifiant unique du champ sur lequel instancier l'éditeur;
-* ``settings`` : une chaîne de caractères contenant les options d'instanciations de l'éditeur au format JSON.
+All default app settings is located in the ``__init__.py`` file of ``djangocodemirror``.
 
 CODEMIRROR_FIELD_INIT_JS
 ************************
 
-Le code HTML d'instanciation de `CodeMirror`_ sur un champ de formulaire. C'est un *template* de chaîne
+**Type :** *string*
+
+HTML code to instantiate `CodeMirror`_ in form fields, this is a template string (usable with ``String.format()``) 
+which expect two variable places :
+
+* ``{inputid}`` : Will be the unique field id;
+* ``{settings}`` : Will be a JSON string representation of the editor settings.
+
+DJANGOCODEMIRROR_FIELD_INIT_JS
+******************************
+
+**Type :** *string*
+
+This identical to `CODEMIRROR_FIELD_INIT_JS`_ but for `DjangoCodeMirror`_ usage only.
 
 CODEMIRROR_SETTINGS
 *******************
 
-Un dictionnaire contenant différents schémas d'options pour les éditeurs. Vous pouvez y mettre toute les 
-options attendues par `CodeMirror`_ plus celles de `DjangoCodeMirror`_. À noter que dans les templates ces options 
-sont transmises aux éditeurs dans un format JSON.
+**Type :** *dict*
 
-Par défaut quelques schémas d'options sont fournis :
+The settings schemes to use with `CodeMirror`_ and `DjangoCodeMirror`_ editors. Each editor form fields use this 
+schemes to get their default settings. Note that these options must be suitable to be transformed by the Python 
+JSON parser.
 
-* ``default`` : Ne fait que définir l'option pour activer la numérotation des lignes;
-* ``djangocodemirror`` : Définit les options minimales pour `DjangoCodeMirror`_ (numérotation des lignes et le mode 
-  de syntaxe ``rst`` pour `ReStructuredText`_);
-* ``djangocodemirror_with_preview`` : Reprends les mêmes options que ``djangocodemirror`` plus celle pour activer la 
-  prévisualisation sur l'URL ``/preview/``.
-* ``djangocodemirror_sample_demo`` : Reprends les mêmes options que ``djangocodemirror_with_preview`` mais calibrés 
-  pour fonctionner dans le cadre de `Ensemble de démonstration`_.
+The default available settings schemes are :
+
+* ``default`` : Only for enable the option to show line numbers;
+* ``djangocodemirror`` : Minimal options for `DjangoCodeMirror`_ (line numbers and mode ``rst`` for 
+  `ReStructuredText`_);
+* ``djangocodemirror_with_preview`` : Same as ``djangocodemirror`` but enable the preview option on ``preview/``;
+* ``djangocodemirror_sample_demo`` : Same as ``djangocodemirror`` but enable all stuff needed in the 
+  `Sample demonstration`_.
 
 DJANGOCODEMIRROR_DEFAULT_SETTING
 ********************************
 
-Le nom clé du schéma par défaut à utiliser pour `DjangoCodeMirror`_ tel qu'avec le champ `DjangoCodeMirrorField`_.
+**Type :** *string*
 
-CODEMIRROR_MODES
+The keyword to use to select the default settings with `DjangoCodeMirrorField`_. Note that `CodeMirrorField`_ always 
+use the keyword ``default`` to select his default settings.
+
+CODEMIRROR_MODES 
 ****************
 
-Une liste de *tuple* des différents modes de syntaxe disponibles pour `CodeMirror`_. La liste contenue par défaut 
-est une liste reproduite à partir de tout les modules officiels existants `CodeMirror`_.
+**Type :** *list*
 
-Chemins relatifs des médias
-***************************
+A list of tuples for the various syntax coloration modes supported by `CodeMirror`_. This list is generated from 
+the available mode files in `CodeMirror`_.
 
-Vous pouvez si besoin, modifier tout les chemins des médias liés au widget `CodeMirrorWidget`_. Leur chemin est 
-relatif à votre emplacement des fichiers statiques (voyez `Django staticfiles`_) ou des médias si vous n'utilisez 
-pas les *staticfiles*.
+Fields medias
+*************
 
-Ci-dessous les différents chemins :
+The `CodeMirrorWidget`_ widget need some medias to correctly load the editor, all these medias paths are defined in 
+settings and you can change them if needed. Theses paths assume to be in your staticfiles directory (see 
+`Django staticfiles`_).
 
 CODEMIRROR_FILEPATH_LIB
-  La librairie JavaScript de `CodeMirror`_.
+    The JavaScript core library of `CodeMirror`_.
 CODEMIRROR_FILEPATH_CSS
-  Le fichier CSS de `CodeMirror`_.
+    The CSS file of `CodeMirror`_.
 DJANGOCODEMIRROR_FILEPATH_LIB
-  La librairie JavaScript de `DjangoCodeMirror`_.
+    The Javascript core library of `DjangoCodeMirror`_.
 DJANGOCODEMIRROR_FILEPATH_CSS
-  Le fichier CSS de `DjangoCodeMirror`_.
+    The CSS file of `DjangoCodeMirror`_.
 DJANGOCODEMIRROR_FILEPATH_BUTTONS
-  Composant JavaScript définissant les boutons disponibles dans l'éditeur, à surclasser (en crééant le votre et 
-  renseignant son chemin à la place dans vos **settings**).
+    The Javascript componant of `DjangoCodeMirror`_ to define the avalaible buttons in the button bar. Change this 
+    path to your own componant if you want to change the button bar.
 DJANGOCODEMIRROR_FILEPATH_METHODS
-  Composant JavaScript définissant les méthodes utilisés par les boutons disponibles de l'éditeur, à surclasser 
-  (en crééant le votre et renseignant son chemin à la place dans vos **settings**).
+    The Javascript componant of `DjangoCodeMirror`_ to define the internal methods used with the syntax buttons. If you 
+    add some new button in your own button bar, you have to make your own methods file too.
 DJANGOCODEMIRROR_FILEPATH_CONSOLE
-  Composant JavaScript pour les notifications de l'éditeur.
+	The Javascript componant of `DjangoCodeMirror`_ which define the usage of qTip.
 DJANGOCODEMIRROR_FILEPATH_CSRF
-  Le composant JavaScript de permettant le support du système `Django CSRF`_ dans les prévisualisations avec `DjangoCodeMirror`_.
+    The Javascript componant of `DjangoCodeMirror`_ used in the editor requests (preview or quicksave) to 
+    apply `Django CSRF`_.
 DJANGOCODEMIRROR_FILEPATH_COOKIES
-  Le plugin `jQuery`_ pour utiliser accéder aux cookies, nécessaire pour `Django CSRF`_.
+    Le plugin `jQuery`_ pour utiliser accéder aux cookies, nécessaire pour `Django CSRF`_.
 QTIP_FILEPATH_LIB
-  La librairie JavaScript de `qTip2`_.
+    The JavaScript core library of `qTip2`_.
 QTIP_FILEPATH_CSS
-  Le fichier CSS de `qTip2`_.
+    The CSS file of `qTip2`_.
 
-Par défaut tout ces chemins sont déjà configurés pour fonctionner avec les médias déjà fournis dans la brique 
-logicielle mais vous pouvez les modifier selon vos besoins.
+Sample demonstration
+====================
 
-Ensemble de démonstration
-=========================
+You can rapidly insert **Django-CodeMirror** in your project in adding ``djangocodemirror.urls`` to your project 
+``urls.py`` file. This will use ``djangocodemirror.views`` which contains the demonstration views.
 
-Un ensemble de démonstration complet est inclus dans ``djangocodemirror.views`` et dans 
-``djangocodemirror.urls``.
-
-Vous pouvez l'inclure à votre projet simplement en incluant ses urls à votre fichier ``urls.py`` de votre 
-projet : ::
+::
 
     urlpatterns = patterns('',
         ...
@@ -316,13 +320,12 @@ projet : ::
         ...
     )
 
-Trois vues y sont présentes :
+Three views are avalaible :
 
-* L'index (donc ``djangocodemirror-sample/`` si vous n'avez pas changé le point de montage des urls) qui affiche 
-  la démonstration utilisant le mode de syntaxe pour `ReStructuredText`_;
-* ``preview/`` pour la prévisualisation de l'éditeur, utilise le parser de **sveetchies-documents** si il est 
-  disponible, sinon renvoi un contenu *bidon*. N'accepte que les requêtes de type **POST**, renverra une simple 
-  réponse vide pour toute requête de type **GET**;
-* ``quicksave/`` pour simuler la sauvegarde rapide. N'effectue aucune sauvegarde mais test au moins le contenu pour 
-  renvoyer une erreur le cas échéant. La validation utilise le parser **sveetchies-documents** si il est installé 
-  sinon aucune réelle validation de syntaxe n'est effectuée (seulement celle du formulaire);
+* The editor demonstration on ``djangocodemirror-sample/`` using `ReStructuredText`_;
+* The preview view ``preview/`` used in editor demo, it require **sveedocuments** to work correctly or it 
+  will simply return a dummy content. This view accepts only **POST** request and return an empty response for all request 
+  type (like GET);
+* The quicksave view ``quicksave/`` used in editor demo, doesn't really save anything, just do some validation. It 
+  require **sveedocuments** to work correctly.
+
