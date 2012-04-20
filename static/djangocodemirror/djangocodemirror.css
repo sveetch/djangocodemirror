@@ -38,16 +38,16 @@ hr,
     line-height:1.1em;
 }
 .CodeMirror .activeline {
-    background-color: #e8f2ff !important;
+/*     background-color: #e8f2ff !important; */
 }
 
 .CodeMirror-scroll{
-    border: 1px solid #ffffff;
+/*     border: 1px solid #ffffff; */
     border-top:0;
     border-bottom:0;
 }
 .CodeMirror-lines{
-    background-color:#ffffff;
+/*     background-color:#ffffff; */
 }
 
 /*___________________________

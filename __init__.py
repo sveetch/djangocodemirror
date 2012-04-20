@@ -60,6 +60,15 @@ DJANGOCODEMIRROR_FILEPATH_COOKIES = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH
 QTIP_FILEPATH_LIB = getattr(settings, 'QTIP_FILEPATH_LIB', 'jquery/plugins/qtip/jquery.qtip.min.js')
 QTIP_FILEPATH_CSS = getattr(settings, 'QTIP_FILEPATH_CSS', 'jquery/plugins/qtip/jquery.qtip.min.css')
 
+# List of available CSS themes for CodeMirror
+CODEMIRROR_THEMES = getattr(settings, 'CODEMIRROR_THEMES', (
+    (u'Neat', 'CodeMirror/theme/neat.css'),
+    (u'Eclipse', 'CodeMirror/theme/eclipse.css'),
+    (u'Elegant', 'CodeMirror/theme/elegant.css'),
+    (u'Lesser dark', 'CodeMirror/theme/lesser-dark.css'),
+    (u'Nice lesser dark', 'djangocodemirror/theme/nice-lesser-dark.css'),
+))
+
 # List of available modes and their JavaScript file
 CODEMIRROR_MODES = getattr(settings, 'CODEMIRROR_MODES', (
     (u'clike', u'CodeMirror/mode/clike/clike.js'),

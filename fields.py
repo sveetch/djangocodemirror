@@ -14,7 +14,7 @@ from django.utils.safestring import mark_safe
 from djangocodemirror import (CODEMIRROR_SETTINGS, DJANGOCODEMIRROR_DEFAULT_SETTING, 
                                 CODEMIRROR_FIELD_INIT_JS, 
                                 DJANGOCODEMIRROR_FIELD_INIT_JS, CODEMIRROR_MODES,
-                                CODEMIRROR_FILEPATH_LIB, CODEMIRROR_FILEPATH_CSS,
+                                CODEMIRROR_FILEPATH_LIB, CODEMIRROR_FILEPATH_CSS, CODEMIRROR_THEMES,
                                 DJANGOCODEMIRROR_FILEPATH_LIB, DJANGOCODEMIRROR_FILEPATH_CSS,
                                 DJANGOCODEMIRROR_FILEPATH_BUTTONS, DJANGOCODEMIRROR_FILEPATH_METHODS,
                                 DJANGOCODEMIRROR_FILEPATH_CONSOLE,
@@ -83,7 +83,7 @@ class CodeMirrorWidget(forms.Textarea):
         """
         Adds necessary files (Js/CSS) to the widget's medias
         """
-        css_items = [CODEMIRROR_FILEPATH_CSS, QTIP_FILEPATH_CSS]
+        css_items = [CODEMIRROR_FILEPATH_CSS, QTIP_FILEPATH_CSS]+[item[1] for item in CODEMIRROR_THEMES]
         js_items = [CODEMIRROR_FILEPATH_LIB]
         # Set CodeMirror 'mode' js media only if 'mode' has been defined
         # Use the 'mode' name as a key in the settings registry
