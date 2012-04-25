@@ -8,6 +8,7 @@ from django import forms
 from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import BaseFormView
 from django.http import HttpResponse
+from django.utils.translation import ugettext
 
 import djangocodemirror
 from djangocodemirror.fields import CodeMirrorField, DjangoCodeMirrorField
@@ -17,14 +18,16 @@ try:
 except ImportError:
     # Dummy fallback
     def SourceParser(source, *args, **kwargs):
-        return "<p>This a dummy preview because <tt>sveedocuments.parser</tt> is not available.</p>"
+        # Translators: Dummy content returned when no supported parser is installed
+        return ugettext("<p>This a dummy preview because <tt>sveedocuments.parser</tt> is not available.</p>")
 
 try:
     from sveedocuments.parser import SourceReporter, map_parsing_errors
 except ImportError:
     # Dummy fallback
     def map_parsing_errors(error, *args, **kwargs):
-        return u"Dummy"
+        # Translators: Dummy error to return when no supported parser is installed
+        return ugettext("Dummy")
     def SourceReporter(source, *args, **kwargs):
         return []
 

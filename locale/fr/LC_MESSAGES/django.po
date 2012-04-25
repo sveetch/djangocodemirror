@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# DAVID THENON <sveetch@gmail.com>, 2012.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: sveetch@gmail.com\n"
+"POT-Creation-Date: 2012-04-25 01:42+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: DAVID THENON <sveetch@gmail.com>\n"
+"Language-Team: FRENCH <FR@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Translators: Dummy content returned when no supported parser is installed
+#: views.py:22
+msgid "<p>This a dummy preview because <tt>sveedocuments.parser</tt> is not available.</p>"
+msgstr "<p>Ceci est une prévisualisation bidon car <tt>sveedocuments.parser</tt> n'est pas disponible.</p>"
+
+#. Translators: Dummy error to return when no supported parser is installed
+#: views.py:30
+msgid "Dummy"
+msgstr "Bidon"
+
+#. Translators: Demonstration page title
+#: templates/djangocodemirror/sample.html:5
+#: templates/djangocodemirror/sample.html:26
+msgid "DjangoCodeMirror sample"
+msgstr "Exemple DjangoCodeMirror"
+
+#. Translators: Link name to load demonstration content
+#: templates/djangocodemirror/sample.html:12
+msgid "Load demo content"
+msgstr "Charger le contenu de démonstration"
+
+#. Translators: Demonstration form title
+#: templates/djangocodemirror/sample.html:32
+msgid "Sample content"
+msgstr "Contenu d'exemple"

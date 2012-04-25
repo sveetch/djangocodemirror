@@ -16,6 +16,7 @@ from djangocodemirror import (CODEMIRROR_SETTINGS, DJANGOCODEMIRROR_DEFAULT_SETT
                                 DJANGOCODEMIRROR_FIELD_INIT_JS, CODEMIRROR_MODES,
                                 CODEMIRROR_FILEPATH_LIB, CODEMIRROR_FILEPATH_CSS, CODEMIRROR_THEMES,
                                 DJANGOCODEMIRROR_FILEPATH_LIB, DJANGOCODEMIRROR_FILEPATH_CSS,
+                                DJANGOCODEMIRROR_FILEPATH_TRANSLATION, DJANGOCODEMIRROR_TRANSLATIONS,
                                 DJANGOCODEMIRROR_FILEPATH_BUTTONS, DJANGOCODEMIRROR_FILEPATH_METHODS,
                                 DJANGOCODEMIRROR_FILEPATH_CONSOLE,
                                 DJANGOCODEMIRROR_FILEPATH_COOKIES, DJANGOCODEMIRROR_FILEPATH_CSRF,
@@ -92,9 +93,13 @@ class CodeMirrorWidget(forms.Textarea):
             if mode:
                 js_items.append(mode)
         # DjangoCodeMirror files if enabled
+        # DJANGOCODEMIRROR_FILEPATH_TRANSLATION, DJANGOCODEMIRROR_TRANSLATIONS,
         if not self.codemirror_only:
             css_items.append(DJANGOCODEMIRROR_FILEPATH_CSS)
             # DjangoCodeMirror must be instanciated AFTER CodeMirror
+            js_items.append(DJANGOCODEMIRROR_FILEPATH_TRANSLATION)
+            for lang in DJANGOCODEMIRROR_TRANSLATIONS:
+                js_items.append(lang)
             js_items.append(DJANGOCODEMIRROR_FILEPATH_BUTTONS)
             js_items.append(DJANGOCODEMIRROR_FILEPATH_METHODS)
             js_items.append(DJANGOCODEMIRROR_FILEPATH_LIB)

@@ -51,9 +51,9 @@ DCM_Core_Methods = {
                 $(".DjangoCodeMirror_menu .buttonQuickSave", djangocodemirror_container).removeClass("error");
                 if(data['status']=='form_invalid') {
                     $(".DjangoCodeMirror_menu .buttonQuickSave", djangocodemirror_container).addClass("error");
-                    createGrowl(djangocodemirror_container, "warning", "Erreur de validation", data["errors"]["content"].join("<br/>"), false);
+                    createGrowl(djangocodemirror_container, "warning", safegettext("Validation error"), data["errors"]["content"].join("<br/>"), false);
                 } else {
-                    createGrowl(djangocodemirror_container, "success", "Succès", "Sauvegarde réussie", false);
+                    createGrowl(djangocodemirror_container, "success", safegettext("Success"), safegettext("Successful save"), false);
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -329,22 +329,22 @@ DCM_Core_Methods = {
     // le textarea visé et enfin on initialise CodeMirror qui va s'y intégrer
     this.each(function() {
         // Conteneur principal de DjangoCodeMirror
-        var DCM_container = $('<div class="DjangoCodeMirror"></div>');
+        var DCM_container = $("<div class=\"DjangoCodeMirror\"></div>");
         $(this).before(DCM_container);
         
         // Menu de boutons
-        var header = $('<div class="DjangoCodeMirror_menu"><ul></ul><div class="cale"></div></div>');
+        var header = $("<div class=\"DjangoCodeMirror_menu\"><ul></ul><div class=\"cale\"></div></div>");
         header.appendTo(DCM_container);
         // Déplace le textarea
         $(this).appendTo(DCM_container);
         // Onglets de preview
         if(settings.preview_url) {
-            var footer = $('<div class="DjangoCodeMirror_tabs"><ul></ul><div class="cale"></div></div>');
+            var footer = $("<div class=\"DjangoCodeMirror_tabs\"><ul></ul><div class=\"cale\"></div></div>");
             footer.appendTo(DCM_container);
-            var tab_preview_on = $('<li class="tab preview"><a>Prévisualisation</a></li>');
-            var tab_preview_off = $('<li class="tab editor tabactive"><a>Edition</a></li>');
-            tab_preview_off.appendTo('.DjangoCodeMirror_tabs ul', DCM_container);
-            tab_preview_on.appendTo('.DjangoCodeMirror_tabs ul', DCM_container);
+            var tab_preview_on = $("<li class=\"tab preview\"><a>"+safegettext("Preview")+"</a></li>");
+            var tab_preview_off = $("<li class=\"tab editor tabactive\"><a>"+safegettext("Edit")+"</a></li>");
+            tab_preview_off.appendTo(".DjangoCodeMirror_tabs ul", DCM_container);
+            tab_preview_on.appendTo(".DjangoCodeMirror_tabs ul", DCM_container);
             tab_preview_on.on("click", function(event){
                 DCM_Core_Methods.previewRender(settings, DCM_container, codemirror_instance);
             });
@@ -359,14 +359,14 @@ DCM_Core_Methods = {
         // Ajout des boutons pour le fullscreen si activé
         if( settings.fullscreen ){
             var maximize_settings = $.extend({}, default_button_settings, {
-                name:'Maximiser',
+                name: safegettext("Maximize"),
                 classname: 'buttonFullscreenEnter',
-                functype:"fullscreenEnter"
+                functype: "fullscreenEnter"
             });
             var minimize_settings = $.extend({}, default_button_settings, {
-                name:'Taille normale',
+                name: safegettext("Normal size"),
                 classname: 'buttonFullscreenExit',
-                functype:"fullscreenExit"
+                functype: "fullscreenExit"
             });
             _add_bar_button(maximize_settings, DCM_container, codemirror_instance);
             _add_bar_button(minimize_settings, DCM_container, codemirror_instance);
@@ -391,7 +391,7 @@ DCM_Core_Methods = {
         if( settings.quicksave_url ){
             _add_bar_separator(DCM_container);
             var quicksave_settings = $.extend({}, default_button_settings, {
-                name:'Sauvegarde rapide',
+                name: safegettext("Quick save"),
                 classname: 'buttonQuickSave',
                 quicksave_url: settings.quicksave_url,
                 quicksave_datas: settings.quicksave_datas,
@@ -405,7 +405,7 @@ DCM_Core_Methods = {
         if( settings.help_link ){
             _add_bar_separator(DCM_container);
             var help_settings = $.extend({}, default_button_settings, {
-                name:'Aide',
+                name: safegettext("Help"),
                 classname: 'buttonHelp',
                 url: settings.help_link,
                 functype:"externalressource"
@@ -434,10 +434,13 @@ DCM_Core_Methods = {
     */
     function _add_bar_button(item_opts, container, instance) {
         var accesskey = (item_opts.key) ? ' accesskey="'+item_opts.key+'"' : '';
-        var button = $('<li class="button '+item_opts.classname+'"><a'+accesskey+' title="'+item_opts.name+'">'+item_opts.name+'</a></li>')
+        var button = $('<li class="button '+item_opts.classname+'"><a'+accesskey+' title="'+safegettext(item_opts.name)+'">'+safegettext(item_opts.name)+'</a></li>')
         button.appendTo('.DjangoCodeMirror_menu ul', container);
         button.on("click", item_opts, function(event){
             var opts = event.data;
+            if(opts.placeholder) {
+                opts.placeholder = safegettext(opts.placeholder);
+            }
             // Valeur de la séléction si elle n'est pas vide, sinon le @placeholder
             var value = instance.getSelection()||opts.placeholder;
             // Evaluation du nom de la méthode de formatage à employer

@@ -12,7 +12,7 @@ DCM_Syntax_Methods = {
     // Link
     */
     link: function(value, codemirror_instance, opts) {
-        var url = prompt("Votre lien","http://");
+        var url = prompt(safegettext("Link"),"http://");
         if(url){
             codemirror_instance.replaceSelection('`'+ value +' <'+ url +'>`_');
         }
@@ -57,7 +57,7 @@ DCM_Syntax_Methods = {
     // Source content formating
     */
     sourcecode: function(value, codemirror_instance, opts) {
-        var lexer_name = prompt("Nom du language","");
+        var lexer_name = prompt(safegettext("Language name"),"");
         if(lexer_name){
             var directive_head = "..  sourcecode:: "+lexer_name+"\n    :linenos:\n\n";
             codemirror_instance.replaceSelection(directive_head+DCM_Methods._indenter(value, '    '));

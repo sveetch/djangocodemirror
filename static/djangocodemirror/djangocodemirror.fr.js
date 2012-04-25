@@ -1,0 +1,35 @@
+/*
+* French translation dictionnary for DjangoCodeMirror
+*/
+DCM_Translations["fr"] = {
+    "Language name": "Nom du langage",
+    "Link": "Lien",
+    "Maximize": "Taille maximum",
+    "Normal size": "Taille normale",
+    "Title level 1": "Titre niveau 1",
+    "Title level 2": "Titre niveau 2",
+    "Title level 3": "Titre niveau 3",
+    "Your title": "Votre titre",
+    "Your value": "Votre contenu",
+    "Bold": "Gras",
+    "Italic": "Italique",
+    "Inline code": "Code en ligne",
+    "External link": "Lien externe",
+    "Internal link to a Page document": "Lien interne vers une Page",
+    "Substitution image": "Image par substitution",
+    "Simple image block": "Bloc image",
+    "Annoted image block": "Bloc image annotée",
+    "Your image link": "Votre lien d'image",
+    "Bullet list": "Liste à puces",
+    "Enumerated List": "Liste numérotées",
+    "Item": "Élément",
+    "Cite": "Citation",
+    "Block code": "Bloc de code",
+    "Validation error": "Erreur de validation",
+    "Success": "Succès",
+    "Successful save": "Sauvegarde réussie",
+    "Preview": "Prévisualisation",
+    "Edit": "Edition",
+    "Quick save": "Sauvegarde rapide",
+    "Help": "Aide"
+};

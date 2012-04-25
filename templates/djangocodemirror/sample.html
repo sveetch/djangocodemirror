@@ -1,12 +1,17 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block head_title %}DjangoCodeMirror sample{% endblock %}
+{% comment %}Translators: Demonstration page title{% endcomment %}
+{% block head_title %}{% trans "DjangoCodeMirror sample" %}{% endblock %}
 {% block head_more_js %}{{ block.super }} 
+    {% get_current_language as LANGUAGE_CODE %}
     {{ form.media }}
     <script language="JavaScript" type="text/javascript">
     //<![CDATA[
+    DCM_lang = "{{ LANGUAGE_CODE }}";
     $(document).ready(function() {
-        $("#sample h2:first").after('<p><a class="demo_content_loadlink" href="">Load demo content</a></p>');
+        {% comment %}Translators: Link name to load demonstration content{% endcomment %}
+        $("#sample h2:first").after('<p><a class="demo_content_loadlink" href="">{% trans "Load demo content" %}</a></p>');
         $("#sample a.demo_content_loadlink").click(function () {
             id_content_codemirror_instance.setValue( $("#sample_demo_content").val() );
             id_content_codemirror_instance.clearHistory();
@@ -20,12 +25,13 @@
 
 {% block content %}
     <div id="sample">
-        <h2>DjangoCodeMirror sample</h2>
+        <h2>{% trans "DjangoCodeMirror sample" %}</h2>
         <form method="post" action="">{% csrf_token %}
             <div>{{ form.content }}</div>
         </form>
         <div style="display:none;">
-            <h2>Sample content</h2>
+            {% comment %}Translators: Demonstration form title{% endcomment %}
+            <h2>{% trans "Sample content" %}</h2>
             <div><textarea name="sample_demo_content" id="sample_demo_content">{{ demo_content }}</textarea></div>
         </div>
     </div>

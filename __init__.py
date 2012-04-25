@@ -46,11 +46,12 @@ CODEMIRROR_SETTINGS.update(getattr(settings, 'CODEMIRROR_SETTINGS', {}))
 DJANGOCODEMIRROR_DEFAULT_SETTING = getattr(settings, 'DJANGOCODEMIRROR_DEFAULT_SETTING', 'djangocodemirror')
 
 # Relative paths for widget medias (CSS, JS)
-CODEMIRROR_ROOT = getattr(settings, 'CODEMIRROR_ROOT', 'CodeMirror/') # TODO: Activer son utilisation
-JQUERY_PLUGINS_ROOT = getattr(settings, 'JQUERY_PLUGINS_ROOT', 'jquery/plugins/') # TODO: Activer son utilisation
+CODEMIRROR_ROOT = getattr(settings, 'CODEMIRROR_ROOT', 'CodeMirror/') # TODO: Implement usage for settings below
+JQUERY_PLUGINS_ROOT = getattr(settings, 'JQUERY_PLUGINS_ROOT', 'jquery/plugins/') # TODO: Implement usage for settings below
 CODEMIRROR_FILEPATH_LIB = getattr(settings, 'CODEMIRROR_FILEPATH_LIB', 'CodeMirror/lib/codemirror.js')
 CODEMIRROR_FILEPATH_CSS = getattr(settings, 'CODEMIRROR_FILEPATH_CSS', 'CodeMirror/lib/codemirror.css')
 DJANGOCODEMIRROR_FILEPATH_LIB = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_LIB', 'djangocodemirror/djangocodemirror.js')
+DJANGOCODEMIRROR_FILEPATH_TRANSLATION = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_TRANSLATION', 'djangocodemirror/djangocodemirror.translation.js')
 DJANGOCODEMIRROR_FILEPATH_CSS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CSS', 'djangocodemirror/djangocodemirror.css')
 DJANGOCODEMIRROR_FILEPATH_BUTTONS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_BUTTONS', 'djangocodemirror/buttons.js')
 DJANGOCODEMIRROR_FILEPATH_METHODS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_METHODS', 'djangocodemirror/syntax_methods.js')
@@ -59,6 +60,11 @@ DJANGOCODEMIRROR_FILEPATH_CSRF = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CS
 DJANGOCODEMIRROR_FILEPATH_COOKIES = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_COOKIES', 'jquery/plugins/jquery.cookies.2.2.0.min.js')
 QTIP_FILEPATH_LIB = getattr(settings, 'QTIP_FILEPATH_LIB', 'jquery/plugins/qtip/jquery.qtip.min.js')
 QTIP_FILEPATH_CSS = getattr(settings, 'QTIP_FILEPATH_CSS', 'jquery/plugins/qtip/jquery.qtip.min.css')
+
+# List of translations
+DJANGOCODEMIRROR_TRANSLATIONS = getattr(settings, 'DJANGOCODEMIRROR_TRANSLATIONS', (
+    ('djangocodemirror/djangocodemirror.fr.js'),
+))
 
 # List of available CSS themes for CodeMirror
 CODEMIRROR_THEMES = getattr(settings, 'CODEMIRROR_THEMES', (
