@@ -11,7 +11,7 @@ from django.forms.widgets import flatatt
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
-from djangocodemirror import (CODEMIRROR_SETTINGS, DJANGOCODEMIRROR_DEFAULT_SETTING, 
+from djangocodemirror.settings_local import (CODEMIRROR_SETTINGS, DJANGOCODEMIRROR_DEFAULT_SETTING, 
                                 CODEMIRROR_FIELD_INIT_JS, 
                                 DJANGOCODEMIRROR_FIELD_INIT_JS, CODEMIRROR_MODES,
                                 CODEMIRROR_FILEPATH_LIB, CODEMIRROR_FILEPATH_CSS, CODEMIRROR_THEMES,

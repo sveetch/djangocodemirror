@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 App default settings
-
-TODO: * Ajout d'un css (ou modification d'un existant?) pour le cas ou 
-        *DjangoCodeMirror* n'est pas utilisé (``codemirror_only=True`` avec le widget);
-      * Templatetag pour générer directement le champ;
 """
 from django.conf import settings
-
-__version__ = '0.4.0'
 
 # HTML Code to insert for instanciate CodeMirror with a field
 DJANGOCODEMIRROR_FIELD_INIT_JS = getattr(settings, 'DJANGOCODEMIRROR_FIELD_INIT_JS', u"""<script language="JavaScript" type="text/javascript">//<![CDATA[\n$(document).ready(function() {{ {inputid}_codemirror_instance = $('#{inputid}').djangocodemirror({settings}); }});\n//]]></script>""")

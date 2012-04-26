@@ -16,7 +16,6 @@ DCM_Translations = {};
 function safegettext(key, lang) {
     if (!lang) {
         lang = DCM_lang;
-        // TODO: Try to find language elsewhere in a constant
     }
     if(DCM_Translations[lang]) {
         if(DCM_Translations[lang][key]) {

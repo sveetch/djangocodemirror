@@ -10,7 +10,7 @@ from django.views.generic.edit import BaseFormView
 from django.http import HttpResponse
 from django.utils.translation import ugettext
 
-import djangocodemirror
+from djangocodemirror import settings_local
 from djangocodemirror.fields import CodeMirrorField, DjangoCodeMirrorField
 
 try:
@@ -35,7 +35,7 @@ class DjangoCodeMirrorSampleForm(forms.Form):
     """
     Sample form
     """
-    content = DjangoCodeMirrorField(label=u"DjangoCodeMirror", max_length=5000, required=True, codemirror_attrs=djangocodemirror.CODEMIRROR_SETTINGS['djangocodemirror_sample_demo'])
+    content = DjangoCodeMirrorField(label=u"DjangoCodeMirror", max_length=5000, required=True, codemirror_attrs=settings_local.CODEMIRROR_SETTINGS['djangocodemirror_sample_demo'])
     
     def clean_content(self):
         """
@@ -58,7 +58,7 @@ class Sample(TemplateView):
     template_name = "djangocodemirror/sample.html"
     
     def get(self, request, *args, **kwargs):
-        path_root = os.path.abspath(os.path.dirname(djangocodemirror.__file__))
+        path_root = os.path.abspath(os.path.dirname(settings_local.__file__))
         f = open(os.path.join(path_root, "README.rst"))
         content = f.read()
         f.close()
