@@ -39,19 +39,19 @@ DCM_Syntax_Methods = {
     // Cite
     */
     cite: function(value, codemirror_instance, opts) {
-        codemirror_instance.replaceSelection(DCM_Methods._indenter(value, opts.begin_with));
+        codemirror_instance.replaceSelection(DCM_Syntax_Methods._indenter(value, opts.begin_with));
     },
     /*
     // Bullet list
     */
     bulletlist: function(value, codemirror_instance, opts) {
-        codemirror_instance.replaceSelection(DCM_Methods._indenter(value, '* ')+'\n');
+        codemirror_instance.replaceSelection(DCM_Syntax_Methods._indenter(value, '* ')+'\n');
     },
     /*
     // Numbered list
     */
     numberedlist: function(value, codemirror_instance, opts) {
-        codemirror_instance.replaceSelection(DCM_Methods._indenter(value, '#. ')+'\n');
+        codemirror_instance.replaceSelection(DCM_Syntax_Methods._indenter(value, '#. ')+'\n');
     },
     /*
     // Source content formating
@@ -60,7 +60,7 @@ DCM_Syntax_Methods = {
         var lexer_name = prompt(safegettext("Language name"),"");
         if(lexer_name){
             var directive_head = "..  sourcecode:: "+lexer_name+"\n    :linenos:\n\n";
-            codemirror_instance.replaceSelection(directive_head+DCM_Methods._indenter(value, '    '));
+            codemirror_instance.replaceSelection(directive_head+DCM_Syntax_Methods._indenter(value, '    '));
         }
     },
     /*
