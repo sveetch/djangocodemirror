@@ -4,6 +4,7 @@
 .. _jQuery.axax(): http://api.jquery.com/jQuery.ajax/
 .. _Django CSRF: https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 .. _Django staticfiles: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/
+.. _Django internationalization system: https://docs.djangoproject.com/en/dev/topics/i18n/
 .. _ReStructuredText: http://docutils.sourceforge.net/rst.html
 .. _qTip2: http://craigsworks.com/projects/qtip2/
 
@@ -20,11 +21,15 @@ HTML, etc..). It is essentialy a jQuery plugin on top of `CodeMirror`_ to add so
 * A maximize mode to resize the editor at full browser size;
 * A preview mode;
 * A quicksave option;
+* Support translations with english and french allready shipped;
 * Compatibility with `Django CSRF`_.
 
+Links
+*****
 
-You can download it on his `Github repository <https://github.com/sveetch/djangocodemirror>`_ and find 
-his `documentation on DjangoSveetchies <http://sveetchies.sveetch.net/djangocodemirror/>`_.
+* Download his `PyPi package <http://pypi.python.org/pypi/djangocodemirror>`_;
+* Clone it on his `Github repository <https://github.com/sveetch/djangocodemirror>`_;
+* Documentation and demo to come on his `DjangoSveetchies page <http://sveetchies.sveetch.net/djangocodemirror/>`_.
 
 Requires
 ========
@@ -216,10 +221,15 @@ His default value for ``codemirror_attrs`` correspond to `DJANGOCODEMIRROR_DEFAU
         def save(self, *args, **kwargs):
             return
 
-App Settings
-============
+Application settings
+====================
 
-All default app settings is located in the ``__init__.py`` file of ``djangocodemirror``.
+All default app settings is located in the ``settings_local.py`` file of ``djangocodemirror``, you can modify them in your 
+project settings.
+
+.. NOTE:: All app settings are overwritten if present in your project settings with the exception of 
+          dict variables. This is to be remembered when you want to add a new entry in a list variable, you will have to 
+          copy the default version in your settings with the new entry otherwise default variable will be lost.
 
 CODEMIRROR_FIELD_INIT_JS
 ************************
@@ -265,10 +275,25 @@ DJANGOCODEMIRROR_DEFAULT_SETTING
 The keyword to use to select the default settings with `DjangoCodeMirrorField`_. Note that `CodeMirrorField`_ always 
 use the keyword ``default`` to select his default settings.
 
+DJANGOCODEMIRROR_TRANSLATIONS
+*****************************
+
+**Type :** *list* or *tuple*
+
+A list of paths for available translations.
+
+CODEMIRROR_THEMES
+*****************
+
+**Type :** *list* or *tuple*
+
+A list of paths for available themes to load with `CodeMirror`_. There is actually no loaded theme by default, you will 
+have to set one in your `CODEMIRROR_SETTINGS`_
+
 CODEMIRROR_MODES 
 ****************
 
-**Type :** *list*
+**Type :** *list* or *tuple*
 
 A list of tuples for the various syntax coloration modes supported by `CodeMirror`_. This list is generated from 
 the available mode files in `CodeMirror`_.
@@ -286,6 +311,8 @@ CODEMIRROR_FILEPATH_CSS
     The CSS file of `CodeMirror`_.
 DJANGOCODEMIRROR_FILEPATH_LIB
     The Javascript core library of `DjangoCodeMirror`_.
+DJANGOCODEMIRROR_FILEPATH_TRANSLATION
+    The Javascript componant to enable translations for `DjangoCodeMirror`_.
 DJANGOCODEMIRROR_FILEPATH_CSS
     The CSS file of `DjangoCodeMirror`_.
 DJANGOCODEMIRROR_FILEPATH_BUTTONS
@@ -329,3 +356,24 @@ Three views are avalaible :
 * The quicksave view ``quicksave/`` used in editor demo, doesn't really save anything, just do some validation. It 
   require **sveedocuments** to work correctly.
 
+Internationalization and localization
+=====================================
+
+This application make usage of the `Django internationalization system`_ only in his demonstration. However the editor is 
+translated with his own system using a javascript file for each available language.
+
+To add a new language, you will have to add a new javascript file that will register the new available language. Just create 
+a file with this :
+
+::
+
+    DCM_Translations["NAME"] = {
+        // Translations goes here
+    };
+
+Where ``NAME`` is the language locale name to register and ``// Translations goes here`` must be replaced by the content 
+to translate. To see a full translation see the french version in ``static/djangocodemirror/djangocodemirror.fr.js`` where you 
+can see all the string to translate.
+
+You can save your file where you want in your project or application, you will just have to register it in the setting 
+`DJANGOCODEMIRROR_TRANSLATIONS`_.
