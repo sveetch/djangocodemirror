@@ -37,9 +37,9 @@ hr,
     font-size:1.1em;
     line-height:1.1em;
 }
-.CodeMirror .activeline {
-/*     background-color: #e8f2ff !important; */
-}
+/*.CodeMirror .activeline {
+    background-color: #e8f2ff !important;
+}*/
 
 .CodeMirror-scroll{
 /*     border: 1px solid #ffffff; */
@@ -191,7 +191,7 @@ hr,
 }
 
 /*___________________________
-    Menu des onglets
+    Barre de status et onglets
 */
 .DjangoCodeMirror .DjangoCodeMirror_tabs{
     border-top: 1px solid #e0e0e0;
@@ -204,17 +204,17 @@ hr,
 }
 .DjangoCodeMirror .DjangoCodeMirror_tabs ul .tab a{
     display:block;
+    opacity:0.4;
     margin:0;
     padding: .3em .5em .3em .5em;
+    cursor: pointer;
     font-size:0.6em;
+    color:#404040;
     text-decoration:none;
     text-transform:uppercase;
     border: 1px solid #d0d0d0;
     border-radius: 3px;
-    cursor: pointer;
-    color:#404040;
     background-color:#ededed;
-    opacity:0.4;
 }
 .DjangoCodeMirror .DjangoCodeMirror_tabs ul .tab a:hover{
     opacity:1.0;
@@ -233,6 +233,13 @@ hr,
     color:#000000;
 }
 
+.DjangoCodeMirror .DjangoCodeMirror_tabs .cursor_pos{
+    padding: .9em .8em .4em .5em;
+    float:right;
+    font-size:0.6em;
+    color:#707070;
+}
+
 /*____________________________________
     Pour la prévisualisation
 */
@@ -248,6 +255,7 @@ hr,
 .DjangoCodeMirror.fullScreen{
     border:0;
     border-radius:0;
+    font-size:1.3em;
 }
 .DjangoCodeMirror.fullScreen .CodeMirror{
     font-size:1.3em;

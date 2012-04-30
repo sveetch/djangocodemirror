@@ -30,6 +30,8 @@ DCM_Translations["fr"] = {
     "Successful save": "Sauvegarde réussie",
     "Preview": "Prévisualisation",
     "Edit": "Edition",
+    "Line": "Ligne",
+    "Col": "Col",
     "Quick save": "Sauvegarde rapide",
     "Help": "Aide"
 };

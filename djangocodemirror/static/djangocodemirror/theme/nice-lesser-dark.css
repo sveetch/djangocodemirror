@@ -1,6 +1,7 @@
 /*
 http://lesscss.org/ dark theme
 Ported to CodeMirror by Peter Kroon
+Edited by David Thenon only to use a more readable blue
 */
 .CodeMirror{
   line-height: 15px;

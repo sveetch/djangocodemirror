@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% comment %}TODO: Default settings template should not use crispy forms to avoid his dependancy{% endcomment %}
+{% load i18n crispy_forms_tags %}
+
+{% block head_title %}{% trans "Your settings" %}{% endblock %}
+{% block head_more_links %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}uni_form/uni-form.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}uni_form/default.uni-form.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}sveedocuments/css/forms.css" type="text/css" />
+{% endblock %}
+
+{% block content %}
+    <h2>{% trans "Your settings" %} </h2>
+    {% if save_success %}<p>Your settings has been saved.</p>{% endif %}
+    {% crispy form %}
+{% endblock %}

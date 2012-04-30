@@ -2,15 +2,17 @@
 """
 Sample views
 """
-import json, os
+import datetime, json, os, urllib
+import base64
 
-from django import forms
 from django.views.generic.base import View, TemplateView
-from django.views.generic.edit import BaseFormView
+from django.views.generic.edit import BaseFormView, FormView
 from django.http import HttpResponse
 from django.utils.translation import ugettext
+from django.conf import settings
 
 from djangocodemirror import settings_local
+from djangocodemirror.forms import DjangoCodeMirrorSampleForm, DjangoCodeMirrorSettingsForm
 from djangocodemirror.fields import CodeMirrorField, DjangoCodeMirrorField
 
 try:
@@ -21,36 +23,6 @@ except ImportError:
         # Translators: Dummy content returned when no supported parser is installed
         return ugettext("<p>This a dummy preview because <tt>sveedocuments.parser</tt> is not available.</p>")
 
-try:
-    from sveedocuments.parser import SourceReporter, map_parsing_errors
-except ImportError:
-    # Dummy fallback
-    def map_parsing_errors(error, *args, **kwargs):
-        # Translators: Dummy error to return when no supported parser is installed
-        return ugettext("Dummy")
-    def SourceReporter(source, *args, **kwargs):
-        return []
-
-class DjangoCodeMirrorSampleForm(forms.Form):
-    """
-    Sample form
-    """
-    content = DjangoCodeMirrorField(label=u"DjangoCodeMirror", max_length=5000, required=True, codemirror_attrs=settings_local.CODEMIRROR_SETTINGS['djangocodemirror_sample_demo'])
-    
-    def clean_content(self):
-        """
-        Parse content to check eventual markup syntax errors and warnings
-        """
-        content = self.cleaned_data.get("content")
-        if content:
-            errors = SourceReporter(content)
-            if errors:
-                raise forms.ValidationError(map(map_parsing_errors, errors))
-        return content
-    
-    def save(self, *args, **kwargs):
-        return
-
 class Sample(TemplateView):
     """
     Sample page view
@@ -59,7 +31,7 @@ class Sample(TemplateView):
     
     def get(self, request, *args, **kwargs):
         path_root = os.path.abspath(os.path.dirname(settings_local.__file__))
-        f = open(os.path.join(path_root, "README.rst"))
+        f = open(os.path.join(path_root, "../README.rst"))
         content = f.read()
         f.close()
         
@@ -106,3 +78,45 @@ class SampleQuicksave(BaseFormView):
             'errors': dict(form.errors.items()),
         })
         return HttpResponse(content, content_type='application/json')
+
+class EditorSettings(FormView):
+    """
+    Editor Settings
+    """
+    template_name = "djangocodemirror/settings.html"
+    form_class = DjangoCodeMirrorSettingsForm
+
+    def get_initial(self):
+        """
+        Try to get the initial data from saved cookie
+        """
+        user_settings = self.request.COOKIES.get(settings_local.DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME, None)
+        if user_settings:
+            return json.loads(urllib.unquote(user_settings))
+        return {}
+    
+    def form_valid(self, form):
+        """
+        Save settings in cookies and back to the form with a success message
+        """
+        saved_settings = form.save()
+        
+        cookie_content = json.dumps(saved_settings)
+        cookie_expires = datetime.datetime.strftime(
+            datetime.datetime.utcnow() + datetime.timedelta(seconds=settings_local.DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE), 
+            "%a, %d-%b-%Y %H:%M:%S GMT"
+        )
+        
+        form_class = self.get_form_class()
+        new_form = self.get_form(form_class)
+        resp = self.render_to_response(self.get_context_data(form=new_form, save_success=True))
+        
+        resp.set_cookie(
+            settings_local.DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME,
+            urllib.quote(cookie_content),
+            max_age=settings_local.DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE,
+            expires=cookie_expires,
+            domain=settings.SESSION_COOKIE_DOMAIN
+        )
+        
+        return resp

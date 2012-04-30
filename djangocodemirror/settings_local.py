@@ -8,6 +8,9 @@ from django.conf import settings
 DJANGOCODEMIRROR_FIELD_INIT_JS = getattr(settings, 'DJANGOCODEMIRROR_FIELD_INIT_JS', u"""<script language="JavaScript" type="text/javascript">//<![CDATA[\n$(document).ready(function() {{ {inputid}_codemirror_instance = $('#{inputid}').djangocodemirror({settings}); }});\n//]]></script>""")
 CODEMIRROR_FIELD_INIT_JS = getattr(settings, 'CODEMIRROR_FIELD_INIT_JS', u"""<script language="JavaScript" type="text/javascript">//<![CDATA[\n{inputid}_codemirror_instance = CodeMirror.fromTextArea(document.getElementById('{inputid}'), {settings});\n//]]></script>""")
 
+DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME = getattr(settings, 'DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME', "djangocodemirror_user_settings")
+DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE = getattr(settings, 'SESSION_COOKIE_AGE', (60 * 60 * 24 * 7 * 8))
+
 # Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
     'default': {
@@ -15,22 +18,23 @@ CODEMIRROR_SETTINGS = {
     },
     'djangocodemirror': {
         'mode': 'rst',
-        'lineWrapping': True,
+        'lineWrapping': False,
         'lineNumbers': True,
     },
     'djangocodemirror_with_preview': {
         'mode': 'rst',
         'csrf': 'CSRFpass',
         'preview_url': '/preview/',
-        'lineWrapping': True,
+        'lineWrapping': False,
         'lineNumbers': True,
     },
     'djangocodemirror_sample_demo': {
         'mode': 'rst',
         'csrf': 'CSRFpass',
+        'settings_cookie': DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME,
         'preview_url': ('djangocodemirror-sample-preview', [], {}),
         'quicksave_url': ('djangocodemirror-sample-quicksave', [], {}),
-        'lineWrapping': True,
+        'lineWrapping': False,
         'lineNumbers': True,
     },
 }
@@ -62,12 +66,17 @@ DJANGOCODEMIRROR_TRANSLATIONS = getattr(settings, 'DJANGOCODEMIRROR_TRANSLATIONS
 
 # List of available CSS themes for CodeMirror
 CODEMIRROR_THEMES = getattr(settings, 'CODEMIRROR_THEMES', (
-    (u'Neat', 'CodeMirror/theme/neat.css'),
+    (u'Ambiance', 'CodeMirror/theme/ambiance.css'),
     (u'Eclipse', 'CodeMirror/theme/eclipse.css'),
     (u'Elegant', 'CodeMirror/theme/elegant.css'),
     (u'Lesser dark', 'CodeMirror/theme/lesser-dark.css'),
-    (u'Nice lesser dark', 'djangocodemirror/theme/nice-lesser-dark.css'),
+    (u'Neat', 'CodeMirror/theme/neat.css'),
+    (u'Nice ambiance', 'djangocodemirror/theme/nice-ambiance.css'),
+    (u'Nice Lesser dark', 'djangocodemirror/theme/nice-lesser-dark.css'),
 ))
+
+# Default theme name used by DjangoCodeMirror
+DJANGOCODEMIRROR_DEFAULT_THEME = getattr(settings, 'DJANGOCODEMIRROR_DEFAULT_THEME', 'Neat')
 
 # List of available modes and their JavaScript file
 CODEMIRROR_MODES = getattr(settings, 'CODEMIRROR_MODES', (

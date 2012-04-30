@@ -297,6 +297,11 @@ DCM_Core_Methods = {
         'lineNumbers' : false,
         'onCursorActivity': function() {
             codemirror_instance.setLineClass(hlLine, null);
+            var cur = codemirror_instance.getCursor();
+            console.log("Ligne: "+(cur.line+1)+" Col: "+(cur.ch+1));
+            // TODO: should use the codemirror container instance, actually this is not multiple instance aware
+            $(".DjangoCodeMirror_tabs .cursor_pos span.line").html((cur.line+1));
+            $(".DjangoCodeMirror_tabs .cursor_pos span.ch").html((cur.ch+1));
             hlLine = codemirror_instance.setLineClass(codemirror_instance.getCursor().line, "activeline");
         },
         // For DjangoCodeMirror only
@@ -306,6 +311,8 @@ DCM_Core_Methods = {
         'quicksave_datas' : {},
         'preview_url' : false,
         'csrf' : false,
+        'settings_cookie': '',
+        'display_cursor_position': true,
         'preview_padding': 10,
         'preview_borders': 0
     }, options);
@@ -324,6 +331,13 @@ DCM_Core_Methods = {
         'move_cursor_char' : 0,
         'separator' : false
     };
+    // User settings in cookie
+    if(settings.settings_cookie) {
+        var cookie = $.cookies.get("djangocodemirror_user_settings");
+        if(cookie){
+            settings = $.extend( settings, cookie);
+        }
+    }
     
     // En mode normal, on initialise l'interface de DjangoCodeMirror puis on y déplace 
     // le textarea visé et enfin on initialise CodeMirror qui va s'y intégrer
@@ -337,20 +351,25 @@ DCM_Core_Methods = {
         header.appendTo(DCM_container);
         // Déplace le textarea
         $(this).appendTo(DCM_container);
-        // Onglets de preview
-        if(settings.preview_url) {
+        // Bar d'infos et onglets
+        if(settings.preview_url || settings.display_cursor_position) {
             var footer = $("<div class=\"DjangoCodeMirror_tabs\"><ul></ul><div class=\"cale\"></div></div>");
             footer.appendTo(DCM_container);
-            var tab_preview_on = $("<li class=\"tab preview\"><a>"+safegettext("Preview")+"</a></li>");
-            var tab_preview_off = $("<li class=\"tab editor tabactive\"><a>"+safegettext("Edit")+"</a></li>");
-            tab_preview_off.appendTo(".DjangoCodeMirror_tabs ul", DCM_container);
-            tab_preview_on.appendTo(".DjangoCodeMirror_tabs ul", DCM_container);
-            tab_preview_on.on("click", function(event){
-                DCM_Core_Methods.previewRender(settings, DCM_container, codemirror_instance);
-            });
-            tab_preview_off.on("click", function(event){
-                DCM_Core_Methods.closePreview(DCM_container, codemirror_instance);
-            });
+            if(settings.preview_url) {
+                var tab_preview_on = $("<li class=\"tab preview\"><a>"+safegettext("Preview")+"</a></li>");
+                var tab_preview_off = $("<li class=\"tab editor tabactive\"><a>"+safegettext("Edit")+"</a></li>");
+                tab_preview_off.appendTo(".DjangoCodeMirror_tabs ul", DCM_container);
+                tab_preview_on.appendTo(".DjangoCodeMirror_tabs ul", DCM_container);
+                tab_preview_on.on("click", function(event){
+                    DCM_Core_Methods.previewRender(settings, DCM_container, codemirror_instance);
+                });
+                tab_preview_off.on("click", function(event){
+                    DCM_Core_Methods.closePreview(DCM_container, codemirror_instance);
+                });
+            }
+            if(settings.display_cursor_position) {
+                $(".DjangoCodeMirror_tabs .cale", DCM_container).before("<div class=\"cursor_pos\">"+safegettext("Line")+"&nbsp;:&nbsp;<span class=\"line\">1</span> &nbsp;&nbsp; "+safegettext("Col")+"&nbsp;:&nbsp;<span class=\"ch\">1</span></div>");
+            }
         }
         
         // Activation de CodeMirror
