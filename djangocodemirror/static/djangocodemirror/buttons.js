@@ -2,6 +2,14 @@
 * Settings for DjangoCodeMirror buttons bar
 */
 DCM_Buttons_settings = [
+    {name:'Maximize', classname: 'buttonFullscreenEnter', functype:"fullscreenEnter", method:"internal" },
+    {name:'Normal size', classname: 'buttonFullscreenExit', functype:"fullscreenExit", method:"internal" },
+    {separator:true},
+    {name:'Quick save', classname: 'buttonQuickSave', key:'S', functype:"quicksave", method:"internal" },
+    {separator:true},
+    {name:'Undo', classname: 'buttonUndo', functype:"do_undo", method:"internal" },
+    {name:'Redo', classname: 'buttonRedo', functype:"do_redo", method:"internal" },
+    {separator:true},
     {name:'Title level 1', classname: 'buttonH1', key:'1', char:'=', placeholder:'Your title', functype:"title" },
     {name:'Title level 2', classname: 'buttonH2', key:'2', char:'*', placeholder:'Your title', functype:"title" },
     {name:'Title level 3', classname: 'buttonH3', key:'3', char:'-', placeholder:'Your title', functype:"title" },
@@ -21,5 +29,7 @@ DCM_Buttons_settings = [
     {name:'Enumerated List', classname: 'buttonNList', functype:"numberedlist", placeholder:'Item' },
     {separator:true},
     {name:'Cite', classname: 'buttonQuotes', begin_with:'    ', placeholder:'Your value', functype:"cite"},
-    {name:'Block code', classname: 'buttonSourcecode', placeholder:'Your value', functype:"sourcecode" }
+    {name:'Block code', classname: 'buttonSourcecode', placeholder:'Your value', functype:"sourcecode" },
+    {separator:true},
+    {name:'Help', classname: 'buttonHelp', functype:"externalressource" }
 ];

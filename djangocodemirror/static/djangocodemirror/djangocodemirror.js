@@ -1,15 +1,12 @@
 /*
-* Plugin d'initialisation de "CodeMirror" et ajout autour d'une interface 
-* d'enrichissement qu'on apellera "DjangoCodeMirror" (par pure modestie..) qui ajoute des 
-* boutons d'aides à la syntaxe ReST, fullscreen et preview. Le multi-instances de 
-* DjangoCodeMirror est supporté.
+* Django-CodeMirror jQuery plugin
 * 
 * TODO: * CSS pour mettre une puce différente pour les liens internes et pour les liens externes;
-*       * Boutons pour appliquer le undo/redo (mais sans ajout de raccourcis clavier);
-*       * Activation des modes de recherches et remplacement de CodeMirror;
-*       * Déplacer les chaînes de texte dans un fichier séparé pour pouvoir faire des traductions par i18n;
 *       * Ne pas déplacer le curseur après une insertion si il est déjà à la fin de la ligne;
 *       * Améliorer le binding des touches de raccourcis clavier (utiliser l'api de codemirror?);
+* 
+* NOTE: Actual code doesn't pass yet the codemirror container instance to all core methods, so 
+*       DjangoCodeMirror is compatible for multiple instances usage.
 */
 
 /*
@@ -19,7 +16,7 @@ DCM_Core_Methods = {
     /*
     // Ouverture du mode FULLSCREEN
     */
-    quicksave: function(opts, djangocodemirror_container, codemirror_instance) {
+    quicksave: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
         // Une chaine de caractère implique un nom de variable à utiliser qui contient 
         // l'objet {} à utiliser
         if( jQuery.type(opts.quicksave_datas)=='string' ){
@@ -57,8 +54,8 @@ DCM_Core_Methods = {
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus);
-                console.log(errorThrown);
+                // console.log(textStatus);
+                // console.log(errorThrown);
                 $(".DjangoCodeMirror_menu .buttonQuickSave", djangocodemirror_container).removeClass("ready");
                 $(".DjangoCodeMirror_menu .buttonQuickSave", djangocodemirror_container).addClass("error");
                 createGrowl(djangocodemirror_container, "warning", textStatus, errorThrown, false);
@@ -69,7 +66,7 @@ DCM_Core_Methods = {
     /*
     // Ouverture du mode FULLSCREEN
     */
-    fullscreenEnter: function(opts, djangocodemirror_container, codemirror_instance) {
+    fullscreenEnter: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
         $("body","html").css({'height':"100%", 'width':"100%"});
         $("html").css('overflow',"hidden");
         
@@ -114,7 +111,7 @@ DCM_Core_Methods = {
     /*
     // Fermeture du mode FULLSCREEN
     */
-    fullscreenExit: function(opts, djangocodemirror_container, codemirror_instance) {
+    fullscreenExit: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
         if ($("#DjangoCodeMirror_fullscreen_scene").length==0){
             return;
         }
@@ -138,6 +135,19 @@ DCM_Core_Methods = {
         );
         DCM_Core_Methods.closePreview(djangocodemirror_container, codemirror_instance);
         codemirror_instance.refresh();
+    },
+    /*
+    // Gestion des undo/redo
+    */
+    do_undo: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
+        if(button_instance.hasClass("active")) {
+            codemirror_instance.undo();
+        }
+    },
+    do_redo: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
+        if(button_instance.hasClass("active")){
+            codemirror_instance.redo();
+        }
     },
     /*
     // Gestion de l'affichage de la PREVIEW
@@ -208,6 +218,7 @@ DCM_Core_Methods = {
         var DCM_preview_id = djangocodemirror_container.data("DCM_preview_markid");
         $("#"+DCM_preview_id).remove();
         djangocodemirror_container.removeData("DCM_preview_markid");
+        codemirror_instance.focus();
     },
     /*
     // Getters pour calculer les css des éléments principaux
@@ -296,13 +307,29 @@ DCM_Core_Methods = {
     var settings = $.extend( {
         'lineNumbers' : false,
         'onCursorActivity': function() {
+            // TODO: this lack the container instance so this function is not multiple 
+            //       instances compatible
             codemirror_instance.setLineClass(hlLine, null);
             var cur = codemirror_instance.getCursor();
-            console.log("Ligne: "+(cur.line+1)+" Col: "+(cur.ch+1));
-            // TODO: should use the codemirror container instance, actually this is not multiple instance aware
+            
             $(".DjangoCodeMirror_tabs .cursor_pos span.line").html((cur.line+1));
             $(".DjangoCodeMirror_tabs .cursor_pos span.ch").html((cur.ch+1));
-            hlLine = codemirror_instance.setLineClass(codemirror_instance.getCursor().line, "activeline");
+            
+            // Update the undo/redo buttons class from history items
+            var histo = codemirror_instance.historySize();
+            if(histo.undo>0) {
+                $(".DjangoCodeMirror_menu .buttonUndo").addClass("active").removeClass("inactive");
+            } else {
+                $(".DjangoCodeMirror_menu .buttonUndo").addClass("inactive").removeClass("active");
+            }
+            if(histo.redo>0) {
+                $(".DjangoCodeMirror_menu .buttonRedo").addClass("active").removeClass("inactive");
+            } else {
+                $(".DjangoCodeMirror_menu .buttonRedo").addClass("inactive").removeClass("active");
+            }
+            
+            // Highlight active line
+            hlLine = codemirror_instance.setLineClass(cur.line, "activeline");
         },
         // For DjangoCodeMirror only
         'fullscreen' : true,
@@ -311,6 +338,7 @@ DCM_Core_Methods = {
         'quicksave_datas' : {},
         'preview_url' : false,
         'csrf' : false,
+        'undo_buttons' : true,
         'settings_cookie': '',
         'display_cursor_position': true,
         'preview_padding': 10,
@@ -320,6 +348,7 @@ DCM_Core_Methods = {
     var default_button_settings = {
         'name' : '',
         'functype' : 'common',
+        'method' : 'syntax',
         'classname' : '',
         'key' : false,
         'char' : false,
@@ -374,63 +403,23 @@ DCM_Core_Methods = {
         
         // Activation de CodeMirror
         codemirror_instance = CodeMirror.fromTextArea(this, settings);
-
-        // Ajout des boutons pour le fullscreen si activé
-        if( settings.fullscreen ){
-            var maximize_settings = $.extend({}, default_button_settings, {
-                name: safegettext("Maximize"),
-                classname: 'buttonFullscreenEnter',
-                functype: "fullscreenEnter"
-            });
-            var minimize_settings = $.extend({}, default_button_settings, {
-                name: safegettext("Normal size"),
-                classname: 'buttonFullscreenExit',
-                functype: "fullscreenExit"
-            });
-            _add_bar_button(maximize_settings, DCM_container, codemirror_instance);
-            _add_bar_button(minimize_settings, DCM_container, codemirror_instance);
-            _add_bar_separator(DCM_container);
-        }
         
         // Création des boutons des éléments de syntaxe
+        _buttons_preprocessing(settings, default_button_settings);
         $.each(DCM_Buttons_settings, function(item_index, item_value) {
-            // options par défaut
-            var item_settings = $.extend({}, default_button_settings, item_value);
-            
-            // Séparateur simple
-            if(item_settings.separator) {
-                _add_bar_separator(DCM_container);
-            // Ajouter le bouton au DOM et créer son évènement de clic pour formatage
-            } else {
-                _add_bar_button(item_settings, DCM_container, codemirror_instance);
+            if(item_value) {
+                // options par défaut
+                var item_settings = $.extend({}, default_button_settings, item_value);
+                
+                // Séparateur simple
+                if(item_settings.separator) {
+                    _add_bar_separator(DCM_container);
+                // Ajouter le bouton au DOM et créer son évènement de clic pour formatage
+                } else {
+                    _add_bar_button(item_settings, DCM_container, codemirror_instance);
+                }
             }
         });
-        
-        // Ajout du lien de sauvegarde rapide
-        if( settings.quicksave_url ){
-            _add_bar_separator(DCM_container);
-            var quicksave_settings = $.extend({}, default_button_settings, {
-                name: safegettext("Quick save"),
-                classname: 'buttonQuickSave',
-                quicksave_url: settings.quicksave_url,
-                quicksave_datas: settings.quicksave_datas,
-                csrf: settings.csrf,
-                functype:"quicksave"
-            });
-            _add_bar_button(quicksave_settings, DCM_container, codemirror_instance);
-        }
-        
-        // Ajout du lien d'aide si rempli
-        if( settings.help_link ){
-            _add_bar_separator(DCM_container);
-            var help_settings = $.extend({}, default_button_settings, {
-                name: safegettext("Help"),
-                classname: 'buttonHelp',
-                url: settings.help_link,
-                functype:"externalressource"
-            });
-            _add_bar_button(help_settings, DCM_container, codemirror_instance);
-        }
         
         $(window).bind('resize', function(event){
             resize(settings, DCM_container, codemirror_instance);
@@ -442,16 +431,94 @@ DCM_Core_Methods = {
     });
     
     /*
+    * Pre-processing on avalaible buttons
+    */
+    function _buttons_preprocessing(global_settings, default_settings) {
+        // Available buttons indexation on classname
+        var button_indexes = {};
+        $.each(DCM_Buttons_settings, function(item_index, item_value) {
+            if(!item_value.separator){
+                button_indexes[item_value.classname] = item_index;
+            }
+        });
+        
+        // Delete button from registry if option is disabled
+        // Assume that there are two buttons followed by a separator
+        if( button_indexes['buttonFullscreenEnter'] != undefined && button_indexes['buttonFullscreenEnter'] != null){
+            if(!global_settings.fullscreen){
+                var pos_enter = button_indexes['buttonFullscreenEnter'];
+                var pos_exit = button_indexes['buttonFullscreenExit'];
+                delete DCM_Buttons_settings[pos_enter];
+                delete DCM_Buttons_settings[pos_exit];
+                if(DCM_Buttons_settings[pos_exit+1].separator) {
+                    delete DCM_Buttons_settings[pos_exit+1];
+                }
+            }
+        }
+
+        // Ajout du lien de sauvegarde rapide
+        if( button_indexes['buttonQuickSave'] != undefined && button_indexes['buttonQuickSave'] != null){
+            var pos = button_indexes['buttonQuickSave'];
+            if(global_settings.quicksave_url){
+                DCM_Buttons_settings[pos].quicksave_url = global_settings.quicksave_url;
+                DCM_Buttons_settings[pos].quicksave_datas = global_settings.quicksave_datas;
+                DCM_Buttons_settings[pos].csrf = global_settings.csrf;
+            } else {
+                delete DCM_Buttons_settings[pos];
+                if(DCM_Buttons_settings[pos+1].separator) {
+                    delete DCM_Buttons_settings[pos+1];
+                }
+            }
+        }
+        
+        // Undo/Redo buttons
+        if( button_indexes['buttonUndo'] != undefined && button_indexes['buttonUndo'] != null){
+            var pos_undo = button_indexes['buttonUndo'];
+            var pos_redo = button_indexes['buttonRedo'];
+            if(!global_settings.undo_buttons){
+                delete DCM_Buttons_settings[pos_undo];
+                delete DCM_Buttons_settings[pos_redo];
+                if(DCM_Buttons_settings[pos_redo+1].separator) {
+                    delete DCM_Buttons_settings[pos_redo+1];
+                }
+            /*} else {
+                // undo
+                var undo_settings = $.extend({}, default_settings, {
+                    functype:"do_undo"
+                });
+                // redo
+                var redo_settings = $.extend({}, default_settings, {
+                    functype:"do_redo"
+                });*/
+            }
+        }
+        
+        // Ajout du lien d'aide si rempli
+        if( button_indexes['buttonHelp'] != undefined && button_indexes['buttonHelp'] != null){
+            var pos = button_indexes['buttonHelp'];
+            if( global_settings.help_link ){
+                DCM_Buttons_settings[pos].url = global_settings.help_link;
+            } else {
+                delete DCM_Buttons_settings[pos];
+            }
+        }
+    };
+    
+    /*
     * Add separator in buttons bar 
     */
-    function _add_bar_separator(container) {
-        $('<li class="separator">-----</li>').appendTo('.DjangoCodeMirror_menu ul', container);
+    function _add_bar_separator(container, direction) {
+        if(!direction || direction=='horizontal') {
+            $('<li class="separator horizontal">-----</li>').appendTo('.DjangoCodeMirror_menu ul', container);
+        } else {
+            $('<li class="separator vertical">-----</li>').appendTo('.DjangoCodeMirror_menu ul', container);
+        }
     };
     
     /*
     * Add button to the bar
     */
-    function _add_bar_button(item_opts, container, instance) {
+    function _add_bar_button(item_opts, container, codemirror_instance) {
         var accesskey = (item_opts.key) ? ' accesskey="'+item_opts.key+'"' : '';
         var button = $('<li class="button '+item_opts.classname+'"><a'+accesskey+' title="'+safegettext(item_opts.name)+'">'+safegettext(item_opts.name)+'</a></li>')
         button.appendTo('.DjangoCodeMirror_menu ul', container);
@@ -461,20 +528,21 @@ DCM_Core_Methods = {
                 opts.placeholder = safegettext(opts.placeholder);
             }
             // Valeur de la séléction si elle n'est pas vide, sinon le @placeholder
-            var value = instance.getSelection()||opts.placeholder;
+            var value = codemirror_instance.getSelection()||opts.placeholder;
             // Evaluation du nom de la méthode de formatage à employer
-            if(opts.functype == 'fullscreenEnter' || opts.functype == 'fullscreenExit' || opts.functype == 'quicksave') {
-                eval("DCM_Core_Methods."+opts.functype)(opts, container, instance);
+            if(opts.functype == 'fullscreenEnter' || opts.functype == 'fullscreenExit' || opts.functype == 'quicksave'
+                 || opts.functype == 'do_undo' || opts.functype == 'do_redo') {
+                eval("DCM_Core_Methods."+opts.functype)(button, opts, container, codemirror_instance);
             } else {
-                eval("DCM_Syntax_Methods."+opts.functype)(value, instance, opts);
+                eval("DCM_Syntax_Methods."+opts.functype)(value, codemirror_instance, opts);
+                // Désactive la séléction pour replacer le curseur de X (0 par 
+                // défaut) caractères après le texte qui était séléctionné
+                var pos = codemirror_instance.getCursor();
+                pos.ch += 1;
+                codemirror_instance.setCursor(pos);
             }
-            // Désactive la séléction pour replacer le curseur de X (0 par 
-            // défaut) caractères après le texte qui était séléctionné
-            var pos = instance.getCursor();
-            pos.ch += 1;
-            instance.setCursor(pos);
             // Rétablit le focus dans l'éditeur
-            instance.focus();
+            codemirror_instance.focus();
         });
     };
     

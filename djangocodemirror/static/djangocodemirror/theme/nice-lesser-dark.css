@@ -3,20 +3,12 @@ http://lesscss.org/ dark theme
 Ported to CodeMirror by Peter Kroon
 Edited by David Thenon only to use a more readable blue
 */
-.CodeMirror{
-  line-height: 15px;
-}
-.cm-s-nice-lesser-dark {
-/*   font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', 'Monaco', Courier, monospace !important; */
-  font-size:12px;
-}
-
-.cm-s-nice-lesser-dark { background: #262626; color: #EBEFE7; text-shadow: 0 -1px 1px #262626; }
+.cm-s-nice-lesser-dark { background: #262626; color: #EBEFE7; }
 .cm-s-nice-lesser-dark div.CodeMirror-selected {background: #45443B !important;} /* 33322B*/
 .cm-s-nice-lesser-dark .CodeMirror-cursor { border-left: 1px solid white !important; }
 .cm-s-nice-lesser-dark .CodeMirror-lines { margin-left:3px; margin-right:3px; }/*editable code holder*/
 
-div.CodeMirror span.CodeMirror-matchingbracket { color: #7EFC7E; }/*65FC65*/
+.cm-s-nice-lesser-dark span.CodeMirror-matchingbracket { color: #7EFC7E; }/*65FC65*/
 
 .cm-s-nice-lesser-dark .CodeMirror-gutter { background: #262626; border-right:1px solid #aaa; padding-right:3px; min-width:2.5em; }
 .cm-s-nice-lesser-dark .CodeMirror-gutter-text { color: #777; }
@@ -44,3 +36,11 @@ div.CodeMirror span.CodeMirror-matchingbracket { color: #7EFC7E; }/*65FC65*/
 .cm-s-nice-lesser-dark span.cm-quote {color: #090;}
 .cm-s-nice-lesser-dark span.cm-hr {color: #999;}
 .cm-s-nice-lesser-dark span.cm-link {color: #599eff;}
+
+.cm-s-nice-lesser-dark .activeline {
+    background-color:#33353b;
+}
+.cm-s-nice-lesser-dark .CodeMirror-searching {
+    color:#ffffff !important;
+    background-color:#404249;
+}

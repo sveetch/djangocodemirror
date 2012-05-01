@@ -69,6 +69,7 @@ class DjangoCodeMirrorSettingsForm(forms.Form):
     indentUnit = forms.IntegerField(label=_('indent unit'), initial=2, required=True, help_text=_("How many spaces a block (whatever that means in the edited language) should be indented."))
     tabSize = forms.IntegerField(label=_('tab size'), initial=4, required=True, help_text=_("The width of a tab character."))
     indentWithTabs = forms.BooleanField(label=_('indent with tabs'), initial=False, required=False, help_text=_("Whether, when indenting, the first N*tabSize spaces should be replaced by N tabs."))
+    lineWrapping = forms.BooleanField(label=_('line wrapping'), initial=False, required=False, help_text=_("Whether CodeMirror should scroll or wrap for long lines."))
     
     def __init__(self, *args, **kwargs):
         self.helper = get_form_helper()

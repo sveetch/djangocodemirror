@@ -20,6 +20,7 @@ CODEMIRROR_SETTINGS = {
         'mode': 'rst',
         'lineWrapping': False,
         'lineNumbers': True,
+        'search_enabled': True,
     },
     'djangocodemirror_with_preview': {
         'mode': 'rst',
@@ -27,6 +28,7 @@ CODEMIRROR_SETTINGS = {
         'preview_url': '/preview/',
         'lineWrapping': False,
         'lineNumbers': True,
+        'search_enabled': True,
     },
     'djangocodemirror_sample_demo': {
         'mode': 'rst',
@@ -36,6 +38,7 @@ CODEMIRROR_SETTINGS = {
         'quicksave_url': ('djangocodemirror-sample-quicksave', [], {}),
         'lineWrapping': False,
         'lineNumbers': True,
+        'search_enabled': True,
     },
 }
 CODEMIRROR_SETTINGS.update(getattr(settings, 'CODEMIRROR_SETTINGS', {}))
@@ -46,8 +49,14 @@ DJANGOCODEMIRROR_DEFAULT_SETTING = getattr(settings, 'DJANGOCODEMIRROR_DEFAULT_S
 # Relative paths for widget medias (CSS, JS)
 CODEMIRROR_ROOT = getattr(settings, 'CODEMIRROR_ROOT', 'CodeMirror/') # TODO: Implement usage for settings below
 JQUERY_PLUGINS_ROOT = getattr(settings, 'JQUERY_PLUGINS_ROOT', 'jquery/plugins/') # TODO: Implement usage for settings below
+
 CODEMIRROR_FILEPATH_LIB = getattr(settings, 'CODEMIRROR_FILEPATH_LIB', 'CodeMirror/lib/codemirror.js')
 CODEMIRROR_FILEPATH_CSS = getattr(settings, 'CODEMIRROR_FILEPATH_CSS', 'CodeMirror/lib/codemirror.css')
+CODEMIRROR_FILEPATH_DIALOG_LIB = getattr(settings, 'CODEMIRROR_FILEPATH_DIALOG_LIB', 'CodeMirror/lib/util/dialog.js')
+CODEMIRROR_FILEPATH_DIALOG_CSS = getattr(settings, 'CODEMIRROR_FILEPATH_DIALOG_CSS', 'CodeMirror/lib/util/dialog.css')
+CODEMIRROR_FILEPATH_SEARCH_LIB = getattr(settings, 'CODEMIRROR_FILEPATH_SEARCH_LIB', 'CodeMirror/lib/util/search.js')
+CODEMIRROR_FILEPATH_SEARCHCURSOR_LIB = getattr(settings, 'CODEMIRROR_FILEPATH_SEARCHCURSOR_LIB', 'CodeMirror/lib/util/searchcursor.js')
+
 DJANGOCODEMIRROR_FILEPATH_LIB = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_LIB', 'djangocodemirror/djangocodemirror.js')
 DJANGOCODEMIRROR_FILEPATH_TRANSLATION = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_TRANSLATION', 'djangocodemirror/djangocodemirror.translation.js')
 DJANGOCODEMIRROR_FILEPATH_CSS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CSS', 'djangocodemirror/djangocodemirror.css')
@@ -56,6 +65,7 @@ DJANGOCODEMIRROR_FILEPATH_METHODS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH
 DJANGOCODEMIRROR_FILEPATH_CONSOLE = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CONSOLE', 'djangocodemirror/qtip_console.js')
 DJANGOCODEMIRROR_FILEPATH_CSRF = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CSRF', 'djangocodemirror/csrf.js')
 DJANGOCODEMIRROR_FILEPATH_COOKIES = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_COOKIES', 'jquery/plugins/jquery.cookies.2.2.0.min.js')
+
 QTIP_FILEPATH_LIB = getattr(settings, 'QTIP_FILEPATH_LIB', 'jquery/plugins/qtip/jquery.qtip.min.js')
 QTIP_FILEPATH_CSS = getattr(settings, 'QTIP_FILEPATH_CSS', 'jquery/plugins/qtip/jquery.qtip.min.css')
 

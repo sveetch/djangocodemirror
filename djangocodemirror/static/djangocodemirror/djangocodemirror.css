@@ -37,17 +37,10 @@ hr,
     font-size:1.1em;
     line-height:1.1em;
 }
-/*.CodeMirror .activeline {
-    background-color: #e8f2ff !important;
-}*/
 
 .CodeMirror-scroll{
-/*     border: 1px solid #ffffff; */
     border-top:0;
     border-bottom:0;
-}
-.CodeMirror-lines{
-/*     background-color:#ffffff; */
 }
 
 /*___________________________
@@ -186,6 +179,35 @@ hr,
 .DjangoCodeMirror_menu .buttonHelp a{
     background-image:url('images/help.png');
 }
+
+.DjangoCodeMirror .DjangoCodeMirror_menu ul li.buttonUndo:hover,
+.DjangoCodeMirror .DjangoCodeMirror_menu ul li.buttonRedo:hover{
+    background-color: transparent;
+    border:1px solid transparent;
+}
+.DjangoCodeMirror_menu .buttonUndo a,
+.DjangoCodeMirror_menu .buttonUndo.inactive a{
+    cursor: default !important;
+    background: url('images/arrow_undo_disabled.png');
+}
+.DjangoCodeMirror_menu .buttonUndo.active a{
+    background: url('images/arrow_undo.png');
+}
+
+.DjangoCodeMirror_menu .buttonRedo a,
+.DjangoCodeMirror_menu .buttonRedo.inactive a{
+    cursor: default !important;
+    background: url('images/arrow_redo_disabled.png');
+}
+.DjangoCodeMirror_menu .buttonRedo.active a{
+    background: url('images/arrow_redo.png');
+}
+.DjangoCodeMirror .DjangoCodeMirror_menu ul li.buttonUndo.active:hover,
+.DjangoCodeMirror .DjangoCodeMirror_menu ul li.buttonRedo.active:hover{
+    background-color: #ffffff;
+    border:1px solid #dedede;
+}
+
 .DjangoCodeMirror_menu .buttonFullscreenExit{
     display:none;
 }
@@ -255,10 +277,9 @@ hr,
 .DjangoCodeMirror.fullScreen{
     border:0;
     border-radius:0;
-    font-size:1.3em;
+    font-size:1.1em;
 }
 .DjangoCodeMirror.fullScreen .CodeMirror{
-    font-size:1.3em;
     line-height:1.3em;
 }
 .DjangoCodeMirror.fullScreen .CodeMirror-scroll{

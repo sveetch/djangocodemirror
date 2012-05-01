@@ -11,16 +11,7 @@ from django.forms.widgets import flatatt
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
-from djangocodemirror.settings_local import (CODEMIRROR_SETTINGS, DJANGOCODEMIRROR_DEFAULT_SETTING, 
-                                CODEMIRROR_FIELD_INIT_JS, 
-                                DJANGOCODEMIRROR_FIELD_INIT_JS, CODEMIRROR_MODES,
-                                CODEMIRROR_FILEPATH_LIB, CODEMIRROR_FILEPATH_CSS, CODEMIRROR_THEMES,
-                                DJANGOCODEMIRROR_FILEPATH_LIB, DJANGOCODEMIRROR_FILEPATH_CSS,
-                                DJANGOCODEMIRROR_FILEPATH_TRANSLATION, DJANGOCODEMIRROR_TRANSLATIONS,
-                                DJANGOCODEMIRROR_FILEPATH_BUTTONS, DJANGOCODEMIRROR_FILEPATH_METHODS,
-                                DJANGOCODEMIRROR_FILEPATH_CONSOLE,
-                                DJANGOCODEMIRROR_FILEPATH_COOKIES, DJANGOCODEMIRROR_FILEPATH_CSRF,
-                                QTIP_FILEPATH_LIB, QTIP_FILEPATH_CSS)
+from djangocodemirror import settings_local
 
 class CodeMirrorWidget(forms.Textarea):
     """
@@ -56,9 +47,9 @@ class CodeMirrorWidget(forms.Textarea):
 
     def _get_codemirror_settings(self, final_attrs):
         settings = self._reverse_setting_urls( self.codemirror_attrs )
-        html = DJANGOCODEMIRROR_FIELD_INIT_JS
+        html = settings_local.DJANGOCODEMIRROR_FIELD_INIT_JS
         if self.codemirror_only:
-            html = CODEMIRROR_FIELD_INIT_JS
+            html = settings_local.CODEMIRROR_FIELD_INIT_JS
         return html.format(inputid=final_attrs['id'], settings=json.dumps(settings))
 
     def _reverse_setting_urls(self, settings):
@@ -84,33 +75,39 @@ class CodeMirrorWidget(forms.Textarea):
         """
         Adds necessary files (Js/CSS) to the widget's medias
         """
-        css_items = [CODEMIRROR_FILEPATH_CSS, QTIP_FILEPATH_CSS]+[item[1] for item in CODEMIRROR_THEMES]
-        js_items = [CODEMIRROR_FILEPATH_LIB]
+        css_items = [settings_local.CODEMIRROR_FILEPATH_CSS, settings_local.QTIP_FILEPATH_CSS]+[item[1] for item in settings_local.CODEMIRROR_THEMES]
+        js_items = [settings_local.CODEMIRROR_FILEPATH_LIB]
+        # Libs for search&replace
+        if self.codemirror_attrs.get('search_enabled', False):
+            js_items.append(settings_local.CODEMIRROR_FILEPATH_DIALOG_LIB)
+            css_items.append(settings_local.CODEMIRROR_FILEPATH_DIALOG_CSS)
+            js_items.append(settings_local.CODEMIRROR_FILEPATH_SEARCH_LIB)
+            js_items.append(settings_local.CODEMIRROR_FILEPATH_SEARCHCURSOR_LIB)
         # Set CodeMirror 'mode' js media only if 'mode' has been defined
         # Use the 'mode' name as a key in the settings registry
         if 'mode' in self.codemirror_attrs:
-            mode = dict(CODEMIRROR_MODES).get(self.codemirror_attrs['mode'], None)
+            mode = dict(settings_local.CODEMIRROR_MODES).get(self.codemirror_attrs['mode'], None)
             if mode:
                 js_items.append(mode)
         # DjangoCodeMirror files if enabled
         # DJANGOCODEMIRROR_FILEPATH_TRANSLATION, DJANGOCODEMIRROR_TRANSLATIONS,
         if not self.codemirror_only:
-            css_items.append(DJANGOCODEMIRROR_FILEPATH_CSS)
+            css_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CSS)
             # DjangoCodeMirror must be instanciated AFTER CodeMirror
-            js_items.append(DJANGOCODEMIRROR_FILEPATH_TRANSLATION)
-            for lang in DJANGOCODEMIRROR_TRANSLATIONS:
+            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_TRANSLATION)
+            for lang in settings_local.DJANGOCODEMIRROR_TRANSLATIONS:
                 js_items.append(lang)
-            js_items.append(DJANGOCODEMIRROR_FILEPATH_BUTTONS)
-            js_items.append(DJANGOCODEMIRROR_FILEPATH_METHODS)
-            js_items.append(DJANGOCODEMIRROR_FILEPATH_LIB)
-            js_items.append(QTIP_FILEPATH_LIB)
-            js_items.append(DJANGOCODEMIRROR_FILEPATH_CONSOLE)
+            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_BUTTONS)
+            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_METHODS)
+            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_LIB)
+            js_items.append(settings_local.QTIP_FILEPATH_LIB)
+            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CONSOLE)
             # Use CSRF lib only if setted and used
-            if DJANGOCODEMIRROR_FILEPATH_CSRF and self.codemirror_attrs.get('csrf', False):
-                js_items.append(DJANGOCODEMIRROR_FILEPATH_CSRF)
+            if settings_local.DJANGOCODEMIRROR_FILEPATH_CSRF and self.codemirror_attrs.get('csrf', False):
+                js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CSRF)
             # Adds Jquery Cookies plugin only if setted
-            if DJANGOCODEMIRROR_FILEPATH_COOKIES:
-                js_items.append(DJANGOCODEMIRROR_FILEPATH_COOKIES)
+            if settings_local.DJANGOCODEMIRROR_FILEPATH_COOKIES:
+                js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_COOKIES)
         
         return forms.Media(
             css={'all': tuple(css_items)},
@@ -127,7 +124,7 @@ class CodeMirrorField(forms.CharField):
     """
     widget = CodeMirrorWidget
     
-    def __init__(self, max_length=None, min_length=None, codemirror_attrs=CODEMIRROR_SETTINGS['default'], *args, **kwargs):
+    def __init__(self, max_length=None, min_length=None, codemirror_attrs=settings_local.CODEMIRROR_SETTINGS['default'], *args, **kwargs):
         super(CodeMirrorField, self).__init__(max_length=max_length, min_length=min_length, *args, **kwargs)
         
         self.widget.codemirror_attrs.update(codemirror_attrs or {})
@@ -142,7 +139,7 @@ class DjangoCodeMirrorField(forms.CharField):
     """
     widget = CodeMirrorWidget
     
-    def __init__(self, max_length=None, min_length=None, codemirror_attrs=CODEMIRROR_SETTINGS[DJANGOCODEMIRROR_DEFAULT_SETTING], *args, **kwargs):
+    def __init__(self, max_length=None, min_length=None, codemirror_attrs=settings_local.CODEMIRROR_SETTINGS[settings_local.DJANGOCODEMIRROR_DEFAULT_SETTING], *args, **kwargs):
         super(DjangoCodeMirrorField, self).__init__(max_length=max_length, min_length=min_length, *args, **kwargs)
         
         self.widget.codemirror_attrs.update(codemirror_attrs or {})
