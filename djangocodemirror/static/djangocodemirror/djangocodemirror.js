@@ -65,7 +65,6 @@ DCM_Core_Methods = {
     },
     /*
     // Maximize editor size
-    // TODO: don't let redo preview when allready in preview, else the editor is no more reachable
     */
     fullscreenEnter: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
         $("body","html").css({'height':"100%", 'width':"100%"});
@@ -340,7 +339,6 @@ DCM_Core_Methods = {
             // Highlight active line
             hlLine = codemirror_instance.setLineClass(cur.line, "activeline");
         },
-        'extraKeys': {"Tab": tab_transformer},
         // For DjangoCodeMirror only
         'fullscreen' : true,
         'help_link' : '',
@@ -418,6 +416,12 @@ DCM_Core_Methods = {
         codemirror_instance = CodeMirror.fromTextArea(this, settings);
         // Force options in codemirror that it doesn't know of
         codemirror_instance.setOption('no_tab_char', settings.no_tab_char);
+        codemirror_instance.setOption('extraKeys', {
+            "Tab": tab_transformer,
+            // TODO: Ctrl/Cmd prefix should be determined from the enabled default keymap
+            "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
+            // TODO: Here should defined syntax button keybinding from there key attribute
+        });
         
         // Buttons bar
         _buttons_preprocessing(settings, default_button_settings);
