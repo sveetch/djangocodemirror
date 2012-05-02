@@ -70,6 +70,7 @@ class DjangoCodeMirrorSettingsForm(forms.Form):
     tabSize = forms.IntegerField(label=_('tab size'), initial=4, required=True, help_text=_("The width of a tab character."))
     indentWithTabs = forms.BooleanField(label=_('indent with tabs'), initial=False, required=False, help_text=_("Whether, when indenting, the first N*tabSize spaces should be replaced by N tabs."))
     lineWrapping = forms.BooleanField(label=_('line wrapping'), initial=False, required=False, help_text=_("Whether CodeMirror should scroll or wrap for long lines."))
+    no_tab_char = forms.BooleanField(label=_('avoid tabulation'), initial=False, required=False, help_text=_("Disable usage of any tabulation character, instead each tabulation will be replaced by N space where N is the value of the 'tab size' option."))
     
     def __init__(self, *args, **kwargs):
         self.helper = get_form_helper()

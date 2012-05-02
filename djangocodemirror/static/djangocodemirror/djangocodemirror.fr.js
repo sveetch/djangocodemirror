@@ -32,6 +32,8 @@ DCM_Translations["fr"] = {
     "Edit": "Edition",
     "Line": "Ligne",
     "Col": "Col",
+    "Undo": "Annuler",
+    "Redo": "Refaire",
     "Quick save": "Sauvegarde rapide",
     "Help": "Aide"
 };

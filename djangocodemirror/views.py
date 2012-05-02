@@ -95,23 +95,17 @@ class EditorSettings(FormView):
             return json.loads(urllib.unquote(user_settings))
         return {}
     
-    def form_valid(self, form):
+    def patch_response(self, response, saved_settings):
         """
-        Save settings in cookies and back to the form with a success message
+        Patch response to save user settings in a cookie
         """
-        saved_settings = form.save()
-        
         cookie_content = json.dumps(saved_settings)
         cookie_expires = datetime.datetime.strftime(
             datetime.datetime.utcnow() + datetime.timedelta(seconds=settings_local.DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE), 
             "%a, %d-%b-%Y %H:%M:%S GMT"
         )
         
-        form_class = self.get_form_class()
-        new_form = self.get_form(form_class)
-        resp = self.render_to_response(self.get_context_data(form=new_form, save_success=True))
-        
-        resp.set_cookie(
+        response.set_cookie(
             settings_local.DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME,
             urllib.quote(cookie_content),
             max_age=settings_local.DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE,
@@ -119,4 +113,16 @@ class EditorSettings(FormView):
             domain=settings.SESSION_COOKIE_DOMAIN
         )
         
-        return resp
+        return response
+    
+    def form_valid(self, form):
+        """
+        Save settings in cookies and back to the form with a success message
+        """
+        saved_settings = form.save()
+        
+        form_class = self.get_form_class()
+        new_form = self.get_form(form_class)
+        resp = self.render_to_response(self.get_context_data(form=new_form, save_success=True))
+        
+        return self.patch_response(resp, saved_settings)

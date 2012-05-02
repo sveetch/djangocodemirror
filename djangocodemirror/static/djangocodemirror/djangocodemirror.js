@@ -14,11 +14,11 @@
 */
 DCM_Core_Methods = {
     /*
-    // Ouverture du mode FULLSCREEN
+    // Send a quick save request to the dedicated view
     */
     quicksave: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
-        // Une chaine de caractère implique un nom de variable à utiliser qui contient 
-        // l'objet {} à utiliser
+        // If it's a string, assume that this is the variable name where there is the 
+        // object {} to use
         if( jQuery.type(opts.quicksave_datas)=='string' ){
             try {
                 opts.quicksave_datas = eval(opts.quicksave_datas);
@@ -26,12 +26,12 @@ DCM_Core_Methods = {
                 opts.quicksave_datas = {};
             }
         }
-        // Données à envoyer, ajoute le contenu extrait du textarea
+        // Add current textarea content to the request args
         var thedatas = $.extend({}, opts.quicksave_datas, {
             "nocache": (new Date()).getTime(),
             "content": codemirror_instance.getValue()
         });
-        // Requête
+        // Do Ajax POST request to quicksave view
         $.ajax({
             type: 'POST',
             dataType: "json",
@@ -64,22 +64,23 @@ DCM_Core_Methods = {
         return false;
     },
     /*
-    // Ouverture du mode FULLSCREEN
+    // Maximize editor size
+    // TODO: don't let redo preview when allready in preview, else the editor is no more reachable
     */
     fullscreenEnter: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
         $("body","html").css({'height':"100%", 'width':"100%"});
         $("html").css('overflow',"hidden");
         
         djangocodemirror_container.addClass("fullScreen");
-        // Prépare la nouvelle scène de l'éditeur
+        // Build new scene where will be moved the editor in maximized size and add a 
+        // empty container to mark the initial editor position
         var scene = $('<div>').attr('id', "DjangoCodeMirror_fullscreen_scene");
         var old_place_scene = $('<div>').attr('id', "DjangoCodeMirror_old_place");
         
-        // Sauvegarde la dimension originale du textarea pour sa restitution 
-        // à la sortie du fullscreen
+        // Save initial editor size to restore after exiting the maximized mode
         $(".CodeMirror-scroll", djangocodemirror_container).data('original_size', $(".CodeMirror-scroll", djangocodemirror_container).height());
         
-        // Contrôle de la touche ESC pour fermer l'éditeur
+        // Catch and use the ESC key to exit from the maximized mode
         $(scene).keydown( function(e){
             if(e.keyCode == '27'){
                 DCM_Core_Methods.fullscreenExit(opts, djangocodemirror_container, codemirror_instance);
@@ -109,9 +110,10 @@ DCM_Core_Methods = {
         codemirror_instance.refresh();
     },
     /*
-    // Fermeture du mode FULLSCREEN
+    // Exit maximized mode
     */
     fullscreenExit: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
+        // Don't try to re-init all the thing if there are no displayed maximized editor
         if ($("#DjangoCodeMirror_fullscreen_scene").length==0){
             return;
         }
@@ -137,7 +139,7 @@ DCM_Core_Methods = {
         codemirror_instance.refresh();
     },
     /*
-    // Gestion des undo/redo
+    // undo/redo management
     */
     do_undo: function(button_instance, opts, djangocodemirror_container, codemirror_instance) {
         if(button_instance.hasClass("active")) {
@@ -150,12 +152,16 @@ DCM_Core_Methods = {
         }
     },
     /*
-    // Gestion de l'affichage de la PREVIEW
+    // Send a preview request and display the rendered content
     */
     previewRender: function(djangocodemirror_settings, djangocodemirror_container, codemirror_instance) {
-        // Vire un éventuel signal d'erreur d'une requête précédente
+        // Don't add a new preview it if another one is allready displayed
+        if (djangocodemirror_container.data("DCM_preview_markid")){
+            return;
+        }
+        // Clean previous error markers
         $(".DjangoCodeMirror_tabs li.preview a .error", djangocodemirror_container).remove();
-        // Requête
+        // Do Ajax POST request to preview view
         $.ajax({
             type: 'POST',
             dataType: "html",
@@ -210,9 +216,13 @@ DCM_Core_Methods = {
         return false;
     },
     /*
-    // Fermeture du mode FULLSCREEN
+    // Close preview display and get back to editor
     */
     closePreview: function(djangocodemirror_container, codemirror_instance) {
+        // Don't add a new preview it if another one is allready displayed
+        if (!djangocodemirror_container.data("DCM_preview_markid")){
+            return;
+        }
         $(".DjangoCodeMirror_tabs li.editor", djangocodemirror_container).addClass("tabactive");
         $(".DjangoCodeMirror_tabs li.preview", djangocodemirror_container).removeClass("tabactive");
         var DCM_preview_id = djangocodemirror_container.data("DCM_preview_markid");
@@ -221,10 +231,9 @@ DCM_Core_Methods = {
         codemirror_instance.focus();
     },
     /*
-    // Getters pour calculer les css des éléments principaux
+    // Getters to calculate CSS size of elements
     */
     get_preview_sizes: function(djangocodemirror_settings, djangocodemirror_container, codemirror_instance) {
-        // Récupère le conteneur en cours de l'éditeur
         var editor_container = $(".CodeMirror-scroll", djangocodemirror_container);
         var menu_height = $(".DjangoCodeMirror_menu", djangocodemirror_container).outerHeight(true);
         var scene_css = {
@@ -259,9 +268,8 @@ DCM_Core_Methods = {
         return [scene_css, content_css];
     },
     /*
-    / Sauvegarde une la position verticale d'une référence
-    / La valeur est stockée sous le nom 'DCM_'+key dans le container 
-    / spécifié (si non spécifié, sur le <body/> par défaut)
+    / Save vertical scroll position from an element (the 'referer') in container element 
+    / (the 'elem_container')
     */
     save_scroll_position: function(key, referer, elem_container) {
         if(referer == undefined){
@@ -276,7 +284,8 @@ DCM_Core_Methods = {
         elem_container.data('DCM_'+key, elem_referer.scrollTop());
     },
     /*
-    / Restauration de la position verticale enregistrée d'un élément (referer)
+    / Restore vertical scroll position from the given key in the 'elem_container' to the 
+    / 'referer' element
     */
     restore_scroll_position: function(key, referer, elem_container) {
         if(referer == undefined){
@@ -331,17 +340,20 @@ DCM_Core_Methods = {
             // Highlight active line
             hlLine = codemirror_instance.setLineClass(cur.line, "activeline");
         },
+        'extraKeys': {"Tab": tab_transformer},
         // For DjangoCodeMirror only
         'fullscreen' : true,
         'help_link' : '',
         'quicksave_url' : '',
         'quicksave_datas' : {},
+        //'enable_active_line' : false,
         'preview_url' : false,
         'csrf' : false,
         'undo_buttons' : true,
         'settings_cookie': '',
         'display_cursor_position': true,
         'preview_padding': 10,
+        'no_tab_char': false,
         'preview_borders': 0
     }, options);
     // Default settings for buttons
@@ -368,19 +380,20 @@ DCM_Core_Methods = {
         }
     }
     
-    // En mode normal, on initialise l'interface de DjangoCodeMirror puis on y déplace 
-    // le textarea visé et enfin on initialise CodeMirror qui va s'y intégrer
+    // Build DjangoCodeMirror for each selected object
     this.each(function() {
-        // Conteneur principal de DjangoCodeMirror
+        // DjangoCodeMirror global container
         var DCM_container = $("<div class=\"DjangoCodeMirror\"></div>");
         $(this).before(DCM_container);
         
-        // Menu de boutons
+        // Button bar container
         var header = $("<div class=\"DjangoCodeMirror_menu\"><ul></ul><div class=\"cale\"></div></div>");
         header.appendTo(DCM_container);
-        // Déplace le textarea
+        
+        // Moving textarea in the DjangoCodeMirror global container
         $(this).appendTo(DCM_container);
-        // Bar d'infos et onglets
+        
+        // Tabs and status bar
         if(settings.preview_url || settings.display_cursor_position) {
             var footer = $("<div class=\"DjangoCodeMirror_tabs\"><ul></ul><div class=\"cale\"></div></div>");
             footer.appendTo(DCM_container);
@@ -401,20 +414,19 @@ DCM_Core_Methods = {
             }
         }
         
-        // Activation de CodeMirror
+        // Build CodeMirror
         codemirror_instance = CodeMirror.fromTextArea(this, settings);
+        // Force options in codemirror that it doesn't know of
+        codemirror_instance.setOption('no_tab_char', settings.no_tab_char);
         
-        // Création des boutons des éléments de syntaxe
+        // Buttons bar
         _buttons_preprocessing(settings, default_button_settings);
         $.each(DCM_Buttons_settings, function(item_index, item_value) {
             if(item_value) {
-                // options par défaut
                 var item_settings = $.extend({}, default_button_settings, item_value);
-                
-                // Séparateur simple
+                // Add entry to bar
                 if(item_settings.separator) {
                     _add_bar_separator(DCM_container);
-                // Ajouter le bouton au DOM et créer son évènement de clic pour formatage
                 } else {
                     _add_bar_button(item_settings, DCM_container, codemirror_instance);
                 }
@@ -425,13 +437,32 @@ DCM_Core_Methods = {
             resize(settings, DCM_container, codemirror_instance);
         });
         
+        // Default active line
+        // TODO: should be optional on settings
         hlLine = codemirror_instance.setLineClass(0, "activeline");
-        // Refresh de codemirror suite aux changements
+        
+        // Refresh update of CodeMirror
         codemirror_instance.refresh();
     });
     
     /*
+    * Transform tabulation character in spaces
+    */
+    function tab_transformer(cm) {
+        var tab = "\t";
+        if(cm.getOption('no_tab_char')) {
+            tab = "";
+            for (var l=0; l < cm.getOption('tabSize'); l++) {
+                tab += " ";
+            }
+        }
+        cm.replaceSelection(tab, "end");
+    };
+    
+    /*
     * Pre-processing on avalaible buttons
+    * 
+    * This is where buttons should be deleted or modified from defined settings
     */
     function _buttons_preprocessing(global_settings, default_settings) {
         // Available buttons indexation on classname
@@ -456,7 +487,7 @@ DCM_Core_Methods = {
             }
         }
 
-        // Ajout du lien de sauvegarde rapide
+        // Quicksave button
         if( button_indexes['buttonQuickSave'] != undefined && button_indexes['buttonQuickSave'] != null){
             var pos = button_indexes['buttonQuickSave'];
             if(global_settings.quicksave_url){
@@ -472,6 +503,7 @@ DCM_Core_Methods = {
         }
         
         // Undo/Redo buttons
+        // Assume that there are two buttons followed by a separator
         if( button_indexes['buttonUndo'] != undefined && button_indexes['buttonUndo'] != null){
             var pos_undo = button_indexes['buttonUndo'];
             var pos_redo = button_indexes['buttonRedo'];
@@ -481,19 +513,10 @@ DCM_Core_Methods = {
                 if(DCM_Buttons_settings[pos_redo+1].separator) {
                     delete DCM_Buttons_settings[pos_redo+1];
                 }
-            /*} else {
-                // undo
-                var undo_settings = $.extend({}, default_settings, {
-                    functype:"do_undo"
-                });
-                // redo
-                var redo_settings = $.extend({}, default_settings, {
-                    functype:"do_redo"
-                });*/
             }
         }
         
-        // Ajout du lien d'aide si rempli
+        // Help link if setted
         if( button_indexes['buttonHelp'] != undefined && button_indexes['buttonHelp'] != null){
             var pos = button_indexes['buttonHelp'];
             if( global_settings.help_link ){
@@ -527,36 +550,35 @@ DCM_Core_Methods = {
             if(opts.placeholder) {
                 opts.placeholder = safegettext(opts.placeholder);
             }
-            // Valeur de la séléction si elle n'est pas vide, sinon le @placeholder
+            // Get the content value if not empty, else use the placeholder value
             var value = codemirror_instance.getSelection()||opts.placeholder;
-            // Evaluation du nom de la méthode de formatage à employer
+            // Evaluate method
             if(opts.functype == 'fullscreenEnter' || opts.functype == 'fullscreenExit' || opts.functype == 'quicksave'
                  || opts.functype == 'do_undo' || opts.functype == 'do_redo') {
                 eval("DCM_Core_Methods."+opts.functype)(button, opts, container, codemirror_instance);
             } else {
                 eval("DCM_Syntax_Methods."+opts.functype)(value, codemirror_instance, opts);
-                // Désactive la séléction pour replacer le curseur de X (0 par 
-                // défaut) caractères après le texte qui était séléctionné
+                // Try to put cursor after the updated content, seems a little buggy
                 var pos = codemirror_instance.getCursor();
                 pos.ch += 1;
                 codemirror_instance.setCursor(pos);
             }
-            // Rétablit le focus dans l'éditeur
+            // Restore focus after action
             codemirror_instance.focus();
         });
     };
     
     /*
-    * Resize method to use for editor
+    * Resize method to use when the editor window is resized
     */
     function resize(djangocodemirror_settings, djangocodemirror_container, codemirror_instance) {
-        // Redimensionnement du plein écran
+        // For Maximize mode
         if ($("#DjangoCodeMirror_fullscreen_scene").length>0){
             var elems_css = DCM_Core_Methods.get_fullscreen_sizes(djangocodemirror_container, codemirror_instance);
             $("#DjangoCodeMirror_fullscreen_scene").css(elems_css[0]);
             $(".CodeMirror-scroll", djangocodemirror_container).css(elems_css[1]);
         }
-        // Redimensionnement de la preview
+        // For preview display
         var DCM_preview_id = djangocodemirror_container.data("DCM_preview_markid");
         if (DCM_preview_id){
             var elems_css = DCM_Core_Methods.get_preview_sizes(djangocodemirror_settings, djangocodemirror_container, codemirror_instance);
