@@ -420,7 +420,7 @@ DCM_Core_Methods = {
             "Tab": tab_transformer,
             // TODO: Ctrl/Cmd prefix should be determined from the enabled default keymap
             "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
-            // TODO: Here should defined syntax button keybinding from there key attribute
+            // TODO: Here should be defined syntax button keybinding from there key attribute
         });
         
         // Buttons bar
