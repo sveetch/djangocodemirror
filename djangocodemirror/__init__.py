@@ -1,2 +1,5 @@
 # -*- coding: utf-8 -*-
-__version__ = '0.5.2'
+"""
+Rich Textarea for Django with CodeMirror and some enhancement
+"""
+__version__ = '0.5.3'

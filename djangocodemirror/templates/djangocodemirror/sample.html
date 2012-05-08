@@ -12,6 +12,7 @@
     $(document).ready(function() {
         {% comment %}Translators: Link name to load demonstration content{% endcomment %}
         $("#sample h2:first").after('<p id="menu"><a class="demo_content_loadlink" href="">{% filter addslashes %}{% trans "Load demo content" %}{% endfilter %}</a></p>');
+        {% comment %}Translators: Link name to user settings form{% endcomment %}
         $("#menu").append(' - <a href="{% url djangocodemirror-settings %}">{% filter addslashes %}{% trans "Change your editor settings" %}{% endfilter %}</a>');
         $("#sample a.demo_content_loadlink").click(function () {
             id_content_codemirror_instance.setValue( $("#sample_demo_content").val() );

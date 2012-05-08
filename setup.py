@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='djangocodemirror',
     version=__import__('djangocodemirror').__version__,
-    description='Rich Textarea for Django with CodeMirror and some enhancement',
+    description=__import__('djangocodemirror').__doc__,
     long_description=open('README.rst').read(),
     author='David Thenon',
     author_email='sveetch@gmail.com',
