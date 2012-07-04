@@ -83,8 +83,12 @@ class EditorSettings(FormView):
     """
     Editor Settings
     """
-    template_name = "djangocodemirror/settings.html"
     form_class = DjangoCodeMirrorSettingsForm
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ["djangocodemirror/include_settings_form.html"]
+        return ["djangocodemirror/settings.html"]
 
     def get_initial(self):
         """

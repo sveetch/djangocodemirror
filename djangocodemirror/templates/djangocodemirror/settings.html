@@ -10,7 +10,5 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{% trans "Your settings" %} </h2>
-    {% if save_success %}<p>Your settings has been saved.</p>{% endif %}
-    {% crispy form %}
+    {% include "djangocodemirror/include_settings_form.html" %}
 {% endblock %}

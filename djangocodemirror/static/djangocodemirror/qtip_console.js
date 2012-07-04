@@ -65,7 +65,7 @@ window.createGrowl = function(element_instance, kind, title, message, persistent
     .removeData('qtip');
 };
 
-// Make it a window property see we can call it outside via updateGrowls() at any point
+// Make it a window property so we can call it outside via updateGrowls() at any point
 window.updateGrowls = function(element_instance) {
     // Loop over each jGrowl qTip
     var each = $('.qtip.jgrowl:not(:animated)');

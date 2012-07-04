@@ -12,16 +12,14 @@ hr,
     font-size:0;
     clear:both;
 }
-
 .DjangoCodeMirror{
     padding:0;
     float: left;
     width: 63%;
-    background: #ededed;
     border: 1px solid #d0d0d0;
     border-radius: 5px;
+    background-color: #ffffff;
 }
-
 .DjangoCodeMirror .DjangoCodeMirror_menu ul,
 .DjangoCodeMirror .DjangoCodeMirror_tabs ul{
     margin:0;
@@ -37,7 +35,6 @@ hr,
     font-size:1.1em;
     line-height:1.1em;
 }
-
 .CodeMirror-scroll{
     border-top:0;
     border-bottom:0;
@@ -61,7 +58,6 @@ hr,
     border-bottom: 1px solid #e0e0e0;
     border-radius: 5px 5px 0 0;
 }
-
 .DjangoCodeMirror .DjangoCodeMirror_menu ul li{
     margin: 0;
     padding: 0;
@@ -101,85 +97,34 @@ hr,
     border-bottom:1px solid #ffffff;
     background-color:#CCC;
 }
-.DjangoCodeMirror_menu .buttonH1 a{
-    background-image:url('images/h1.png');
-}
-.DjangoCodeMirror_menu .buttonH2 a{
-    background-image:url('images/h2.png');
-}
-.DjangoCodeMirror_menu .buttonH3 a{
-    background-image:url('images/h3.png');
-}
-.DjangoCodeMirror_menu .buttonH4 a{
-    background-image:url('images/h4.png');
-}
-.DjangoCodeMirror_menu .buttonH5 a{
-    background-image:url('images/h5.png');
-}
-.DjangoCodeMirror_menu .buttonH6 a{
-    background-image:url('images/h6.png');
-}
+.DjangoCodeMirror_menu .buttonH1 a{ background-image:url('images/h1.png'); }
+.DjangoCodeMirror_menu .buttonH2 a{ background-image:url('images/h2.png'); }
+.DjangoCodeMirror_menu .buttonH3 a{ background-image:url('images/h3.png'); }
+.DjangoCodeMirror_menu .buttonH4 a{ background-image:url('images/h4.png'); }
+.DjangoCodeMirror_menu .buttonH5 a{ background-image:url('images/h5.png'); }
+.DjangoCodeMirror_menu .buttonH6 a{ background-image:url('images/h6.png'); }
+.DjangoCodeMirror_menu .buttonBold a{ background-image:url('images/bold.png'); }
+.DjangoCodeMirror_menu .buttonItalic a{ background-image:url('images/italic.png'); }
+.DjangoCodeMirror_menu .buttonCode a{ background-image:url('images/text_allcaps.png'); }
+.DjangoCodeMirror_menu .buttonBList a{ background-image:url('images/list-bullet.png'); }
+.DjangoCodeMirror_menu .buttonNList a{ background-image:url('images/list-numeric.png'); }
+.DjangoCodeMirror_menu .buttonPicture a{ background-image:url('images/picture.png'); }
+.DjangoCodeMirror_menu .buttonFigure a{ background-image:url('images/photo.png'); }
+.DjangoCodeMirror_menu .buttonSubPicture a{ background-image:url('images/bullet_picture.png'); }
+.DjangoCodeMirror_menu .buttonLink a{ background-image:url('images/world_link.png'); }
+.DjangoCodeMirror_menu .buttonPageLink a{ background-image:url('images/page_link.png'); }
+.DjangoCodeMirror_menu .buttonQuotes a{ background-image:url('images/quotes.png'); }
+.DjangoCodeMirror_menu .buttonSourcecode a{ background-image:url('images/sourcecode.png'); }
+.DjangoCodeMirror_menu .buttonFullscreenEnter a{ background: url('images/fullscreen_enter.png'); }
+.DjangoCodeMirror_menu .buttonFullscreenExit a{ background-image:url('images/fullscreen_exit.png'); }
+.DjangoCodeMirror_menu .buttonQuickSave a{ background-image:url('images/disk.png'); }
+.DjangoCodeMirror_menu .buttonQuickSave.ready a{ background-image:url('images/disk_star_blue.png'); }
+.DjangoCodeMirror_menu .buttonHelp a{ background-image:url('images/help.png'); }
+.DjangoCodeMirror_menu .buttonSettings a{ background-image:url('images/cog_edit.png'); }
 
-.DjangoCodeMirror_menu .buttonBold a{
-    background-image:url('images/bold.png');
-}
-.DjangoCodeMirror_menu .buttonItalic a{
-    background-image:url('images/italic.png');
-}
-.DjangoCodeMirror_menu .buttonCode a{
-    background-image:url('images/text_allcaps.png');
-}
-
-.DjangoCodeMirror_menu .buttonBList a{
-    background-image:url('images/list-bullet.png');
-}
-.DjangoCodeMirror_menu .buttonNList a{
-    background-image:url('images/list-numeric.png');
-}
-
-.DjangoCodeMirror_menu .buttonPicture a{
-    background-image:url('images/picture.png');
-}
-.DjangoCodeMirror_menu .buttonFigure a{
-    background-image:url('images/photo.png');
-}
-.DjangoCodeMirror_menu .buttonSubPicture a{
-    background-image:url('images/bullet_picture.png');
-}
-
-.DjangoCodeMirror_menu .buttonLink a{
-    background-image:url('images/world_link.png');
-}
-.DjangoCodeMirror_menu .buttonPageLink a{
-    background-image:url('images/page_link.png');
-}
-
-.DjangoCodeMirror_menu .buttonQuotes a{
-    background-image:url('images/quotes.png');
-}
-
-.DjangoCodeMirror_menu .buttonSourcecode a{
-    background-image:url('images/sourcecode.png');
-}
-.DjangoCodeMirror_menu .buttonFullscreenEnter a{
-    background: url('images/fullscreen_enter.png');
-}
-.DjangoCodeMirror_menu .buttonFullscreenExit a{
-    background-image:url('images/fullscreen_exit.png');
-}
-.DjangoCodeMirror_menu .buttonQuickSave a{
-    background-image:url('images/disk.png');
-}
-.DjangoCodeMirror_menu .buttonQuickSave.ready a{
-    background-image:url('images/disk_star_blue.png');
-}
 .DjangoCodeMirror_menu .buttonQuickSave.error a{
     background-color: #ee0000;
 }
-.DjangoCodeMirror_menu .buttonHelp a{
-    background-image:url('images/help.png');
-}
-
 .DjangoCodeMirror .DjangoCodeMirror_menu ul li.buttonUndo:hover,
 .DjangoCodeMirror .DjangoCodeMirror_menu ul li.buttonRedo:hover{
     background-color: transparent;
@@ -216,6 +161,7 @@ hr,
     Barre de status et onglets
 */
 .DjangoCodeMirror .DjangoCodeMirror_tabs{
+    background: #ededed;
     border-top: 1px solid #e0e0e0;
 }
 .DjangoCodeMirror .DjangoCodeMirror_tabs ul li{

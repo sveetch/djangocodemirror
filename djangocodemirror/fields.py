@@ -102,6 +102,7 @@ class CodeMirrorWidget(forms.Textarea):
             js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_LIB)
             js_items.append(settings_local.QTIP_FILEPATH_LIB)
             js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CONSOLE)
+            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_SETTINGS)
             # Use CSRF lib only if setted and used
             if settings_local.DJANGOCODEMIRROR_FILEPATH_CSRF and self.codemirror_attrs.get('csrf', False):
                 js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CSRF)
