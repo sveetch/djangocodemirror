@@ -9,8 +9,6 @@
     <script language="JavaScript" type="text/javascript">
     //<![CDATA[
     DCM_lang = "{{ LANGUAGE_CODE }}";
-    {% comment %}// TODO: Bad temporary HACK, should be configured in some settings
-    FOOTIP = "{{ STATIC_URL }}djangocodemirror/images/square_circle_1.gif";{% endcomment %}
     $(document).ready(function() {
         {% comment %}Translators: Link name to load demonstration content{% endcomment %}
         $("#sample h2:first").after('<p id="menu"><a class="demo_content_loadlink" href="">{% filter addslashes %}{% trans "Load demo content" %}{% endfilter %}</a></p>');

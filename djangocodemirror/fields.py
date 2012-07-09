@@ -59,7 +59,7 @@ class CodeMirrorWidget(forms.Textarea):
         
         This is only working on setting items : preview_url, help_link, quicksave_url
         """
-        for name in ['preview_url', 'help_link', 'quicksave_url']:
+        for name in ['preview_url', 'help_link', 'quicksave_url', 'settings_url']:
             if name in settings and not isinstance(settings.get(name, ''), basestring):
                 args = []
                 kwargs = {}
@@ -102,7 +102,6 @@ class CodeMirrorWidget(forms.Textarea):
             js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_LIB)
             js_items.append(settings_local.QTIP_FILEPATH_LIB)
             js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CONSOLE)
-            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_SETTINGS)
             # Use CSRF lib only if setted and used
             if settings_local.DJANGOCODEMIRROR_FILEPATH_CSRF and self.codemirror_attrs.get('csrf', False):
                 js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CSRF)

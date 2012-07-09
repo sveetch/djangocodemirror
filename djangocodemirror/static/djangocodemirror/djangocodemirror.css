@@ -82,7 +82,6 @@ hr,
     background-color: transparent;
     background-repeat:no-repeat;
     background-position: center;
-    margin:0px;
     cursor: pointer;
 }
 .DjangoCodeMirror .DjangoCodeMirror_menu ul .separator,
@@ -163,6 +162,7 @@ hr,
 .DjangoCodeMirror .DjangoCodeMirror_tabs{
     background: #ededed;
     border-top: 1px solid #e0e0e0;
+    border-radius: 0 0 5px 5px;
 }
 .DjangoCodeMirror .DjangoCodeMirror_tabs ul li{
     margin: .3em 0 .3em 0.7em;
@@ -241,6 +241,60 @@ hr,
     display:block;
 }
 
+/*____________________________________
+    Pour le panneau de paramètres éditables
+*/
+.DjangoCodeMirror_settings_panel{
+    border: 1px solid #d0d0d0;
+    background-color:#ffffff;
+    border-radius: 5px;
+}
+#DjangoCodeMirror_fullscreen_scene .DjangoCodeMirror_settings_panel{
+    border:0;
+    border-radius:0;
+}
+
+.DjangoCodeMirror_settings_panel a.close {
+    display: block;
+    width: 22px;
+    height: 22px;
+    text-indent:-10000px;
+    background: #ededed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('images/cross.png');
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 3px;
+    border: 1px solid #dfdfdf;
+}
+.DjangoCodeMirror_settings_panel a.close:hover {
+    background-color: #ffffff;
+}
+.DjangoCodeMirror_settings_panel h2 {
+    margin: 0;
+    padding: 6px;
+    font-size:16px;
+    height:20px;
+    color:#7f7f7f;
+    text-shadow:#9f9f9f 1px 1px 2px;
+    background: #ffffff;
+    background: -moz-linear-gradient(top,  #ffffff 0%, #f3f3f3 41%, #ededed 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(41%,#f3f3f3), color-stop(100%,#ededed));
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#f3f3f3 41%,#ededed 100%);
+    background: -o-linear-gradient(top,  #ffffff 0%,#f3f3f3 41%,#ededed 100%);
+    background: -ms-linear-gradient(top,  #ffffff 0%,#f3f3f3 41%,#ededed 100%);
+    background: linear-gradient(top,  #ffffff 0%,#f3f3f3 41%,#ededed 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+    border: 1px solid #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 5px 5px 0 0;
+}
+.DjangoCodeMirror_settings_panel form input.submit{
+    margin-bottom:1em;
+}
 
 /*____________________________________
     Pour la démo

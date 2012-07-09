@@ -36,6 +36,7 @@ CODEMIRROR_SETTINGS = {
         'settings_cookie': DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME,
         'preview_url': ('djangocodemirror-sample-preview', [], {}),
         'quicksave_url': ('djangocodemirror-sample-quicksave', [], {}),
+        'settings_url': ('djangocodemirror-settings', [], {}),
         'lineWrapping': False,
         'lineNumbers': True,
         'search_enabled': True,
@@ -63,7 +64,6 @@ DJANGOCODEMIRROR_FILEPATH_CSS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CSS
 DJANGOCODEMIRROR_FILEPATH_BUTTONS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_BUTTONS', 'djangocodemirror/buttons.js')
 DJANGOCODEMIRROR_FILEPATH_METHODS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_METHODS', 'djangocodemirror/syntax_methods.js')
 DJANGOCODEMIRROR_FILEPATH_CONSOLE = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CONSOLE', 'djangocodemirror/qtip_console.js')
-DJANGOCODEMIRROR_FILEPATH_SETTINGS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_SETTINGS', 'djangocodemirror/qtip_settingscreen.js')
 DJANGOCODEMIRROR_FILEPATH_CSRF = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CSRF', 'djangocodemirror/csrf.js')
 DJANGOCODEMIRROR_FILEPATH_COOKIES = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_COOKIES', 'jquery/plugins/jquery.cookies.2.2.0.min.js')
 

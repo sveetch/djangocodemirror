@@ -125,8 +125,22 @@ class EditorSettings(FormView):
         """
         saved_settings = form.save()
         
-        form_class = self.get_form_class()
-        new_form = self.get_form(form_class)
-        resp = self.render_to_response(self.get_context_data(form=new_form, save_success=True))
+        if self.request.is_ajax():
+            content = json.dumps({'status':'form_valid', 'setting_options':saved_settings})
+            resp = HttpResponse(content, content_type='application/json')
+        else:
+            form_class = self.get_form_class()
+            new_form = self.get_form(form_class)
+            resp = self.render_to_response(self.get_context_data(form=new_form, save_success=True))
         
         return self.patch_response(resp, saved_settings)
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            content = json.dumps({
+                'status':'form_invalid',
+                'errors': dict(form.errors.items()),
+            })
+            return HttpResponse(content, content_type='application/json')
+        
+        return super(EditorSettings, self).form_invalid(form)

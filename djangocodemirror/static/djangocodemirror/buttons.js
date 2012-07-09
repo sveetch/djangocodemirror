@@ -31,6 +31,6 @@ DCM_Buttons_settings = [
     {name:'Cite', classname: 'buttonQuotes', begin_with:'    ', placeholder:'Your value', funcname:"cite"},
     {name:'Block code', classname: 'buttonSourcecode', placeholder:'Your value', funcname:"sourcecode" },
     {separator:true},
-    {name:'Help', classname: 'buttonHelp', funcname:"externalressource" }
-    //{name:'Settings', classname: 'buttonSettings', funcname:"settings_panel", method:"internal" }
+    {name:'Help', classname: 'buttonHelp', funcname:"externalressource" },
+    {name:'Settings', classname: 'buttonSettings', funcname:"show_settings", method:"internal" }
 ];

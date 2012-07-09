@@ -34,14 +34,15 @@ var methods = {
             "help_link": '',
             "quicksave_url": '',
             "quicksave_datas": {},
-            //"enable_active_line": false,
+            "enable_active_line": true,
             "preview_url": false,
             "csrf": false,
             "undo_buttons": true,
-            "settings_cookie": '',
             "display_cursor_position": true,
             "preview_padding": 10,
             "no_tab_char": false,
+            "settings_cookie": '',
+            "settings_url": '',
             "preview_borders": 0
         }, options);
         // Default button settings
@@ -105,7 +106,7 @@ var methods = {
             codemirror_instance.setOption('no_tab_char', settings.no_tab_char);
             codemirror_instance.setOption('extraKeys', {
                 "Tab": coreutils.tab_transformer,
-                // TODO: Ctrl/Cmd prefix should be determined from the enabled default 
+                // WARNING: Ctrl/Cmd prefix should be determined from the enabled default 
                 //       keymap (because on MacOS it should be Cmd and not Ctrl)
                 "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
                 // NOTE: Here should be defined syntax button keybinding from there key attribute
@@ -137,11 +138,11 @@ var methods = {
                 tab_preview_on.on("click", { "input_source": input_source }, events.show_preview);
                 tab_preview_off.on("click", { "input_source": input_source }, events.hide_preview);
             }
-            $(window).bind("resize", { "input_source": input_source }, events.resize);
             
             // Default active line
-            // TODO: should be optional on settings
-            input_source.data("codemirror_hlLine", codemirror_instance.setLineClass(0, "activeline"));
+            if(settings.enable_active_line){
+                input_source.data("codemirror_hlLine", codemirror_instance.setLineClass(0, "activeline"));
+            }
             
             // Refresh update of CodeMirror
             codemirror_instance.refresh();
@@ -192,40 +193,18 @@ var methods = {
  */
 var events = {
     /*
-     * Resize method to use when the editor window is resized
-     */
-    resize: function(event) {
-        var input_source = $(event.data.input_source),
-            instance_data = input_source.data("djangocodemirror");
-            
-        // For Maximize mode
-        if ($("#DjangoCodeMirror_fullscreen_scene").length>0){
-            var elems_css = coreutils.get_fullscreen_sizes(input_source);
-            $("#DjangoCodeMirror_fullscreen_scene").css(elems_css[0]);
-            $(".CodeMirror-scroll", instance_data.container).css(elems_css[1]);
-        }
-        // For preview display
-        var preview_id = instance_data.container.data("DCM_preview_markid");
-        if (preview_id){
-            var elems_css = coreutils.get_preview_sizes(input_source);
-            var editor_container = $(".CodeMirror-scroll", instance_data.container);
-            $("#"+preview_id).css(elems_css[0]);
-            $("#"+preview_id+" .PreviewContent").css(elems_css[1]);
-        }
-        instance_data.codemirror.refresh();
-    },
-    
-    /*
      * Set some marks and do some computing for each cursor activity
      * NOTE: this is heavily called because the cursor activity is constantly used,
      *       so there should be improvements in this code to speed up things
      */
     cursor_activity: function(input_source) {
         var instance_data = input_source.data("djangocodemirror"),
-            hlLine = input_source.data("codemirror_hlLine"),
             cur = instance_data.codemirror.getCursor();
         // Reset previous highlighted lines
-        instance_data.codemirror.setLineClass(hlLine, null);
+        if(instance_data.settings.enable_active_line){
+            var hlLine = input_source.data("codemirror_hlLine");
+            instance_data.codemirror.setLineClass(hlLine, null);
+        }
         // Update column and row counters
         $(".DjangoCodeMirror_tabs .cursor_pos span.line", instance_data.container).html((cur.line+1));
         $(".DjangoCodeMirror_tabs .cursor_pos span.ch", instance_data.container).html((cur.ch+1));
@@ -242,7 +221,9 @@ var events = {
             $(".DjangoCodeMirror_menu .buttonRedo", instance_data.container).addClass("inactive").removeClass("active");
         }
         // Update the highlight
-        input_source.data("codemirror_hlLine", instance_data.codemirror.setLineClass(cur.line, "activeline"));
+        if(instance_data.settings.enable_active_line){
+            input_source.data("codemirror_hlLine", instance_data.codemirror.setLineClass(cur.line, "activeline"));
+        }
     },
     /*
      * Handle click on common button (aka using the public syntax methods)
@@ -317,6 +298,7 @@ var events = {
         });
         return false;
     },
+ 
     /*
      * Maximize editor size
      */
@@ -355,15 +337,14 @@ var events = {
         // Calcul et applique les nouvelles dimensions
         var elems_css = coreutils.get_fullscreen_sizes(input_source);
         scene.css(elems_css[0]).attr('id', "DjangoCodeMirror_fullscreen_scene");
-        instance_data.container.css(
-            "width",
-            "100%"
-        );
+        instance_data.container.css("width", "100%");
         // Met la hauteur de CodeMirror à la dimension qui lui est disponible
         $(".CodeMirror-scroll", instance_data.container).css(elems_css[1]);
         events.hide_preview(event);
         // Recalcul auto de CodeMirror
         instance_data.codemirror.refresh();
+        // Resize
+        $(window).bind("resize.djc_maximize", { "input_source": input_source }, events.resize_editor);
     },
     /*
      * Exit maximized mode
@@ -395,8 +376,18 @@ var events = {
             $(".CodeMirror-scroll", instance_data.container).data('original_size') + "px"
         );
         events.hide_preview(event);
+        $(window).unbind("resize.djc_maximize");
         instance_data.codemirror.refresh();
     },
+    resize_editor: function(event) {
+        var input_source = $(event.data.input_source),
+            instance_data = input_source.data("djangocodemirror"),
+            elems_css = coreutils.get_fullscreen_sizes(input_source);
+        $("#DjangoCodeMirror_fullscreen_scene").css(elems_css[0]);
+        $(".CodeMirror-scroll", instance_data.container).css(elems_css[1]);
+        instance_data.codemirror.refresh();
+    },
+    
     /*
      * undo/redo management
      */
@@ -418,6 +409,7 @@ var events = {
             instance_data.codemirror.redo();
         }
     },
+    
     /*
      * Send a preview request and display the rendered content
      */
@@ -453,13 +445,13 @@ var events = {
                 instance_data.container.data("DCM_preview_markid", preview_id);
                 
                 // Scène principal par dessus l'éditeur
-                var scene = $('<div>').css(elems_css[0]);
+                var scene = $("<div>").css(elems_css[0]);
                 scene.addClass("DjangoCodeMirrorPreviewScene")
                 scene.attr("id", preview_id);
                 $("body").append(scene);
                 
                 // Conteneur de la preview renvoyée par le parser
-                var content = $('<div>').css(elems_css[1]);
+                var content = $("<div>").css(elems_css[1]);
                 content.addClass("PreviewContent")
                 content.addClass("restructuredtext_container")
                 scene.append(content);
@@ -470,7 +462,7 @@ var events = {
                 content.append(data);
                 // Contrôle du clic dans la preview, ouvre les liens dans une nouvelle 
                 // fenêtre et bloque les ancres
-                $('a', content).click(function () {
+                $("a", content).click(function () {
                     var url = $(this).attr('href');
                     var is_anchor = (url && url.indexOf('#')==0) ? true : false;
                     if(url && !is_anchor) {
@@ -478,6 +470,8 @@ var events = {
                     }
                     return false;
                 });
+                // Resize
+                $(window).bind("resize.djc_preview", { "input_source": input_source }, events.resize_preview);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 $(".DjangoCodeMirror_tabs li.preview a", instance_data.container).append('<span class="error"> (!)</span>');
@@ -500,8 +494,107 @@ var events = {
         $(".DjangoCodeMirror_tabs li.preview", instance_data.container).removeClass("tabactive");
         var preview_id = instance_data.container.data("DCM_preview_markid");
         $("#"+preview_id).remove();
+        $(window).unbind("resize.djc_preview");
         instance_data.container.removeData("DCM_preview_markid");
         instance_data.codemirror.focus();
+    },
+    resize_preview: function(event) {
+        var input_source = $(event.data.input_source),
+            instance_data = input_source.data("djangocodemirror"),
+            preview_id = instance_data.container.data("DCM_preview_markid"),
+            elems_css = coreutils.get_preview_sizes(input_source),
+            editor_container = $(".CodeMirror-scroll", instance_data.container);
+        $("#"+preview_id).css(elems_css[0]);
+        $("#"+preview_id+" .PreviewContent").css(elems_css[1]);
+        instance_data.codemirror.refresh();
+    },
+
+    /*
+     * Settings panel
+     */
+    show_settings: function(event) {
+        var input_source = $(event.data.input_source),
+            instance_data = input_source.data("djangocodemirror");
+        
+        var border = instance_data.container.outerWidth(false) - instance_data.container.innerWidth();
+        var panel = $('<div>').addClass("DjangoCodeMirror_settings_panel").css({
+            "position": "absolute",
+            "z-index": 5000,
+            "width": (instance_data.container.outerWidth()-border)+"px",
+            "height": (instance_data.container.outerHeight()-border)+"px"
+        });
+        
+        var close_link = $('<a/>').attr("href", "#").addClass("close").html("Close");
+        close_link.appendTo(panel);
+        $("<h2>"+safegettext("Settings")+"</h2>").appendTo(panel);
+        
+        $.ajax({
+            type: 'GET',
+            dataType: "html",
+            global: false,
+            cache: false,
+            url: instance_data.settings.settings_url,
+            success: function(data) {
+                instance_data.container.before(panel);
+                $(".DjangoCodeMirror_menu .buttonSettings", instance_data.container).removeClass("error");
+                panel.append(data);
+                $("form", panel).css({
+                   "overflow": "auto",
+                    "height": (panel.innerHeight()-$("h2", panel).outerHeight())+"px"
+                });
+                close_link.click({ "panel": panel }, function (e) {
+                    $(window).unbind("resize.djc_settings");
+                    $(e.data.panel).remove();
+                    return false;
+                });
+                $("form", panel).submit({ "input_source": input_source, "panel": panel }, events.submit_settings);
+                $(window).bind("resize.djc_settings", { "input_source": input_source, "panel": panel }, events.resize_settings);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $(".DjangoCodeMirror_menu .buttonSettings", instance_data.container).addClass("error");
+                createGrowl(instance_data.container, "warning", textStatus, errorThrown, false);
+            }
+        });
+        return false;
+    },
+    submit_settings: function(event) {
+        var input_source = $(event.data.input_source),
+            instance_data = input_source.data("djangocodemirror");
+            panel = $(event.data.panel);
+        // Serialize the form fields and submit them
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            global: false,
+            cache: false,
+            data: $("form", panel).serialize(),
+            url: $("form", panel).attr("action"),
+            success: function(data) {
+                // Update codemirror settings
+                $.each(data.setting_options, function(key, value) {
+                    instance_data.codemirror.setOption(key, value)
+                });
+                // Close panel
+                $(window).unbind("resize.djc_settings");
+                panel.remove();
+                createGrowl(instance_data.container, "success", safegettext("Success"), safegettext("Successful save"), false);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                createGrowl(instance_data.container, "warning", textStatus, errorThrown, false);
+            }
+        });
+        return false;
+    },
+    resize_settings: function(event) {
+        var input_source = $(event.data.input_source),
+            instance_data = input_source.data("djangocodemirror");
+            panel = $(event.data.panel),
+            borders = 0;
+        panel.css({
+            "width": (instance_data.container.outerWidth()-borders)+"px",
+            "height": (instance_data.container.outerHeight()-borders)+"px"
+        });
+        $("form", panel).css({"height": (panel.innerHeight()-$("h2", panel).outerHeight())+"px"});
     }
 };
 
@@ -582,6 +675,13 @@ var coreutils = {
             if( settings.help_link ){
                 buttons[pos].url = settings.help_link;
             } else {
+                delete buttons[pos];
+            }
+        }
+        // Help link if setted
+        if( button_indexes['buttonSettings'] != undefined && button_indexes['buttonSettings'] != null){
+            var pos = button_indexes['buttonSettings'];
+            if(!settings.settings_url){
                 delete buttons[pos];
             }
         }

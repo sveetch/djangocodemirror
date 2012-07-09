@@ -6,6 +6,7 @@ from django import forms
 
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 from djangocodemirror import settings_local
 from djangocodemirror.fields import DjangoCodeMirrorField
@@ -74,6 +75,7 @@ class DjangoCodeMirrorSettingsForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         self.helper = get_form_helper()
+        self.helper.form_action = reverse('djangocodemirror-settings')
         
         super(DjangoCodeMirrorSettingsForm, self).__init__(*args, **kwargs)
     

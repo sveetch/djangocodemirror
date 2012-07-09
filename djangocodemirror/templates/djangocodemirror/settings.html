@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{% comment %}TODO: Default settings template should not use crispy forms to avoid his dependancy{% endcomment %}
-{% load i18n crispy_forms_tags %}
+{% load i18n %}
 
 {% block head_title %}{% trans "Your settings" %}{% endblock %}
 {% block head_more_links %}
@@ -10,5 +9,7 @@
 {% endblock %}
 
 {% block content %}
+    <h2>{% trans "Your settings" %} </h2>
+    {% if save_success %}<p>Your settings has been saved.</p>{% endif %}
     {% include "djangocodemirror/include_settings_form.html" %}
 {% endblock %}
