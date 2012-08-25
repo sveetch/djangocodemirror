@@ -42,7 +42,6 @@ var methods = {
             "help_link": '',
             "enable_active_line": true,
             "display_cursor_position": true,
-            "no_tab_char": true,
             "undo_buttons": true,
             // Used by some features
             "csrf": false,
@@ -116,7 +115,6 @@ var methods = {
             // Build CodeMirror
             var codemirror_instance = CodeMirror.fromTextArea(this, settings);
             // Force options in codemirror that it doesn't know of
-            codemirror_instance.setOption('no_tab_char', settings.no_tab_char);
             codemirror_instance.setOption('extraKeys', {
                 "Tab": "indentMore", 
                 "Shift-Tab": "indentLess",
@@ -617,20 +615,6 @@ var events = {
 * Various utilities
 */
 var coreutils = {
-    /*
-     * Transform tabulation character in spaces
-     * DEPRECATED
-     */
-    tab_transformer: function(cm) {
-        var tab = "\t";
-        if(cm.getOption('no_tab_char')) {
-            tab = "";
-            for (var l=0; l < cm.getOption('tabSize'); l++) {
-                tab += " ";
-            }
-        }
-        cm.replaceSelection(tab, "end");
-    },
     /*
     * Pre-processing on avalaible buttons
     * 
