@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-05 03:31+0200\n"
+"POT-Creation-Date: 2012-08-25 18:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: DAVID THENON <sveetch@gmail.com>\n"
 "Language-Team: FRENCH <FR@li.org>\n"
@@ -18,21 +18,21 @@ msgstr ""
 
 #. Translators: Demonstration page title
 #: crumbs.py:9 templates/djangocodemirror/sample.html:5
-#: templates/djangocodemirror/sample.html:29
+#: templates/djangocodemirror/sample.html:36
 msgid "DjangoCodeMirror sample"
 msgstr "Exemple DjangoCodeMirror"
 
-#: crumbs.py:10 templates/djangocodemirror/settings.html:6
-#: templates/djangocodemirror/settings.html:14
+#: crumbs.py:10 templates/djangocodemirror/settings.html:4
+#: templates/djangocodemirror/settings.html:12
 msgid "Your settings"
 msgstr "Vos paramètres"
 
 #. Translators: Dummy error to return when no supported parser is installed
-#: forms.py:22
+#: forms.py:23
 msgid "Dummy"
 msgstr "Bidon"
 
-#: forms.py:39
+#: forms.py:40
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -45,52 +45,20 @@ msgid "The theme to style the editor with."
 msgstr "Le thème visuel à appliquer sur l'éditeur."
 
 #: forms.py:68
-msgid "smart indent"
-msgstr "indentation intelligente"
-
-#: forms.py:68
-msgid "Whether to use the context-sensitive indentation that the mode provides (or just indent the same as the line before)."
-msgstr "Active l'indentation sensible au contexte que le mode de syntaxe fourni (au lieu de l'indentation par défaut qui reprend celle de la ligne précédente)."
-
-#: forms.py:69
-msgid "indent unit"
-msgstr "unités d'indentation"
-
-#: forms.py:69
-msgid "How many spaces a block (whatever that means in the edited language) should be indented."
-msgstr "Nombre d'espace qu'un bloc doit être indenté."
-
-#: forms.py:70
-msgid "tab size"
-msgstr "taille de tabulation"
-
-#: forms.py:70
-msgid "The width of a tab character."
-msgstr "Longeur de caractères que vaut une tabulation."
-
-#: forms.py:71
-msgid "indent with tabs"
-msgstr "indentation avec des tabulations"
-
-#: forms.py:71
-msgid "Whether, when indenting, the first N*tabSize spaces should be replaced by N tabs."
-msgstr "Remplace les espaces de l'option 'taille de tabulation' par des caractères de tabulations."
-
-#: forms.py:72
 msgid "line wrapping"
 msgstr "retour à la ligne dynamique"
 
-#: forms.py:72
+#: forms.py:68
 msgid "Whether CodeMirror should scroll or wrap for long lines."
 msgstr "Définit si CodeMirror doit appliquer un retour à la ligne dynamique ou laisser les lignes se poursuivrent horizontalement."
 
-#: forms.py:73
+#: forms.py:69
 msgid "avoid tabulation"
 msgstr "interdire les tabulations"
 
-#: forms.py:73
-msgid "Disable usage of any tabulation character, instead each tabulation will be replaced by N space where N is the value of the 'tab size' option."
-msgstr "Désactive l'utilisation de tout caractère de tabulation, à la place chaque tabulation sera remplacé par N espaces où N sera la valeure de l'option 'taille de tabulation'"
+#: forms.py:69
+msgid "Disable usage of any tabulation character, instead each tabulation will be replaced by 4 space characters."
+msgstr "Désactive l'utilisation de tout caractère de tabulation, à la place chaque tabulation sera remplacé par 4 espaces."
 
 #. Translators: Dummy content returned when no supported parser is installed
 #: views.py:24
@@ -102,11 +70,12 @@ msgstr "<p>Ceci est une prévisualisation bidon car <tt>sveedocuments.parser</tt
 msgid "Load demo content"
 msgstr "Charger le contenu de démonstration"
 
-#: templates/djangocodemirror/sample.html:15
+#. Translators: Link name to user settings form
+#: templates/djangocodemirror/sample.html:16
 msgid "Change your editor settings"
 msgstr "Modifiez vos paramètres pour l'éditeur"
 
 #. Translators: Demonstration form title
-#: templates/djangocodemirror/sample.html:35
+#: templates/djangocodemirror/sample.html:42
 msgid "Sample content"
 msgstr "Contenu d'exemple"

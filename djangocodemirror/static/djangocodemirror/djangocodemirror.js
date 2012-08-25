@@ -28,21 +28,34 @@ var methods = {
     init : function(options) {
         // Default editor settings
         var settings = $.extend( {
+            // Default settings to edit without any tab character and allways use 4 
+            // spaces instead
+            "indentUnit": 4,
+            "tabSize": 4,
+            "indentWithTabs": false,
+            // To enable the automatic line wrapping
+            "lineWrapping": false,
+            // To display line numbers
             "lineNumbers": false,
             // For DjangoCodeMirror only
             "fullscreen": true,
             "help_link": '',
+            "enable_active_line": true,
+            "display_cursor_position": true,
+            "no_tab_char": true,
+            "undo_buttons": true,
+            // Used by some features
+            "csrf": false,
+            // For the preview feature
+            "preview_url": false,
+            // For the quicksave feature
             "quicksave_url": '',
             "quicksave_datas": {},
-            "enable_active_line": true,
-            "preview_url": false,
-            "csrf": false,
-            "undo_buttons": true,
-            "display_cursor_position": true,
-            "preview_padding": 10,
-            "no_tab_char": false,
+            // For the editor settings feature
             "settings_cookie": '',
             "settings_url": '',
+            // Deprecated?
+            "preview_padding": 10,
             "preview_borders": 0
         }, options);
         // Default button settings
@@ -67,7 +80,7 @@ var methods = {
             if(settings.settings_cookie) {
                 var cookie = $.cookies.get("djangocodemirror_user_settings");
                 if(cookie){
-                    settings = $.extend( settings, cookie);
+                    settings = $.extend(settings, cookie);
                 }
             }
             
@@ -105,7 +118,8 @@ var methods = {
             // Force options in codemirror that it doesn't know of
             codemirror_instance.setOption('no_tab_char', settings.no_tab_char);
             codemirror_instance.setOption('extraKeys', {
-                "Tab": coreutils.tab_transformer,
+                "Tab": "indentMore", 
+                "Shift-Tab": "indentLess",
                 // WARNING: Ctrl/Cmd prefix should be determined from the enabled default 
                 //       keymap (because on MacOS it should be Cmd and not Ctrl)
                 "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
@@ -605,6 +619,7 @@ var events = {
 var coreutils = {
     /*
      * Transform tabulation character in spaces
+     * DEPRECATED
      */
     tab_transformer: function(cm) {
         var tab = "\t";
