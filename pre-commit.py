@@ -21,11 +21,11 @@ import os, subprocess, sys
 MINIFIED_EXTENSION = "min" # Extension to assume for minified version
 # Watched files by this hooks, files that are not in this list will 
 # never be worried about
-# Edit this to append your watched files to care of
+# Edit this to append your watched files to care of.
+# Paths are relative to the root of the repository.
 WATCHED_FILES = (
-    #'foo.js',
-    #'bar.css',
-    #'to/stuff/foobar.js',
+    'djangocodemirror/djangocodemirror.min.css',
+    'djangocodemirror/djangocodemirror.min.js',
 )
 
 def has_minified_file(filename, tracked):
