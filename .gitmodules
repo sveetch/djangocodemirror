@@ -1,0 +1,3 @@
+[submodule "djangocodemirror/static/CodeMirror"]
+	path = djangocodemirror/static/CodeMirror
+	url = git://github.com/marijnh/CodeMirror.git
