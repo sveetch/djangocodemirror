@@ -32,7 +32,7 @@ Links
   `PyPi package <http://pypi.python.org/pypi/djangocodemirror>`_;
 * Clone it on his 
   `Github repository <https://github.com/sveetch/djangocodemirror>`_;
-* Documentation and demo to come on his 
+* Documentation and demo on 
   `DjangoSveetchies page <http://sveetchies.sveetch.net/djangocodemirror/>`_.
 
 Requires
@@ -41,11 +41,19 @@ Requires
 Your project will have to includes a copy of these Javascript libraries :
 
 * `jQuery`_ >= 1.7;
-* `CodeMirror Version 2.24 <http://codemirror.net/codemirror-2.24.zip>`_  recommanded, 
-  but the last one should work;
+* `CodeMirror`_ but it is included as a git submodule;
 
 Install
 =======
+
+Getting CodeMirror
+******************
+
+`CodeMirror`_ is included as a git submodule, so you can install it from Github. Within the root of the **Django-CodeMirror** repository do this : ::
+
+    git submodule update --init
+
+This is optionnal, if you want you can download it and install it yourself.
 
 Settings
 ********
@@ -121,6 +129,10 @@ csrf
 display_cursor_position
     At ``True`` it enable the display of current line and column in the bottom right of 
     the editor. This option is enabled by default.
+no_tab_char
+    At ``True`` the usage of the tabulation key will not write a tabulation character and 
+    spaces will be writed in replacment. The number of spaces will be determined from the 
+    *tabSize* option (default to 4) from CodeMirror.
 undo_buttons
     At ``True`` it display buttons *Undo* and *Redo* in the buttons bar. Enabled by 
     default.
@@ -151,6 +163,7 @@ A full example of these settings with the plugin :
                     "quicksave_datas": my_datas,
                     "preview_url": "/djangocodemirror-sample/preview/",
                     "display_cursor_position": true,
+                    "no_tab_char": true,
                     "undo_buttons": true,
                     "settings_cookie": "djancocodemirror_settings",
                     "lineNumbers": true
@@ -284,7 +297,7 @@ DJANGOCODEMIRROR_FIELD_INIT_JS
 
 **Type :** *string*
 
-This is identical to `CODEMIRROR_FIELD_INIT_JS`_ but for `DjangoCodeMirror`_ usage only.
+This identical to `CODEMIRROR_FIELD_INIT_JS`_ but for `DjangoCodeMirror`_ usage only.
 
 CODEMIRROR_SETTINGS
 *******************
