@@ -23,7 +23,7 @@ except ImportError:
         # Translators: Dummy content returned when no supported parser is installed
         return ugettext("<p>This a dummy preview because <tt>sveedocuments.parser</tt> is not available.</p>")
 
-class Sample(TemplateView):
+class SampleView(TemplateView):
     """
     Sample page view
     """
@@ -41,9 +41,9 @@ class Sample(TemplateView):
         }
         return self.render_to_response(context)
 
-class SamplePreview(View):
+class SamplePreviewMixin(object):
     """
-    Sample preview view
+    Sample preview mixin
     """
     def parse_content(self, request, *args, **kwargs):
         content = request.POST.get('content', None)
@@ -58,7 +58,13 @@ class SamplePreview(View):
         content = self.parse_content(request, *args, **kwargs)
         return HttpResponse( content )
 
-class SampleQuicksave(BaseFormView):
+class SamplePreviewView(SamplePreviewMixin, View):
+    """
+    Sample preview view
+    """
+    pass
+
+class SampleQuicksaveMixin(object):
     """
     Sample quicksave view
     """
@@ -79,9 +85,15 @@ class SampleQuicksave(BaseFormView):
         })
         return HttpResponse(content, content_type='application/json')
 
-class EditorSettings(FormView):
+class SampleQuicksaveView(SampleQuicksaveMixin, BaseFormView):
     """
-    Editor Settings
+    Sample quicksave view
+    """
+    pass
+
+class EditorSettingsMixin(object):
+    """
+    Editor Settings mixin
     """
     form_class = DjangoCodeMirrorSettingsForm
 
@@ -144,3 +156,9 @@ class EditorSettings(FormView):
             return HttpResponse(content, content_type='application/json')
         
         return super(EditorSettings, self).form_invalid(form)
+
+class EditorSettingsView(EditorSettingsMixin, FormView):
+    """
+    Editor Settings view
+    """
+    pass
