@@ -245,7 +245,7 @@ hr,
     Pour le panneau de paramètres éditables
 */
 .DjangoCodeMirror_settings_panel{
-    border: 1px solid #d0d0d0;
+/*     border: 1px solid #d0d0d0; */
     background-color:#ffffff;
     border-radius: 5px;
 }

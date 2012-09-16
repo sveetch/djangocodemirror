@@ -547,7 +547,7 @@ var events = {
             cache: false,
             url: instance_data.settings.settings_url,
             success: function(data) {
-                instance_data.container.before(panel);
+                instance_data.container.prepend(panel);
                 $(".DjangoCodeMirror_menu .buttonSettings", instance_data.container).removeClass("error");
                 panel.append(data);
                 $("form", panel).css({

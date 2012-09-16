@@ -58,9 +58,13 @@ CODEMIRROR_FILEPATH_DIALOG_CSS = getattr(settings, 'CODEMIRROR_FILEPATH_DIALOG_C
 CODEMIRROR_FILEPATH_SEARCH_LIB = getattr(settings, 'CODEMIRROR_FILEPATH_SEARCH_LIB', 'CodeMirror/lib/util/search.js')
 CODEMIRROR_FILEPATH_SEARCHCURSOR_LIB = getattr(settings, 'CODEMIRROR_FILEPATH_SEARCHCURSOR_LIB', 'CodeMirror/lib/util/searchcursor.js')
 
-DJANGOCODEMIRROR_FILEPATH_LIB = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_LIB', 'djangocodemirror/djangocodemirror.min.js')
+if settings.DEBUG:
+    DJANGOCODEMIRROR_FILEPATH_LIB = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_LIB', 'djangocodemirror/djangocodemirror.js')
+    DJANGOCODEMIRROR_FILEPATH_CSS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CSS', 'djangocodemirror/djangocodemirror.css')
+else:
+    DJANGOCODEMIRROR_FILEPATH_LIB = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_LIB', 'djangocodemirror/djangocodemirror.min.js')
+    DJANGOCODEMIRROR_FILEPATH_CSS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CSS', 'djangocodemirror/djangocodemirror.min.css')
 DJANGOCODEMIRROR_FILEPATH_TRANSLATION = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_TRANSLATION', 'djangocodemirror/djangocodemirror.translation.js')
-DJANGOCODEMIRROR_FILEPATH_CSS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CSS', 'djangocodemirror/djangocodemirror.min.css')
 DJANGOCODEMIRROR_FILEPATH_BUTTONS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_BUTTONS', 'djangocodemirror/buttons.js')
 DJANGOCODEMIRROR_FILEPATH_METHODS = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_METHODS', 'djangocodemirror/syntax_methods.js')
 DJANGOCODEMIRROR_FILEPATH_CONSOLE = getattr(settings, 'DJANGOCODEMIRROR_FILEPATH_CONSOLE', 'djangocodemirror/qtip_console.js')

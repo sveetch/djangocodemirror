@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# To minify some static files
+# To minify some static files, require : yui-compressor
 
 set -e
 
