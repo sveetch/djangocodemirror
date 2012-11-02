@@ -15,7 +15,7 @@ THEME_CHOICES = [(v.split('/')[-1].split('.')[0], k) for k,v in settings_local.C
 
 # Try import for parser
 try:
-    from sveedocuments.parser import SourceReporter, map_parsing_errors
+    from rstview.parser import SourceReporter, map_parsing_errors
 except ImportError:
     # Dummy fallback
     def map_parsing_errors(error, *args, **kwargs):

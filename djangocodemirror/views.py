@@ -16,7 +16,7 @@ from djangocodemirror.forms import DjangoCodeMirrorSampleForm, DjangoCodeMirrorS
 from djangocodemirror.fields import CodeMirrorField, DjangoCodeMirrorField
 
 try:
-    from sveedocuments.parser import SourceParser
+    from rstview.parser import SourceParser
 except ImportError:
     # Dummy fallback
     def SourceParser(source, *args, **kwargs):
