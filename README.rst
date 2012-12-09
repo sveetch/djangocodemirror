@@ -181,6 +181,12 @@ The plugin use some additional libraries (allready shipped) :
 .. NOTE:: If you directly use the plugin, you will have to load yourself all needed 
           libaries, see `Fields medias`_ for a details of these.
 
+.. WARNING:: Previous versions (<0.7.2) was automatically loading the Javascript init 
+             for the field. This is not the default behavior anymore. You should see the 
+             ``embed_settings`` widget attribute to enable this behavior. Else you will 
+             use the default behavior and manually load the needed Javascript using the 
+             given `Template tags`_.
+
 CodeMirrorWidget
 ****************
 
@@ -205,6 +211,8 @@ The widget accept two additional arguments :
 * ``codemirror_only`` A *boolean* to disable the `DjangoCodeMirror`_ usage at benefit of 
   `CodeMirror`_. It is ``False`` by default;
 * ``codemirror_attrs`` : A *dict* to define the editor settings. It is empty by default.
+* ``embed_settings`` : A *boolean* to disable automatic embedding of Javascript settings 
+  in the widget HTML, you will have to load it manually (using the given template tags);
 
 Another example where the ``content`` field will be a `CodeMirror`_ editor with enabled 
 line numbers :
@@ -395,6 +403,23 @@ QTIP_FILEPATH_LIB
     The JavaScript core library of `qTip2`_.
 QTIP_FILEPATH_CSS
     The CSS file of `qTip2`_.
+
+Template tags
+=============
+
+You will need to load the template tags module in your templates like this : ::
+
+    {% load djangocodemirror_inputs %}
+
+Filters
+*******
+
+djangocodemirror_input_settings
+    Get the generated widget settings and return it as JSON. It take the form field as required argument like this : ::
+    
+        {{ form.content|djangocodemirror_input_settings }}
+djangocodemirror_init_input
+    Return the HTML tag to embed the Javascript init for a djangocodemirror input field. Take the same argument as ``djangocodemirror_input_settings``.
 
 Sample demonstration
 ====================

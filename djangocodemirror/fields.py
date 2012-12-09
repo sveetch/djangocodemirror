@@ -23,14 +23,18 @@ class CodeMirrorWidget(forms.Textarea):
       or DjangoCodeMirror);
     * ``codemirror_only`` to disable DjangoCodeMirror and use directly CodeMirror. By 
       default DjangoCodeMirror is always used.
+    * ``embed_settings`` to disable embedding of Javascript settings in the widget HTML, 
+      you will have to load them manually;
     
     Recoit le même argument optionnel ``attr`` que le widget ``forms.Textarea`` plus un 
     autre argument optionnel ``codemirror_attrs`` qui est un dictionnaire des options 
     de l'instance CodeMirror
     """
-    def __init__(self, attrs=None, codemirror_attrs=None, codemirror_only=False):
+    def __init__(self, attrs=None, codemirror_attrs=None, codemirror_only=False, embed_settings=False):
         self.codemirror_attrs = codemirror_attrs or {}
         self.codemirror_only = codemirror_only
+        self.embed_settings = embed_settings
+        self._codemirror_final_settings_cache = None
         default_attrs = {'cols': '40', 'rows': '10'}
         if attrs:
             default_attrs.update(attrs)
@@ -42,7 +46,9 @@ class CodeMirrorWidget(forms.Textarea):
         assert 'id' in final_attrs, "CodeMirror widget attributes must contain 'id'"
         
         html = [u'<textarea%s>%s</textarea>' % (flatatt(final_attrs), escape(value))]
-        html.append(self._get_codemirror_settings(final_attrs))
+        self._codemirror_final_settings_cache = self._get_codemirror_settings(final_attrs)
+        if self.embed_settings:
+            html.append(self._codemirror_final_settings_cache)
         return mark_safe(u'\n'.join(html))
 
     def _get_codemirror_settings(self, final_attrs):
@@ -50,7 +56,9 @@ class CodeMirrorWidget(forms.Textarea):
         html = settings_local.DJANGOCODEMIRROR_FIELD_INIT_JS
         if self.codemirror_only:
             html = settings_local.CODEMIRROR_FIELD_INIT_JS
-        return html.format(inputid=final_attrs['id'], settings=json.dumps(settings))
+        if self.embed_settings:
+            return html.format(inputid=final_attrs['id'], settings=json.dumps(settings))
+        return settings
 
     def _reverse_setting_urls(self, settings):
         """
