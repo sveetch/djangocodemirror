@@ -11,6 +11,8 @@ from django.http import HttpResponse
 from django.utils.translation import ugettext
 from django.conf import settings
 
+from rstview import local_settings as rstview_local_settings
+
 from djangocodemirror import settings_local
 from djangocodemirror.forms import DjangoCodeMirrorSampleForm, DjangoCodeMirrorSettingsForm
 from djangocodemirror.fields import CodeMirrorField, DjangoCodeMirrorField
@@ -30,8 +32,8 @@ class SampleView(TemplateView):
     template_name = "djangocodemirror/sample.html"
     
     def get(self, request, *args, **kwargs):
-        path_root = os.path.abspath(os.path.dirname(settings_local.__file__))
-        f = open(os.path.join(path_root, "../README.rst"))
+        path_root = os.path.abspath(os.path.dirname(rstview_local_settings.__file__))
+        f = open(os.path.join(path_root, "rst_sample.rst"))
         content = f.read()
         f.close()
         

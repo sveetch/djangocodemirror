@@ -23,6 +23,9 @@ setup(
         'Topic :: Text Editors :: Text Processing',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
+    install_requires=[
+        'rstview',
+    ],
     include_package_data=True,
     zip_safe=False
 )
