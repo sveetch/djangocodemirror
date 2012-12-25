@@ -5,8 +5,8 @@ App default settings
 from django.conf import settings
 
 # HTML Code to insert for instanciate CodeMirror with a field
-DJANGOCODEMIRROR_FIELD_INIT_JS = getattr(settings, 'DJANGOCODEMIRROR_FIELD_INIT_JS', u"""<script language="JavaScript" type="text/javascript">//<![CDATA[\n$(document).ready(function() {{ {inputid}_codemirror_instance = $('#{inputid}').djangocodemirror({settings}); }});\n//]]></script>""")
-CODEMIRROR_FIELD_INIT_JS = getattr(settings, 'CODEMIRROR_FIELD_INIT_JS', u"""<script language="JavaScript" type="text/javascript">//<![CDATA[\n{inputid}_codemirror_instance = CodeMirror.fromTextArea(document.getElementById('{inputid}'), {settings});\n//]]></script>""")
+DJANGOCODEMIRROR_FIELD_INIT_JS = getattr(settings, 'DJANGOCODEMIRROR_FIELD_INIT_JS', u"""<script type="text/javascript">//<![CDATA[\n$(document).ready(function() {{ {inputid}_codemirror_instance = $('#{inputid}').djangocodemirror({settings}); }});\n//]]></script>""")
+CODEMIRROR_FIELD_INIT_JS = getattr(settings, 'CODEMIRROR_FIELD_INIT_JS', u"""<script type="text/javascript">//<![CDATA[\n{inputid}_codemirror_instance = CodeMirror.fromTextArea(document.getElementById('{inputid}'), {settings});\n//]]></script>""")
 
 DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME = getattr(settings, 'DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME', "djangocodemirror_user_settings")
 DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE = getattr(settings, 'SESSION_COOKIE_AGE', (60 * 60 * 24 * 7 * 8))

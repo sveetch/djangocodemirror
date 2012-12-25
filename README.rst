@@ -1,7 +1,7 @@
 .. _CodeMirror: http://codemirror.net/
 .. _CodeMirror Documentation: http://codemirror.net/doc/manual.html
 .. _jQuery: http://jquery.com/
-.. _jQuery.axax(): http://api.jquery.com/jQuery.ajax/
+.. _jQuery.ajax(): http://api.jquery.com/jQuery.ajax/
 .. _Django CSRF: https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 .. _Django staticfiles: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/
 .. _Django internationalization system: https://docs.djangoproject.com/en/dev/topics/i18n/
@@ -46,14 +46,11 @@ Your project will have to includes a copy of these Javascript libraries :
 Install
 =======
 
-Getting CodeMirror
-******************
+The easiest method to install it, is with ``pip`` like this : ::
 
-`CodeMirror`_ is included as a git submodule, so you can install it from Github. Within the root of the **Django-CodeMirror** repository do this : ::
+    pip install djangocodemirror
 
-    git submodule update --init
-
-This is optionnal, if you want you can download it and install it yourself.
+Or installing it like you want from the Github repository.
 
 Settings
 ********
@@ -71,6 +68,17 @@ In your *settings* file add the app to your installed apps :
 And you will need to have a copy of `CodeMirror`_ in your *statics* directory (see 
 `Django staticfiles`_). The jQuery library must be called by your templates, 
 **Django-CodeMirror** don't do it for you.
+
+Getting CodeMirror
+******************
+
+`CodeMirror`_ is included as a git submodule, so you can install it from Github. Within the root of the **Django-CodeMirror** repository do this : ::
+
+    git submodule update --init
+
+This is optionnal, if you want you can download it and install it yourself.
+
+If you have used ``pip`` to install **Django-CodeMirror**, you don't have to mind about this as `CodeMirror`_ is allready shipped in the PyPi package.
 
 Usage
 =====
@@ -122,9 +130,9 @@ csrf
     The function have two required arguments :
     
     * xhr : the `jQuery`_ XMLHTTPRequest to be modified;
-    * settings : the settings object used with `jQuery.axax()`_.
+    * settings : the settings object used with `jQuery.ajax()`_.
     
-    You should see the option ``beforeSend`` of `jQuery.axax()`_ for more details, this 
+    You should see the option ``beforeSend`` of `jQuery.ajax()`_ for more details, this 
     is where the csrf function is really used.
 display_cursor_position
     At ``True`` it enable the display of current line and column in the bottom right of 
@@ -181,6 +189,12 @@ The plugin use some additional libraries (allready shipped) :
 .. NOTE:: If you directly use the plugin, you will have to load yourself all needed 
           libaries, see `Fields medias`_ for a details of these.
 
+.. WARNING:: Previous versions (<0.7.2) was automatically loading the Javascript init 
+             for the field. This is not the default behavior anymore. You should see the 
+             ``embed_settings`` widget attribute to enable this behavior. Else you will 
+             use the default behavior and manually load the needed Javascript using the 
+             given `Template tags`_.
+
 CodeMirrorWidget
 ****************
 
@@ -205,6 +219,11 @@ The widget accept two additional arguments :
 * ``codemirror_only`` A *boolean* to disable the `DjangoCodeMirror`_ usage at benefit of 
   `CodeMirror`_. It is ``False`` by default;
 * ``codemirror_attrs`` : A *dict* to define the editor settings. It is empty by default.
+* ``embed_settings`` : A *boolean* to active the automatic embed of the needed 
+  Javascript code to launch a CodeMirror instance for the field. This is ``False`` 
+  by default because there is lots of possible scenarios to manage your assets and 
+  Javascript code. So if you active this, DjangoCodeMirror assets must be loaded 
+  BEFORE your field appear in the HTML code;
 
 Another example where the ``content`` field will be a `CodeMirror`_ editor with enabled 
 line numbers :
@@ -384,7 +403,7 @@ DJANGOCODEMIRROR_FILEPATH_METHODS
     with the syntax buttons. If you add some new button in your own button bar, you have 
     to make your own methods file too.
 DJANGOCODEMIRROR_FILEPATH_CONSOLE
-	The Javascript componant of `DjangoCodeMirror`_ which define the usage of qTip.
+        The Javascript componant of `DjangoCodeMirror`_ which define the usage of qTip.
 DJANGOCODEMIRROR_FILEPATH_CSRF
     The Javascript componant of `DjangoCodeMirror`_ used in the editor requests (preview 
     or quicksave) to apply `Django CSRF`_.
@@ -395,6 +414,23 @@ QTIP_FILEPATH_LIB
     The JavaScript core library of `qTip2`_.
 QTIP_FILEPATH_CSS
     The CSS file of `qTip2`_.
+
+Template tags
+=============
+
+You will need to load the template tags module in your templates like this : ::
+
+    {% load djangocodemirror_inputs %}
+
+Filters
+*******
+
+djangocodemirror_input_settings
+    Get the generated widget settings and return it as JSON. It take the form field as required argument like this : ::
+    
+        {{ form.content|djangocodemirror_input_settings }}
+djangocodemirror_init_input
+    Return the HTML tag to embed the Javascript init for a djangocodemirror input field. Take the same argument as ``djangocodemirror_input_settings``.
 
 Sample demonstration
 ====================
