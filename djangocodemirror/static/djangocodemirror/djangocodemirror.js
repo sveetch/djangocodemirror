@@ -116,7 +116,7 @@ var methods = {
                 "Tab": "indentMore", 
                 "Shift-Tab": "indentLess",
                 // Quicksave keybind should be done along with the rest of buttons, not here
-                "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
+                "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); },
                 "Cmd-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
             });
             
