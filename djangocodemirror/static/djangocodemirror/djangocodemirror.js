@@ -83,7 +83,7 @@ var methods = {
                 }
             }
             
-            var input_source = $(this), // allway the input source from where is created djangocodemirror
+            var input_source = $(this), // this is allways the input source from where is created djangocodemirror
                 djangocodemirror_key = "djangocodemirror-id-" + (input_source.attr('id')||'default'), // djangocodemirror instance ID
                 container = $("<div class=\"DjangoCodeMirror\"></div>"),
                 header = $("<div class=\"DjangoCodeMirror_menu\"><ul></ul><div class=\"cale\"></div></div>"),
@@ -109,21 +109,22 @@ var methods = {
                 }
             }
             
-            // Update settings to append the cursor activy function
-            settings["onCursorActivity"] = function() { events.cursor_activity(input_source) };
-            
             // Build CodeMirror
             var codemirror_instance = CodeMirror.fromTextArea(this, settings);
-            // Force options in codemirror that it doesn't know of
+            // Force some certain key biding
             codemirror_instance.setOption('extraKeys', {
                 "Tab": "indentMore", 
                 "Shift-Tab": "indentLess",
-                // WARNING: Ctrl/Cmd prefix should be determined from the enabled default 
-                //       keymap (because on MacOS it should be Cmd and not Ctrl)
+                // Quicksave keybind should be done along with the rest of buttons, not here
                 "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
-                // NOTE: Here should be defined syntax button keybinding from there key attribute
+                "Cmd-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
             });
             
+            // Enable the cursor activy function
+            codemirror_instance.on("cursorActivity", function(cm) {
+                events.cursor_activity(input_source);
+            });
+
             // Attach element's data
             input_source.data("djangocodemirror", {
                 "key" : djangocodemirror_key,
@@ -153,7 +154,7 @@ var methods = {
             
             // Default active line
             if(settings.enable_active_line){
-                input_source.data("codemirror_hlLine", codemirror_instance.setLineClass(0, "activeline"));
+                input_source.data("codemirror_hlLine", codemirror_instance.addLineClass(0, "background", "activeline"));
             }
             
             // Refresh update of CodeMirror
@@ -214,8 +215,7 @@ var events = {
             cur = instance_data.codemirror.getCursor();
         // Reset previous highlighted lines
         if(instance_data.settings.enable_active_line){
-            var hlLine = input_source.data("codemirror_hlLine");
-            instance_data.codemirror.setLineClass(hlLine, null);
+            instance_data.codemirror.removeLineClass(input_source.data("codemirror_hlLine"), "background", "activeline");
         }
         // Update column and row counters
         $(".DjangoCodeMirror_tabs .cursor_pos span.line", instance_data.container).html((cur.line+1));
@@ -234,7 +234,7 @@ var events = {
         }
         // Update the highlight
         if(instance_data.settings.enable_active_line){
-            input_source.data("codemirror_hlLine", instance_data.codemirror.setLineClass(cur.line, "activeline"));
+            input_source.data("codemirror_hlLine", instance_data.codemirror.addLineClass(cur.line, "background", "activeline"));
         }
     },
     /*
