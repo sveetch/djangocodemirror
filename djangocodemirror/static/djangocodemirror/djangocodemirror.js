@@ -328,7 +328,7 @@ var events = {
         var old_place_scene = $('<div>').attr('id', "DjangoCodeMirror_old_place");
         
         // Save initial editor size to restore after exiting the maximized mode
-        $(".CodeMirror-scroll", instance_data.container).data('original_size', $(".CodeMirror-scroll", instance_data.container).height());
+        $(".CodeMirror", instance_data.container).data('original_size', $(".CodeMirror", instance_data.container).height());
         
         // Catch and use the ESC key to exit from the maximized mode
         $(scene).keydown( function(e){
@@ -351,7 +351,7 @@ var events = {
         scene.css(elems_css[0]).attr('id', "DjangoCodeMirror_fullscreen_scene");
         instance_data.container.css("width", "100%");
         // Met la hauteur de CodeMirror à la dimension qui lui est disponible
-        $(".CodeMirror-scroll", instance_data.container).css(elems_css[1]);
+        $(".CodeMirror", instance_data.container).css(elems_css[1]);
         events.hide_preview(event);
         // Recalcul auto de CodeMirror
         instance_data.codemirror.refresh();
@@ -383,9 +383,9 @@ var events = {
         
         // Restitue les dimensions originals
         instance_data.container.css("width", '');
-        $(".CodeMirror-scroll", instance_data.container).css(
+        $(".CodeMirror", instance_data.container).css(
             "height",
-            $(".CodeMirror-scroll", instance_data.container).data('original_size') + "px"
+            $(".CodeMirror", instance_data.container).data('original_size') + "px"
         );
         events.hide_preview(event);
         $(window).unbind("resize.djc_maximize");
@@ -396,7 +396,7 @@ var events = {
             instance_data = input_source.data("djangocodemirror"),
             elems_css = coreutils.get_fullscreen_sizes(input_source);
         $("#DjangoCodeMirror_fullscreen_scene").css(elems_css[0]);
-        $(".CodeMirror-scroll", instance_data.container).css(elems_css[1]);
+        $(".CodeMirror", instance_data.container).css(elems_css[1]);
         instance_data.codemirror.refresh();
     },
     
@@ -515,7 +515,7 @@ var events = {
             instance_data = input_source.data("djangocodemirror"),
             preview_id = instance_data.container.data("DCM_preview_markid"),
             elems_css = coreutils.get_preview_sizes(input_source),
-            editor_container = $(".CodeMirror-scroll", instance_data.container);
+            editor_container = $(".CodeMirror", instance_data.container);
         $("#"+preview_id).css(elems_css[0]);
         $("#"+preview_id+" .PreviewContent").css(elems_css[1]);
         instance_data.codemirror.refresh();
@@ -692,18 +692,21 @@ var coreutils = {
     */
     get_preview_sizes: function(input_source) {
         var instance_data = input_source.data("djangocodemirror"),
-            editor_container = $(".CodeMirror-scroll", instance_data.container),
+            editor_container = $(".CodeMirror", instance_data.container),
             editor_scrollbar = $(".CodeMirror-scrollbar", instance_data.container),
             menu_height = $(".DjangoCodeMirror_menu", instance_data.container).outerHeight(true),
-            scrollbar_plus = (editor_scrollbar.css('display') == 'block') ? editor_scrollbar.outerWidth() : 0;
+            // TODO: These ones is for a dirty little hack on the top position, this should be 
+            //       a better way, at least more flexible
+            fullscreen_enabled = ($("#DjangoCodeMirror_fullscreen_scene").length>0) ? true : false,
+            pos_top_border = (fullscreen_enabled) ? 0 : 1;
         
         var scene_css = {
             'position': "absolute",
             'z-index': 3000,
             'left': editor_container.offset().left,
-            'top': editor_container.offset().top-menu_height,
-            'width': (editor_container.outerWidth()+scrollbar_plus)-(instance_data.settings.preview_padding*2)-(instance_data.settings.preview_borders*2),
-            'height': editor_container.outerHeight()-(instance_data.settings.preview_padding*2)+menu_height-(instance_data.settings.preview_borders*2),
+            'top': editor_container.offset().top-menu_height+pos_top_border,
+            'width': editor_container.outerWidth()-(instance_data.settings.preview_borders*2),
+            'height': editor_container.outerHeight()+menu_height-(instance_data.settings.preview_borders*2),
             'overflow': 'auto',
             'padding': instance_data.settings.preview_padding
         };
