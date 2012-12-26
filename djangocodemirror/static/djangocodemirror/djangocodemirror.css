@@ -245,8 +245,9 @@ hr,
     Pour le panneau de paramètres éditables
 */
 .DjangoCodeMirror_settings_panel{
-/*     border: 1px solid #d0d0d0; */
+    /*border: 1px solid #d0d0d0;*/
     background-color:#ffffff;
+    /*background-color:gold;*/
     border-radius: 5px;
 }
 #DjangoCodeMirror_fullscreen_scene .DjangoCodeMirror_settings_panel{
@@ -277,7 +278,7 @@ hr,
     margin: 0;
     padding: 6px;
     font-size:16px;
-    height:20px;
+    height:32px;
     color:#7f7f7f;
     text-shadow:#9f9f9f 1px 1px 2px;
     background: #ffffff;
@@ -292,8 +293,19 @@ hr,
     border-bottom: 1px solid #e0e0e0;
     border-radius: 5px 5px 0 0;
 }
+.DjangoCodeMirror_settings_panel form{
+    margin: 0;
+}
 .DjangoCodeMirror_settings_panel form input.submit{
-    margin-bottom:1em;
+    padding-bottom:1em;
+}
+.DjangoCodeMirror_settings_panel form fieldset{
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+.DjangoCodeMirror_settings_panel form fieldset legend{
+    background: transparent;
 }
 
 /*______________________________________

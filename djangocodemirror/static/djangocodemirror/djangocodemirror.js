@@ -598,10 +598,11 @@ var events = {
         return false;
     },
     resize_settings: function(event) {
+        // Far from perfect, essentially because the borders are not really computed
         var input_source = $(event.data.input_source),
             instance_data = input_source.data("djangocodemirror");
             panel = $(event.data.panel),
-            borders = 0;
+            borders = 2;
         panel.css({
             "width": (instance_data.container.outerWidth()-borders)+"px",
             "height": (instance_data.container.outerHeight()-borders)+"px"
@@ -695,8 +696,8 @@ var coreutils = {
             editor_container = $(".CodeMirror", instance_data.container),
             editor_scrollbar = $(".CodeMirror-scrollbar", instance_data.container),
             menu_height = $(".DjangoCodeMirror_menu", instance_data.container).outerHeight(true),
-            // TODO: These ones is for a dirty little hack on the top position, this should be 
-            //       a better way, at least more flexible
+            // TODO: These ones are for a dirty little hack on the top position, there should be 
+            //       a better way, at least a more flexible
             fullscreen_enabled = ($("#DjangoCodeMirror_fullscreen_scene").length>0) ? true : false,
             pos_top_border = (fullscreen_enabled) ? 0 : 1;
         

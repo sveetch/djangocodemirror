@@ -25,6 +25,8 @@ plugin on top of `CodeMirror`_ to add some features like :
 * Support translations with english and french allready shipped;
 * Compatibility with `Django CSRF`_.
 
+**NOTE :** Since the version 3.0, CodeMirror does not really support IE7 and so Django-CodeMirror too.
+
 Links
 *****
 

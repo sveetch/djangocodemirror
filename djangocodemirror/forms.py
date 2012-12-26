@@ -70,7 +70,8 @@ class DjangoCodeMirrorSettingsForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         self.helper = get_form_helper()
-        self.helper.form_action = reverse('djangocodemirror-settings')
+        if self.helper:
+            self.helper.form_action = reverse('djangocodemirror-settings')
         
         super(DjangoCodeMirrorSettingsForm, self).__init__(*args, **kwargs)
     

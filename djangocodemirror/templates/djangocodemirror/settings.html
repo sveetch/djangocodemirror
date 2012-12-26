@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{% trans "Your settings" %} </h2>
+    <h3>{% trans "Your settings" %} </h3>
     {% if save_success %}<p>Your settings has been saved.</p>{% endif %}
     {% include "djangocodemirror/include_settings_form.html" %}
 {% endblock %}
