@@ -622,11 +622,11 @@ var coreutils = {
     * This is where buttons should be deleted or modified from defined settings
     */
     buttons_preprocessing: function(settings, buttons) {
-        // Available buttons indexation on classname
+        // Available buttons indexation on id
         var button_indexes = {};
         $.each(buttons, function(item_index, item_value) {
             if(!item_value.separator){
-                button_indexes[item_value.classname] = item_index;
+                button_indexes[item_value.id] = item_index;
             }
         });
         // Delete button from registry if option is disabled
