@@ -269,8 +269,8 @@ hr,
     Pour la prévisualisation
 */
 .DjangoCodeMirrorPreviewScene{
-    border:0;
-    background-color:#ffffff;
+    border: 0;
+    background-color: #ffffff;
     border-radius: 5px 5px 0 0;
 }
 
@@ -278,20 +278,16 @@ hr,
     Pour le panneau de paramètres éditables
 */
 .DjangoCodeMirror_settings_panel{
-    /*border: 1px solid #d0d0d0;*/
-    background-color:#ffffff;
-    /*background-color:gold;*/
+    background-color: #ffffff;
     border-radius: 5px;
     
     a.close {
         display: block;
-        width: 22px;
-        height: 22px;
-        text-indent:-10000px;
-        background: #ededed;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-image: url('images/cross.png');
+        width: 16px;
+        height: 16px;
+        text-indent: -10000px;
+        background-color: #ededed;
+        @include djangocodemirror-icons-sprite(cross);
         cursor: pointer;
         position: absolute;
         top: 5px;
@@ -308,9 +304,9 @@ hr,
         margin: 0;
         padding: 6px;
         font-size:16px;
-        height:32px;
-        color:#7f7f7f;
-        text-shadow:#9f9f9f 1px 1px 2px;
+        height: 32px;
+        color: #7f7f7f;
+        text-shadow: #9f9f9f 1px 1px 2px;
         background: #ffffff;
         background: -moz-linear-gradient(top,  #ffffff 0%, #f3f3f3 41%, #ededed 100%);
         background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(41%,#f3f3f3), color-stop(100%,#ededed));
@@ -328,7 +324,7 @@ hr,
         margin: 0;
         
         input.submit{
-            padding-bottom:1em;
+            padding-bottom: 1em;
         }
         
         fieldset{
@@ -343,8 +339,8 @@ hr,
 }
 
 #DjangoCodeMirror_fullscreen_scene .DjangoCodeMirror_settings_panel{
-    border:0;
-    border-radius:0;
+    border: 0;
+    border-radius: 0;
 }
 
 /*______________________________________

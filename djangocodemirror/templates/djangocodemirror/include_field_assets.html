@@ -1,0 +1,48 @@
+{% comment %}//
+// CSS Assets
+//{% endcomment %}
+{% if not codemirror_only %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/djangocodemirror.css">
+{% else %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}CodeMirror/lib/codemirror.css">
+{% endif %}
+
+<link rel="stylesheet" href="{{ STATIC_URL }}jquery/plugins/qtip/jquery.qtip.min.css">
+
+{% for item in themes %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}{{ item }}">
+{% endfor %}
+
+{% comment %}//
+// Javascript Assets
+//{% endcomment %}
+<script type="text/javascript" src="{{ STATIC_URL }}CodeMirror/lib/codemirror.js"></script>
+
+{% if search_enabled %}
+    <script type="text/javascript" src="{{ STATIC_URL }}CodeMirror/lib/util/dialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}CodeMirror/lib/util/search.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}CodeMirror/lib/util/searchcursor.js"></script>
+{% endif %}
+
+{% for item in modes %}
+    <script type="text/javascript" src="{{ STATIC_URL }}{{ item }}"></script>
+{% endfor %}
+
+{% if not codemirror_only %}
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery/plugins/jquery.cookies.2.2.0.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/djangocodemirror.translation.js"></script>
+    {% for item in translations %}
+        <script type="text/javascript" src="{{ STATIC_URL }}{{ item }}"></script>
+    {% endfor %}
+
+    <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/buttons.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/syntax_methods.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/djangocodemirror.js"></script>
+
+    {% if csrf_enabled %}
+        <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/csrf.js"></script>
+    {% endif %}
+
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery/plugins/qtip/jquery.qtip.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/qtip_console.js"></script>
+{% endif %}

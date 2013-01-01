@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-{% load i18n djangocodemirror_inputs %}
+{% load i18n djangocodemirror_inputs djangocodemirror_assets %}
 
 {% comment %}Translators: Demonstration page title{% endcomment %}
 {% block head_title %}{% trans "DjangoCodeMirror sample" %}{% endblock %}
 {% block head_more_js %}{{ block.super }} 
     {% get_current_language as LANGUAGE_CODE %}
-    {{ form.media }}
+    {% comment %}{% include "djangocodemirror/include_field_assets.html" %}{% endcomment %}
+    {% djangocodemirror_get_assets "djangocodemirror/include_field_assets.html" form.content %}
     <script type="text/javascript">
     //<![CDATA[
     DCM_lang = "{{ LANGUAGE_CODE }}";

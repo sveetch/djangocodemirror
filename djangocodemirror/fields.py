@@ -41,6 +41,16 @@ class CodeMirrorWidget(forms.Textarea):
             default_attrs.update(attrs)
             
         super(CodeMirrorWidget, self).__init__(default_attrs)
+        
+        self.public_opts()
+
+    def public_opts(self):
+        self.opt_csrf_method_name = self.codemirror_attrs.get('csrf', False)
+        self.opt_translations_plugins = settings_local.DJANGOCODEMIRROR_TRANSLATIONS
+        self.opt_search_enabled = self.codemirror_attrs.get('search_enabled', False)
+        self.opt_mode_syntax = None
+        if 'mode' in self.codemirror_attrs:
+            self.opt_mode_syntax = dict(settings_local.CODEMIRROR_MODES).get(self.codemirror_attrs['mode'], None)
 
     def render(self, name, value, attrs=None):
         if value is None: value = ''
@@ -84,49 +94,22 @@ class CodeMirrorWidget(forms.Textarea):
                 field_settings[name] = reverse(urlname, args=args, kwargs=kwargs)
         return field_settings
     
-    def _media(self):
-        """
-        Adds necessary files (Js/CSS) to the widget's medias
-        """
-        css_items = [settings_local.CODEMIRROR_FILEPATH_CSS, settings_local.QTIP_FILEPATH_CSS]+[item[1] for item in settings_local.CODEMIRROR_THEMES]
-        js_items = [settings_local.CODEMIRROR_FILEPATH_LIB]
-        # Libs for search&replace
-        if self.codemirror_attrs.get('search_enabled', False):
-            js_items.append(settings_local.CODEMIRROR_FILEPATH_DIALOG_LIB)
-            css_items.append(settings_local.CODEMIRROR_FILEPATH_DIALOG_CSS)
-            js_items.append(settings_local.CODEMIRROR_FILEPATH_SEARCH_LIB)
-            js_items.append(settings_local.CODEMIRROR_FILEPATH_SEARCHCURSOR_LIB)
-        # Set CodeMirror 'mode' js media only if 'mode' has been defined
-        # Use the 'mode' name as a key in the settings registry
-        if 'mode' in self.codemirror_attrs:
-            mode = dict(settings_local.CODEMIRROR_MODES).get(self.codemirror_attrs['mode'], None)
-            if mode:
-                js_items.append(mode)
-        # DjangoCodeMirror files if enabled
-        # DJANGOCODEMIRROR_FILEPATH_TRANSLATION, DJANGOCODEMIRROR_TRANSLATIONS,
-        if not self.codemirror_only:
-            css_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CSS)
-            # DjangoCodeMirror must be instanciated AFTER CodeMirror
-            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_TRANSLATION)
-            for lang in settings_local.DJANGOCODEMIRROR_TRANSLATIONS:
-                js_items.append(lang)
-            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_BUTTONS)
-            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_METHODS)
-            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_LIB)
-            js_items.append(settings_local.QTIP_FILEPATH_LIB)
-            js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CONSOLE)
-            # Use CSRF lib only if setted and used
-            if settings_local.DJANGOCODEMIRROR_FILEPATH_CSRF and self.codemirror_attrs.get('csrf', False):
-                js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_CSRF)
-            # Adds Jquery Cookies plugin only if setted
-            if settings_local.DJANGOCODEMIRROR_FILEPATH_COOKIES:
-                js_items.append(settings_local.DJANGOCODEMIRROR_FILEPATH_COOKIES)
+    #def _media(self):
+        #"""
+        #Adds necessary files (Js/CSS) to the widget's medias
         
-        return forms.Media(
-            css={'all': tuple(css_items)},
-            js=tuple(js_items),
-        )
-    media = property(_media)
+        #NOTE: This has been deprecated in favor of a template tag, a more flexible solution
+              #But this method should be redone with the same technic that the template 
+              #tag, because without this the editor can not be used in the Admin anymore.
+        #"""
+        #css_items = [settings_local.CODEMIRROR_FILEPATH_CSS, settings_local.QTIP_FILEPATH_CSS]+[item[1] for item in settings_local.CODEMIRROR_THEMES]
+        #js_items = [settings_local.CODEMIRROR_FILEPATH_LIB]
+        
+        #return forms.Media(
+            #css={'all': tuple(css_items)},
+            #js=tuple(js_items),
+        #)
+    #media = property(_media)
 
 class CodeMirrorField(forms.CharField):
     """
@@ -142,6 +125,7 @@ class CodeMirrorField(forms.CharField):
         
         self.widget.codemirror_attrs.update(codemirror_attrs or {})
         self.widget.codemirror_only = True
+        self.widget.public_opts()
 
 class DjangoCodeMirrorField(forms.CharField):
     """
@@ -157,3 +141,4 @@ class DjangoCodeMirrorField(forms.CharField):
         
         self.widget.codemirror_attrs.update(codemirror_attrs or {})
         self.widget.codemirror_only = False
+        self.widget.public_opts()

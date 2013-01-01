@@ -478,7 +478,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 /* line 266, djangocodemirror-icons/*.png */
-.djangocodemirror-icons-sprite, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-fullscreen_enter a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-fullscreen_exit a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-disk a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_undo a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_undo_disabled a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_redo a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_redo_disabled a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-h1 a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-h2 a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-h3 a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-bold a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-italic a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-text_allcaps a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-world_link a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-page_link a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-bullet_picture a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-picture a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-photo a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-list-bullet a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-list-numeric a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-quotes a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-sourcecode a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-help a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-cog_edit a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_undo.inactive a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_undo.active a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_redo.inactive a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_redo.active a {
+.djangocodemirror-icons-sprite, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-fullscreen_enter a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-fullscreen_exit a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-disk a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_undo a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_undo_disabled a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_redo a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_redo_disabled a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-h1 a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-h2 a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-h3 a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-bold a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-italic a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-text_allcaps a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-world_link a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-page_link a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-bullet_picture a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-picture a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-photo a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-list-bullet a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-list-numeric a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-quotes a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-sourcecode a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-help a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-cog_edit a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_undo.inactive a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_undo.active a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_redo.inactive a, .DjangoCodeMirror .DjangoCodeMirror_menu ul li.dcm-icons-arrow_redo.active a, .DjangoCodeMirror_settings_panel a.close {
   background: url('../images/djangocodemirror-icons-s147c856b7c.png') no-repeat;
 }
 
@@ -810,21 +810,17 @@ hr,
 */
 /* line 280, ../scss/djangocodemirror.scss */
 .DjangoCodeMirror_settings_panel {
-  /*border: 1px solid #d0d0d0;*/
   background-color: #ffffff;
-  /*background-color:gold;*/
   border-radius: 5px;
 }
-/* line 286, ../scss/djangocodemirror.scss */
+/* line 284, ../scss/djangocodemirror.scss */
 .DjangoCodeMirror_settings_panel a.close {
   display: block;
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
   text-indent: -10000px;
-  background: #ededed;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-image: url("images/cross.png");
+  background-color: #ededed;
+  background-position: 0 -112px;
   cursor: pointer;
   position: absolute;
   top: 5px;
@@ -832,11 +828,11 @@ hr,
   border-radius: 3px;
   border: 1px solid #dfdfdf;
 }
-/* line 302, ../scss/djangocodemirror.scss */
+/* line 298, ../scss/djangocodemirror.scss */
 .DjangoCodeMirror_settings_panel a.close:hover {
   background-color: #ffffff;
 }
-/* line 307, ../scss/djangocodemirror.scss */
+/* line 303, ../scss/djangocodemirror.scss */
 .DjangoCodeMirror_settings_panel h2 {
   margin: 0;
   padding: 6px;
@@ -856,26 +852,26 @@ hr,
   border-bottom: 1px solid #e0e0e0;
   border-radius: 5px 5px 0 0;
 }
-/* line 327, ../scss/djangocodemirror.scss */
+/* line 323, ../scss/djangocodemirror.scss */
 .DjangoCodeMirror_settings_panel form {
   margin: 0;
 }
-/* line 330, ../scss/djangocodemirror.scss */
+/* line 326, ../scss/djangocodemirror.scss */
 .DjangoCodeMirror_settings_panel form input.submit {
   padding-bottom: 1em;
 }
-/* line 334, ../scss/djangocodemirror.scss */
+/* line 330, ../scss/djangocodemirror.scss */
 .DjangoCodeMirror_settings_panel form fieldset {
   background: transparent;
   border: 0;
   box-shadow: none;
 }
-/* line 338, ../scss/djangocodemirror.scss */
+/* line 334, ../scss/djangocodemirror.scss */
 .DjangoCodeMirror_settings_panel form fieldset legend {
   background: transparent;
 }
 
-/* line 345, ../scss/djangocodemirror.scss */
+/* line 341, ../scss/djangocodemirror.scss */
 #DjangoCodeMirror_fullscreen_scene .DjangoCodeMirror_settings_panel {
   border: 0;
   border-radius: 0;
@@ -884,12 +880,12 @@ hr,
 /*____________________________________
     Pour la démo
 */
-/* line 379, ../scss/djangocodemirror.scss */
+/* line 375, ../scss/djangocodemirror.scss */
 #sample {
   margin: auto;
   width: 800px;
 }
-/* line 383, ../scss/djangocodemirror.scss */
+/* line 379, ../scss/djangocodemirror.scss */
 #sample .DjangoCodeMirror {
   padding: 0;
   float: none;
