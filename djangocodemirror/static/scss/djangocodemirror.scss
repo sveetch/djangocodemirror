@@ -3,6 +3,10 @@
 * Créé par David THENON en Février 2012
 */
 
+// Load CodeMirror core stylesheets
+@import "CodeMirror/codemirror";
+@import "CodeMirror/dialog";
+
 // Load icon files
 @import "djangocodemirror-icons/*.png";
 
