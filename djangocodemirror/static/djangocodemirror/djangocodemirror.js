@@ -115,6 +115,10 @@ var methods = {
             codemirror_instance.setOption('extraKeys', {
                 "Tab": "indentMore", 
                 "Shift-Tab": "indentLess",
+                
+                // TODO: this needs changes, as the buttons are not using the same CSS class anymore, 
+                // and they have now a internal id
+                
                 // Quicksave keybind should be done along with the rest of buttons, not here
                 "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); },
                 "Cmd-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
@@ -631,10 +635,10 @@ var coreutils = {
         });
         // Delete button from registry if option is disabled
         // Assume that there are two buttons followed by a separator
-        if( button_indexes['buttonFullscreenEnter'] != undefined && button_indexes['buttonFullscreenEnter'] != null){
+        if( button_indexes['FullscreenEnter'] != undefined && button_indexes['FullscreenEnter'] != null){
             if(!settings.fullscreen){
-                var pos_enter = button_indexes['buttonFullscreenEnter'];
-                var pos_exit = button_indexes['buttonFullscreenExit'];
+                var pos_enter = button_indexes['FullscreenEnter'];
+                var pos_exit = button_indexes['FullscreenExit'];
                 delete buttons[pos_enter];
                 delete buttons[pos_exit];
                 if(buttons[pos_exit+1].separator) {
@@ -643,8 +647,8 @@ var coreutils = {
             }
         }
         // Quicksave button
-        if( button_indexes['buttonQuickSave'] != undefined && button_indexes['buttonQuickSave'] != null){
-            var pos = button_indexes['buttonQuickSave'];
+        if( button_indexes['QuickSave'] != undefined && button_indexes['QuickSave'] != null){
+            var pos = button_indexes['QuickSave'];
             if(settings.quicksave_url){
                 buttons[pos].quicksave_url = settings.quicksave_url;
                 buttons[pos].quicksave_datas = settings.quicksave_datas;
@@ -658,9 +662,9 @@ var coreutils = {
         }
         // Undo/Redo buttons
         // Assume that there are two buttons followed by a separator
-        if( button_indexes['buttonUndo'] != undefined && button_indexes['buttonUndo'] != null){
-            var pos_undo = button_indexes['buttonUndo'];
-            var pos_redo = button_indexes['buttonRedo'];
+        if( button_indexes['Undo'] != undefined && button_indexes['Undo'] != null){
+            var pos_undo = button_indexes['Undo'];
+            var pos_redo = button_indexes['Redo'];
             if(!settings.undo_buttons){
                 delete buttons[pos_undo];
                 delete buttons[pos_redo];
@@ -670,8 +674,8 @@ var coreutils = {
             }
         }
         // Help link if setted
-        if( button_indexes['buttonHelp'] != undefined && button_indexes['buttonHelp'] != null){
-            var pos = button_indexes['buttonHelp'];
+        if( button_indexes['Help'] != undefined && button_indexes['Help'] != null){
+            var pos = button_indexes['Help'];
             if( settings.help_link ){
                 buttons[pos].url = settings.help_link;
             } else {
@@ -679,8 +683,8 @@ var coreutils = {
             }
         }
         // Help link if setted
-        if( button_indexes['buttonSettings'] != undefined && button_indexes['buttonSettings'] != null){
-            var pos = button_indexes['buttonSettings'];
+        if( button_indexes['Settings'] != undefined && button_indexes['Settings'] != null){
+            var pos = button_indexes['Settings'];
             if(!settings.settings_url){
                 delete buttons[pos];
             }
