@@ -59,6 +59,7 @@ var methods = {
         }, options);
         // Default button settings
         var default_button_settings = {
+            "id" : '',
             "name" : '',
             "funcname" : 'common',
             "method" : 'syntax',
@@ -84,7 +85,7 @@ var methods = {
             }
             
             var input_source = $(this), // this is allways the input source from where is created djangocodemirror
-                djangocodemirror_key = "djangocodemirror-id-" + (input_source.attr('id')||'default'), // djangocodemirror instance ID
+                instance_id = "dcm-" + (input_source.attr('id')||'default'), // djangocodemirror instance ID
                 container = $("<div class=\"DjangoCodeMirror\"></div>"),
                 header = $("<div class=\"DjangoCodeMirror_menu\"><ul></ul><div class=\"cale\"></div></div>"),
                 footer = $("<div class=\"DjangoCodeMirror_tabs\"><ul></ul><div class=\"cale\"></div></div>"),
@@ -112,6 +113,7 @@ var methods = {
             // Build CodeMirror
             var codemirror_instance = CodeMirror.fromTextArea(this, settings);
             // Force some certain key biding
+            
             codemirror_instance.setOption('extraKeys', {
                 "Tab": "indentMore", 
                 "Shift-Tab": "indentLess",
@@ -120,8 +122,8 @@ var methods = {
                 // and they have now a internal id
                 
                 // Quicksave keybind should be done along with the rest of buttons, not here
-                "Ctrl-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); },
-                "Cmd-S": function(cm){ cm.save(); $('.buttonQuickSave').trigger('click'); }
+                "Ctrl-S": function(cm){ cm.save(); $('#'+instance_id+'-QuickSave').trigger('click'); },
+                "Cmd-S": function(cm){ cm.save(); $('#'+instance_id+'-QuickSave').trigger('click'); }
             });
             
             // Enable the cursor activy function
@@ -131,7 +133,7 @@ var methods = {
 
             // Attach element's data
             input_source.data("djangocodemirror", {
-                "key" : djangocodemirror_key,
+                "instance_id" : instance_id,
                 "container" : container,
                 "codemirror" : codemirror_instance,
                 "settings": settings
@@ -192,7 +194,7 @@ var methods = {
             var input_source = $(this),
                 instance_data = input_source.data("djangocodemirror"),
                 accesskey = (button_settings.key) ? ' accesskey="'+button_settings.key+'"' : '',
-                button = $('<li class="button '+button_settings.classname+'"><a'+accesskey+' title="'+safegettext(button_settings.name)+'">'+safegettext(button_settings.name)+'</a></li>');
+                button = $('<li id="'+instance_data.instance_id+'-'+button_settings.id+'" class="button '+button_settings.classname+'"><a'+accesskey+' title="'+safegettext(button_settings.name)+'">'+safegettext(button_settings.name)+'</a></li>');
             
             button.appendTo('.DjangoCodeMirror_menu ul', instance_data.container);
             if(button_settings.method == 'internal') {
@@ -227,14 +229,14 @@ var events = {
         // Update the undo/redo buttons class from history items
         var histo = instance_data.codemirror.historySize();
         if(histo.undo>0) {
-            $(".DjangoCodeMirror_menu .buttonUndo", instance_data.container).addClass("active").removeClass("inactive");
+            $("#"+instance_data.instance_id+"-Undo").addClass("active").removeClass("inactive");
         } else {
-            $(".DjangoCodeMirror_menu .buttonUndo", instance_data.container).addClass("inactive").removeClass("active");
+            $("#"+instance_data.instance_id+"-Undo").addClass("inactive").removeClass("active");
         }
         if(histo.redo>0) {
-            $(".DjangoCodeMirror_menu .buttonRedo", instance_data.container).addClass("active").removeClass("inactive");
+            $("#"+instance_data.instance_id+"-Redo").addClass("active").removeClass("inactive");
         } else {
-            $(".DjangoCodeMirror_menu .buttonRedo", instance_data.container).addClass("inactive").removeClass("active");
+            $("#"+instance_data.instance_id+"-Redo").addClass("inactive").removeClass("active");
         }
         // Update the highlight
         if(instance_data.settings.enable_active_line){
@@ -297,18 +299,18 @@ var events = {
                 }
             },
             success: function(data) {
-                $(".DjangoCodeMirror_menu .buttonQuickSave", instance_data.container).removeClass("ready");
-                $(".DjangoCodeMirror_menu .buttonQuickSave", instance_data.container).removeClass("error");
+                $("#"+instance_data.instance_id+"-QuickSave", instance_data.container).removeClass("ready");
+                $("#"+instance_data.instance_id+"-QuickSave", instance_data.container).removeClass("error");
                 if(data['status']=='form_invalid') {
-                    $(".DjangoCodeMirror_menu .buttonQuickSave", instance_data.container).addClass("error");
+                    $("#"+instance_data.instance_id+"-QuickSave", instance_data.container).addClass("error");
                     createGrowl(instance_data.container, "warning", safegettext("Validation error"), data["errors"]["content"].join("<br/>"), false);
                 } else {
                     createGrowl(instance_data.container, "success", safegettext("Success"), safegettext("Successful save"), false);
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                $(".DjangoCodeMirror_menu .buttonQuickSave", instance_data.container).removeClass("ready");
-                $(".DjangoCodeMirror_menu .buttonQuickSave", instance_data.container).addClass("error");
+                $("#"+instance_data.instance_id+"-QuickSave", instance_data.container).removeClass("ready");
+                $("#"+instance_data.instance_id+"-QuickSave", instance_data.container).addClass("error");
                 createGrowl(instance_data.container, "warning", textStatus, errorThrown, false);
             }
         });
@@ -552,7 +554,7 @@ var events = {
             url: instance_data.settings.settings_url,
             success: function(data) {
                 instance_data.container.prepend(panel);
-                $(".DjangoCodeMirror_menu .buttonSettings", instance_data.container).removeClass("error");
+                $("#"+instance_data.instance_id+"-Settings", instance_data.container).removeClass("error");
                 panel.append(data);
                 $("form", panel).css({
                    "overflow": "auto",
@@ -567,7 +569,7 @@ var events = {
                 $(window).bind("resize.djc_settings", { "input_source": input_source, "panel": panel }, events.resize_settings);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                $(".DjangoCodeMirror_menu .buttonSettings", instance_data.container).addClass("error");
+                $("#"+instance_data.instance_id+"-Settings", instance_data.container).addClass("error");
                 createGrowl(instance_data.container, "warning", textStatus, errorThrown, false);
             }
         });

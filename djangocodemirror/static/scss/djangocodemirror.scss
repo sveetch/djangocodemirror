@@ -6,6 +6,7 @@
 // Load icon files
 @import "djangocodemirror-icons/*.png";
 
+// TODO: Remove this fucking "cale" and use a correct clearfix instead
 hr,
 .cale{
     margin:0;
@@ -20,15 +21,6 @@ hr,
 /*___________________________
     Ajustements sur CodeMirror
 */
-.CodeMirror{
-    font-size:1.1em;
-    line-height:1.1em;
-    
-    .CodeMirror-scroll{
-        border-top:0;
-        border-bottom:0;
-    }
-}
 
 .DjangoCodeMirror{
     padding:0;
@@ -37,6 +29,20 @@ hr,
     border: 1px solid #d0d0d0;
     border-radius: 5px;
     background-color: #ffffff;
+    
+    .CodeMirror{
+        font-size:1.1em;
+        line-height:1.1em;
+        // Force font to monospace, as some codemirror themes defines other family fonts 
+        // like serif or sans-serif like..
+        // NOTE: This does not work, theme selectors are higher than this..
+        font-family: monospace !important;
+        
+        .CodeMirror-scroll{
+            border-top:0;
+            border-bottom:0;
+        }
+    }
     
     .DjangoCodeMirror_menu ul,
     .DjangoCodeMirror_tabs ul{
@@ -113,25 +119,25 @@ hr,
                     background-color: transparent;
                     border:1px solid transparent;
                 }
-                &.dcm-icons-disk.error a{
-                    background-color: #ee0000;
-                }
+                //&.dcm-icons-disk.error{
+                //    background-color: #ee0000;
+                //}
                 &.dcm-icons-arrow_undo a,
                 &.dcm-icons-arrow_undo.inactive a{
                     cursor: default !important;
-                    //background: url('images/arrow_undo_disabled.png');
+                    @include djangocodemirror-icons-sprite(arrow_undo_disabled);
                 }
                 &.dcm-icons-arrow_undo.active a{
-                    //background: url('images/arrow_undo.png');
+                    @include djangocodemirror-icons-sprite(arrow_undo);
                 }
 
                 &.dcm-icons-arrow_redo a,
                 &.dcm-icons-arrow_redo.inactive a{
                     cursor: default !important;
-                    //background: url('images/arrow_redo_disabled.png');
+                    @include djangocodemirror-icons-sprite(arrow_redo_disabled);
                 }
                 &.dcm-icons-arrow_redo.active a{
-                    //background: url('images/arrow_redo.png');
+                    @include djangocodemirror-icons-sprite(arrow_redo);
                 }
                 &.dcm-icons-arrow_undo.active:hover,
                 &.dcm-icons-arrow_redo.active:hover{
@@ -338,8 +344,10 @@ hr,
 }
 
 /*______________________________________
-    Pour les retours d'erreur du parser ReST
-*/
+//  Pour les retours d'erreur du parser ReST
+//  TODO: Move to RST stylesheet, this have nothing to do within djangocodemirror 
+//  stylesheet
+//
 .system-message {
   padding: 8px 35px 8px 14px;
   margin-bottom: 18px;
@@ -359,6 +367,7 @@ hr,
   color: inherit;
   font-weight: bold;
 }
+*/
 
 /*____________________________________
     Pour la démo
