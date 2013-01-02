@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}CodeMirror/lib/codemirror.css">
 {% endif %}
 
-<link rel="stylesheet" href="{{ STATIC_URL }}jquery/plugins/qtip/jquery.qtip.min.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}js/qtip/jquery.qtip.min.css">
 
 {% for item in themes %}
     <link rel="stylesheet" href="{{ STATIC_URL }}{{ item }}">
@@ -29,7 +29,7 @@
 {% endfor %}
 
 {% if not codemirror_only %}
-    <script type="text/javascript" src="{{ STATIC_URL }}jquery/plugins/jquery.cookies.2.2.0.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery.cookies.2.2.0.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/djangocodemirror.translation.js"></script>
     {% for item in translations %}
         <script type="text/javascript" src="{{ STATIC_URL }}{{ item }}"></script>
@@ -43,6 +43,6 @@
         <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/csrf.js"></script>
     {% endif %}
 
-    <script type="text/javascript" src="{{ STATIC_URL }}jquery/plugins/qtip/jquery.qtip.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/qtip/jquery.qtip.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}djangocodemirror/qtip_console.js"></script>
 {% endif %}
