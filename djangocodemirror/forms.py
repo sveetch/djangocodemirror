@@ -44,7 +44,7 @@ class DjangoCodeMirrorSampleForm(forms.Form):
     """
     Sample form
     """
-    content = DjangoCodeMirrorField(label=u"DjangoCodeMirror", max_length=50000, required=True, codemirror_attrs=settings_local.CODEMIRROR_SETTINGS['djangocodemirror_sample_demo'])
+    content = DjangoCodeMirrorField(label=u"DjangoCodeMirror", max_length=50000, required=True, codemirror_settings_name='djangocodemirror_sample_demo')
     
     def clean_content(self):
         """

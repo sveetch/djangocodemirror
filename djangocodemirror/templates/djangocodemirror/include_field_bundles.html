@@ -1,0 +1,8 @@
+{% load assets %}
+{% assets css_bundle_name %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+{% endassets %}
+
+{% assets js_bundle_name %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}

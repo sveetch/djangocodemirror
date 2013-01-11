@@ -31,7 +31,7 @@ DCM_Syntax_Methods = {
     title: function(value, codemirror_instance, opts) {
         var heading = '';
         for(i = 0; i < value.length; i++) {
-            heading += opts.char;
+            heading += opts.linechar;
         }
         codemirror_instance.replaceSelection(value+'\n'+heading+'\n');
     },

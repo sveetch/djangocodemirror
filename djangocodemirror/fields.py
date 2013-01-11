@@ -13,12 +13,16 @@ from django.utils.safestring import mark_safe
 
 from djangocodemirror import settings_local
 
-class CodeMirrorWidget(forms.Textarea):
+class CodeMirrorAttrsWidget(forms.Textarea):
     """
     Widget to add a CodeMirror or DjangoCodeMirror instance on a textarea
     
     Take the same arguments than ``forms.Textarea`` and accepts three suplementary 
     optionnal arguments :
+      
+    NOTE: This is the old version of 'CodeMirrorWidget' it takes settings directly from 
+          the ``codemirror_attrs`` argument but he is not aware of the settings name and 
+          so is not available with the Bundles.
     
     * ``codemirror_attrs`` receive a dict with settings for the instance (CodeMirror 
       or DjangoCodeMirror);
@@ -40,11 +44,15 @@ class CodeMirrorWidget(forms.Textarea):
         if attrs:
             default_attrs.update(attrs)
             
-        super(CodeMirrorWidget, self).__init__(default_attrs)
+        super(CodeMirrorAttrsWidget, self).__init__(default_attrs)
         
         self.public_opts()
 
     def public_opts(self):
+        """
+        Agregate some settings and release them to instance attributes, so they can be 
+        used by templatetags and others
+        """
         self.opt_csrf_method_name = self.codemirror_attrs.get('csrf', False)
         self.opt_translations_plugins = settings_local.DJANGOCODEMIRROR_TRANSLATIONS
         self.opt_search_enabled = self.codemirror_attrs.get('search_enabled', False)
@@ -99,8 +107,8 @@ class CodeMirrorWidget(forms.Textarea):
         #Adds necessary files (Js/CSS) to the widget's medias
         
         #NOTE: This has been deprecated in favor of a template tag, a more flexible solution
-              #But this method should be redone with the same technic that the template 
-              #tag, because without this the editor can not be used in the Admin anymore.
+        #      But this method should be redone with the same technic that the template 
+        #      tag, because without this the editor can not be used in the Admin anymore.
         #"""
         #css_items = [settings_local.CODEMIRROR_FILEPATH_CSS, settings_local.QTIP_FILEPATH_CSS]+[item[1] for item in settings_local.CODEMIRROR_THEMES]
         #js_items = [settings_local.CODEMIRROR_FILEPATH_LIB]
@@ -111,6 +119,29 @@ class CodeMirrorWidget(forms.Textarea):
         #)
     #media = property(_media)
 
+class CodeMirrorWidget(CodeMirrorAttrsWidget):
+    """
+    Inherits from ``CodeMirrorAttrsWidget`` but does not accept the ``codemirror_attrs`` 
+    argument, instead it require ``codemirror_settings_name`` named argument.
+    
+    * ``codemirror_settings_name`` name of the settings to use, a valid key name from 
+      ``settings.CODEMIRROR_SETTINGS``;
+    * ``codemirror_only`` to disable DjangoCodeMirror and use directly CodeMirror. By 
+      default DjangoCodeMirror is always used;
+    * ``embed_settings`` a boolean to active the automatic embed of the needed 
+      Javascript code to launch a CodeMirror instance for the field. This is ``False`` 
+      by default because there is lots of possible scenarios to manage your assets and 
+      Javascript code. So if you active this, DjangoCodeMirror assets must be loaded 
+      BEFORE your field appear in the HTML code;
+    """
+    def __init__(self, *args, **kwargs):
+        if 'codemirror_attrs' in kwargs:
+            raise TypeError("CodeMirrorWidget does not accept anymore the 'codemirror_attrs' named argument, for this see at CodeMirrorAttrsWidget")
+        
+        self.codemirror_settings_name = kwargs.pop('codemirror_settings_name', 'default')
+        kwargs['codemirror_attrs'] = settings_local.CODEMIRROR_SETTINGS[self.codemirror_settings_name]
+        super(CodeMirrorWidget, self).__init__(*args, **kwargs)
+
 class CodeMirrorField(forms.CharField):
     """
     CharField dedicated to CodeMirror
@@ -120,11 +151,13 @@ class CodeMirrorField(forms.CharField):
     """
     widget = CodeMirrorWidget
     
-    def __init__(self, max_length=None, min_length=None, codemirror_attrs=settings_local.CODEMIRROR_SETTINGS['default'], *args, **kwargs):
+    def __init__(self, max_length=None, min_length=None, codemirror_settings_name='default', *args, **kwargs):
         super(CodeMirrorField, self).__init__(max_length=max_length, min_length=min_length, *args, **kwargs)
         
-        self.widget.codemirror_attrs.update(codemirror_attrs or {})
         self.widget.codemirror_only = True
+        self.widget.codemirror_settings_name = codemirror_settings_name
+        self.widget.codemirror_attrs = settings_local.CODEMIRROR_SETTINGS[codemirror_settings_name]
+        
         self.widget.public_opts()
 
 class DjangoCodeMirrorField(forms.CharField):
@@ -136,9 +169,11 @@ class DjangoCodeMirrorField(forms.CharField):
     """
     widget = CodeMirrorWidget
     
-    def __init__(self, max_length=None, min_length=None, codemirror_attrs=settings_local.CODEMIRROR_SETTINGS[settings_local.DJANGOCODEMIRROR_DEFAULT_SETTING], *args, **kwargs):
+    def __init__(self, max_length=None, min_length=None, codemirror_settings_name=settings_local.DJANGOCODEMIRROR_DEFAULT_SETTING, *args, **kwargs):
         super(DjangoCodeMirrorField, self).__init__(max_length=max_length, min_length=min_length, *args, **kwargs)
         
-        self.widget.codemirror_attrs.update(codemirror_attrs or {})
         self.widget.codemirror_only = False
+        self.widget.codemirror_settings_name = codemirror_settings_name
+        self.widget.codemirror_attrs = settings_local.CODEMIRROR_SETTINGS[codemirror_settings_name]
+        
         self.widget.public_opts()

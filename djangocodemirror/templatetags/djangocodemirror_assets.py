@@ -17,22 +17,13 @@ class HtmlAssetsRender(template.Node):
     """
     Generate HTML of the node *HtmlMediaRender*
     """
-    def __init__(self, *args):
+    def __init__(self, default_template, *args):
         """
-        :type page_var_name: string or object ``django.db.models.Model``
-        :param page_var_name: Nom de variable de l'instance ou un string 
-                                        pour le slug.
-                                        
-        :type template_path_varname: string
-        :param template_path_varname: (optionnel) Chemin d'un template à utiliser pour 
-                                      le rendu du menu à générer
-                                        
-        :type flat_mode: int
-        :param flat_mode: (optionnel) Indique si on doit gérer un menu avec seulement les 
-                          pages adjacentes (flat) à la page ciblée ou bien l'arborescence 
-                          récursive de ses enfants (tree).
+        :type default_template: string
+        :param default_template: Default template name to use if not given in the tag args
         """
         self.args = args
+        self.default_template = default_template
     
     def render(self, context):
         """
@@ -44,7 +35,7 @@ class HtmlAssetsRender(template.Node):
         :rtype: string
         :return: Le rendu généré pour le tag capturé.
         """
-        self.template_path = "djangocodemirror/include_field_assets.html"
+        self.template_path = self.default_template
         param_context = {
             'codemirror_only': False,
             'themes': [item[1] for item in settings_local.CODEMIRROR_THEMES],
@@ -53,6 +44,9 @@ class HtmlAssetsRender(template.Node):
             'translations': settings_local.DJANGOCODEMIRROR_TRANSLATIONS,
             'csrf': False,
             'cookies_lib': False,
+            'codemirror_settings_name': 'default',
+            'css_bundle_name': settings_local.BUNDLES_CSS_NAME.format(settings_name='default'),
+            'js_bundle_name': settings_local.BUNDLES_JS_NAME.format(settings_name='default'),
         }
         
         # Try to resolve all given arguments
@@ -67,7 +61,7 @@ class HtmlAssetsRender(template.Node):
             else:
                 given_fields.append(field)
         
-        # If the first item is a string, assume that is a template path, pop it and 
+        # If the first item is a string, assume that it is a template path, pop it and 
         # use it
         if len(given_fields)>0 and isinstance(given_fields[0], basestring):
             self.template_path = given_fields.pop(0)
@@ -83,6 +77,11 @@ class HtmlAssetsRender(template.Node):
                 param_context['search_enabled'] = True
             if field_widget.opt_csrf_method_name:
                 param_context['csrf_enabled'] = True
+            # This one is not "cumulative", the last one is allways used, need another solution
+            if hasattr(field_widget, 'codemirror_settings_name'):
+                param_context['codemirror_settings_name'] = getattr(field_widget, 'codemirror_settings_name')
+                param_context['css_bundle_name'] = settings_local.BUNDLES_CSS_NAME.format(settings_name=param_context['codemirror_settings_name'])
+                param_context['js_bundle_name'] = settings_local.BUNDLES_JS_NAME.format(settings_name=param_context['codemirror_settings_name'])
             
             # Agregate modes
             if field_widget.opt_mode_syntax:
@@ -127,7 +126,23 @@ def do_djangocodemirror_get_assets(parser, token):
     if len(args) < 2:
         raise template.TemplateSyntaxError, "You need to specify at less one form field"
     else:
-        return HtmlAssetsRender(*args[1:])
+        return HtmlAssetsRender("djangocodemirror/include_field_assets.html", *args[1:])
 
 do_djangocodemirror_get_assets.is_safe = True
+
+
+@register.tag(name="djangocodemirror_get_bundles")
+def do_djangocodemirror_get_bundles(parser, token):
+    """
+    It works exactly like the "djangocodemirror_get_assets" except it use django-assets 
+    bundles in place of direct assets. You should not use this if you don't have 'django-assets' 
+    installed.
+    """
+    args = token.split_contents()
+    if len(args) < 2:
+        raise template.TemplateSyntaxError, "You need to specify at less one form field"
+    else:
+        return HtmlAssetsRender("djangocodemirror/include_field_bundles.html", *args[1:])
+
+do_djangocodemirror_get_bundles.is_safe = True
 

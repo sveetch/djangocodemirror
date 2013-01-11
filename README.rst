@@ -5,6 +5,7 @@
 .. _Django CSRF: https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 .. _Django staticfiles: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/
 .. _Django internationalization system: https://docs.djangoproject.com/en/dev/topics/i18n/
+.. _django-assets: http://pypi.python.org/pypi/django-assets
 .. _ReStructuredText: http://docutils.sourceforge.net/rst.html
 .. _qTip2: http://craigsworks.com/projects/qtip2/
 
@@ -44,6 +45,8 @@ Your project will have to includes a copy of these Javascript libraries :
 
 * `jQuery`_ >= 1.7;
 * `CodeMirror`_ but it is included as a git submodule;
+
+Optionnally, to use Assets bundles instead of plain assets, you can install `django-assets`_.
 
 Install
 =======
@@ -189,7 +192,7 @@ The plugin use some additional libraries (allready shipped) :
 * `qTip2`_;
 
 .. NOTE:: If you directly use the plugin, you will have to load yourself all needed 
-          libaries, see `Fields medias`_ for a details of these.
+          libaries, see `Fields static files`_ for a details of these.
 
 .. WARNING:: Previous versions (<0.7.2) was automatically loading the Javascript init 
              for the field. This is not the default behavior anymore. You should see the 
@@ -220,7 +223,8 @@ The widget accept two additional arguments :
 
 * ``codemirror_only`` A *boolean* to disable the `DjangoCodeMirror`_ usage at benefit of 
   `CodeMirror`_. It is ``False`` by default;
-* ``codemirror_attrs`` : A *dict* to define the editor settings. It is empty by default.
+* ``codemirror_settings_name`` : name of the settings to use, a valid key name from 
+  ``settings.CODEMIRROR_SETTINGS``;
 * ``embed_settings`` : A *boolean* to active the automatic embed of the needed 
   Javascript code to launch a CodeMirror instance for the field. This is ``False`` 
   by default because there is lots of possible scenarios to manage your assets and 
@@ -235,10 +239,12 @@ line numbers :
     from djangocodemirror.fields import CodeMirrorWidget
     
     class CodeMirrorSampleForm(forms.Form):
-        content = forms.CharField(label="Your content", widget=CodeMirrorWidget(codemirror_only=True, codemirror_attrs={'lineNumbers':True}))
+        content = forms.CharField(label="Your content", widget=CodeMirrorWidget(codemirror_only=True, codemirror_settings_name='default'}))
         
         def save(self, *args, **kwargs):
             return
+
+Note that previously, ``CodeMirrorWidget`` required the ``codemirror_attrs`` to directly receives settings as a dict. This is not the behavior anymore, because the widget was not aware of the settings name that is needed with the Assets bundle system. If you don't want to use Assets bundles and want to directly specify settings as a dict, you will have to use the ``CodeMirrorAttrsWidget`` that accepts the same argument as ``CodeMirrorWidget`` but with ``codemirror_attrs`` instead of ``codemirror_settings_name``.
 
 Medias
 ------
@@ -257,7 +263,7 @@ This inherit from ``django.forms.CharField`` to automatically use `CodeMirrorWid
 the widget field. The widget set the ``codemirror_only`` attribute to ``True`` to use 
 only the `CodeMirror`_ editor.
 
-It take an additional named argument ``codemirror_attrs`` like `CodeMirrorWidget`_, his 
+It take an additional named argument ``codemirror_settings_name`` like `CodeMirrorWidget`_, his 
 default value correspond to the ``default`` setting of `CODEMIRROR_SETTINGS`_.
 
 ::
@@ -266,7 +272,7 @@ default value correspond to the ``default`` setting of `CODEMIRROR_SETTINGS`_.
     from djangocodemirror.fields import CodeMirrorField
     
     class CodeMirrorSampleForm(forms.Form):
-        content_codemirror = CodeMirrorField(label=u"Your content", codemirror_attrs={'lineNumbers':True})
+        content_codemirror = CodeMirrorField(label=u"Your content", codemirror_settings_name='default'})
         
         def save(self, *args, **kwargs):
             return
@@ -277,7 +283,7 @@ DjangoCodeMirrorField
 It is identical as `CodeMirrorField`_ but for usage of `DjangoCodeMirror`_ as the widget 
 field.
 
-His default value for ``codemirror_attrs`` correspond to 
+His default value for ``codemirror_settings_name`` corresponds to 
 `DJANGOCODEMIRROR_DEFAULT_SETTING`_.
 
 ::
@@ -286,7 +292,7 @@ His default value for ``codemirror_attrs`` correspond to
     from djangocodemirror.fields import CodeMirrorField
     
     class CodeMirrorSampleForm(forms.Form):
-        content_djangocodemirror = DjangoCodeMirrorField(label=u"Your content", codemirror_attrs={'lineNumbers':True})
+        content_djangocodemirror = DjangoCodeMirrorField(label=u"Your content", codemirror_settings_name='djangocodemirror'})
         
         def save(self, *args, **kwargs):
             return
@@ -371,61 +377,40 @@ CODEMIRROR_MODES
 A list of tuples for the various syntax coloration modes supported by `CodeMirror`_. 
 This list is generated from the available mode files in `CodeMirror`_.
 
-Fields medias
+Fields static files
+===================
+
+All given paths will be assumed to be in your staticfiles directory 
+(see `Django staticfiles`_).
+
+Direct assets
 *************
 
-The `CodeMirrorWidget`_ widget need some medias to correctly load the editor, all these 
-medias paths are defined in settings and you can change them if needed. Theses paths 
-assume to be in your staticfiles directory (see `Django staticfiles`_).
+If you plan to use the simple assets system, they are now defined in the 
+``templates/djangocodemirror/include_field_assets.html`` template, with some conditional 
+includes from the widget settings. This is the default template used with the 
+``djangocodemirror_get_assets`` template filter.
 
-CODEMIRROR_FILEPATH_LIB
-    The JavaScript core library of `CodeMirror`_.
-CODEMIRROR_FILEPATH_CSS
-    The CSS file of `CodeMirror`_.
-CODEMIRROR_FILEPATH_DIALOG_LIB
-    The Javascript componant to enable dialogs of `CodeMirror`_.
-CODEMIRROR_FILEPATH_DIALOG_CSS
-    The CSS file used by dialogs componant of `CodeMirror`_.
-CODEMIRROR_FILEPATH_SEARCH_LIB
-    The Javascript componant to enable search and replace in `CodeMirror`_.
-CODEMIRROR_FILEPATH_SEARCHCURSOR_LIB
-    The Javascript componant to enable search highlights in `CodeMirror`_.
-DJANGOCODEMIRROR_FILEPATH_LIB
-    The Javascript core library of `DjangoCodeMirror`_.
-DJANGOCODEMIRROR_FILEPATH_TRANSLATION
-    The Javascript componant to enable translations for `DjangoCodeMirror`_.
-DJANGOCODEMIRROR_FILEPATH_CSS
-    The CSS file of `DjangoCodeMirror`_.
-DJANGOCODEMIRROR_FILEPATH_BUTTONS
-    The Javascript componant of `DjangoCodeMirror`_ to define the avalaible buttons in 
-    the button bar. Change this path to your own componant if you want to change the 
-    button bar.
-DJANGOCODEMIRROR_FILEPATH_METHODS
-    The Javascript componant of `DjangoCodeMirror`_ to define the internal methods used 
-    with the syntax buttons. If you add some new button in your own button bar, you have 
-    to make your own methods file too.
-DJANGOCODEMIRROR_FILEPATH_CONSOLE
-        The Javascript componant of `DjangoCodeMirror`_ which define the usage of qTip.
-DJANGOCODEMIRROR_FILEPATH_CSRF
-    The Javascript componant of `DjangoCodeMirror`_ used in the editor requests (preview 
-    or quicksave) to apply `Django CSRF`_.
-DJANGOCODEMIRROR_FILEPATH_COOKIES
-    Le plugin `jQuery`_ pour utiliser accéder aux cookies, nécessaire pour 
-    `Django CSRF`_.
-QTIP_FILEPATH_LIB
-    The JavaScript core library of `qTip2`_.
-QTIP_FILEPATH_CSS
-    The CSS file of `qTip2`_.
+Bundle assets
+*************
+
+If you plan to only use Bundle assets with `django-assets`_, assets are defined in the 
+``assets.py`` module that is automatically loaded by `django-assets`_. You will have to 
+use the ``djangocodemirror_get_bundles`` template filter, that is using the 
+``templates/djangocodemirror/include_field_bundles.html`` template.
 
 Template tags
 =============
+
+For inputs
+**********
 
 You will need to load the template tags module in your templates like this : ::
 
     {% load djangocodemirror_inputs %}
 
 Filters
-*******
+-------
 
 djangocodemirror_input_settings
     Get the generated widget settings and return it as JSON. It take the form field as required argument like this : ::
@@ -433,6 +418,39 @@ djangocodemirror_input_settings
         {{ form.content|djangocodemirror_input_settings }}
 djangocodemirror_init_input
     Return the HTML tag to embed the Javascript init for a djangocodemirror input field. Take the same argument as ``djangocodemirror_input_settings``.
+
+For assets
+**********
+
+You will need to load the template tags module in your templates like this : ::
+
+    {% load djangocodemirror_assets %}
+
+Filters
+-------
+
+djangocodemirror_get_assets
+    Return the html to load all needed assets for all given djangocodemirror fields
+    
+    This can only be used on a field that have allready been rendered.
+    
+    Usage : ::
+    
+        {% load djangocodemirror_assets %}
+        
+        <html>
+            <head>
+            ...
+            {% djangocodemirror_get_assets form.myfield1 form.myfield2 %}
+            </head>
+        ...
+        </html>
+        
+    Warning, the tag does not throw explicit template errors for invalid fields.
+djangocodemirror_get_bundles
+    It works exactly like the ``djangocodemirror_get_assets`` except it use django-assets 
+    bundles in place of direct assets. You should not use this if you don't have `django-assets`_ 
+    installed.
 
 Sample demonstration
 ====================

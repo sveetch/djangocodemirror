@@ -14,6 +14,7 @@ DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE = getattr(settings, 'SESSION_COOKIE
 # Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
     'default': {
+        'codemirror_only': True,
         'lineNumbers': True,
     },
     'djangocodemirror': {
@@ -107,3 +108,11 @@ CODEMIRROR_MODES = getattr(settings, 'CODEMIRROR_MODES', (
     (u'xmlpure', u'CodeMirror/mode/xmlpure/xmlpure.js'),
     (u'yaml', u'CodeMirror/mode/yaml/yaml.js'),
 ))
+
+# Internal key names used for bundles
+BUNDLES_CSS_NAME = "dcm-{settings_name}_css"
+BUNDLES_JS_NAME = "dcm-{settings_name}_js"
+
+# Option arguments use on the bundles
+BUNDLES_CSS_OPTIONS = getattr(settings, 'BUNDLES_CSS_OPTIONS', {'filters':'yui_css', 'output':'css/dcm-{settings_name}.min.css'})
+BUNDLES_JS_OPTIONS = getattr(settings, 'BUNDLES_JS_OPTIONS', {'filters':'yui_js', 'output':'js/dcm-{settings_name}.min.js'})

@@ -65,7 +65,7 @@ var methods = {
             "method" : 'syntax',
             "classname" : '',
             "key" : false,
-            "char" : false,
+            "linechar" : false,
             "url" : false,
             "placeholder" : '',
             "begin_with" : false,
