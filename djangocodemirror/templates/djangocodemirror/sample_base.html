@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n djangocodemirror_inputs djangocodemirror_assets %}
+
+{% comment %}Translators: Demonstration page title{% endcomment %}
+{% block head_title %}{% trans "DjangoCodeMirror sample" %}{% endblock %}
+{% block head_more_js %}{{ block.super }} 
+    {% get_current_language as LANGUAGE_CODE %}
+    {% block djangocodemirror_assets_loading %}{% djangocodemirror_get_assets form.content %}{% endblock %}
+    <script type="text/javascript">
+    //<![CDATA[
+    DCM_lang = "{{ LANGUAGE_CODE }}";
+    $(document).ready(function() {
+        {% comment %}Translators: Link name to load demonstration content{% endcomment %}
+        $("#sample h2:first").after('<p id="menu"><a class="demo_content_loadlink" href="">{% filter addslashes %}{% trans "Load demo content" %}{% endfilter %}</a></p>');
+        {% comment %}Translators: Link name to user settings form{% endcomment %}
+        $("#menu").append(' - <a href="{% url djangocodemirror-settings %}">{% filter addslashes %}{% trans "Change your editor settings" %}{% endfilter %}</a>');
+        
+        var content_codemirror_instance = $('#{{ form.content.auto_id }}').djangocodemirror({{ form.content|djangocodemirror_init_input }});
+        
+        $("#sample a.demo_content_loadlink").click(function () {
+            var cm_instance = $('#{{ form.content.auto_id }}').data('djangocodemirror').codemirror;
+            cm_instance.setValue( $("#sample_demo_content").val() );
+            cm_instance.clearHistory();
+            cm_instance.focus();
+            return false;
+        });
+    });
+    //]]>
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div id="sample">
+        <h2>{% trans "DjangoCodeMirror sample" %}</h2>
+        <form method="post" action="">{% csrf_token %}
+            <div>{{ form.content }}</div>
+        </form>
+        <div style="display:none;">
+            {% comment %}Translators: Demonstration form title{% endcomment %}
+            <h2>{% trans "Sample content" %}</h2>
+            <div><textarea name="sample_demo_content" id="sample_demo_content" cols="10" rows="8">{{ demo_content }}</textarea></div>
+        </div>
+    </div>
+{% endblock %}

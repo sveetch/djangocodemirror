@@ -478,6 +478,19 @@ Three views are avalaible :
 * A public view ``settings/`` usable to edit some settings for the editor. These 
   custom settings will be saved in a cookie. 
 
+The sample view uses the ``djangocodemirror/sample.html`` template that is using by 
+default the `Direct assets`_. If your project use `Bundle assets`_, you will have to 
+overload this template in your project by creating a ``djangocodemirror/sample.html`` 
+template in your project templates directory and use the correct filter like this :
+
+::
+
+    {% extends "djangocodemirror/sample_base.html" %}
+    {% load djangocodemirror_assets %}
+
+    {% block djangocodemirror_assets_loading %}{% djangocodemirror_get_bundles form.content %}{% endblock %}
+
+
 Internationalization and localization
 =====================================
 
