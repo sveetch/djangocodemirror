@@ -225,6 +225,7 @@ The widget accept two additional arguments :
   `CodeMirror`_. It is ``False`` by default;
 * ``codemirror_settings_name`` : name of the settings to use, a valid key name from 
   ``settings.CODEMIRROR_SETTINGS``;
+* ``codemirror_settings_extra`` an optional dict to override some settings;
 * ``embed_settings`` : A *boolean* to active the automatic embed of the needed 
   Javascript code to launch a CodeMirror instance for the field. This is ``False`` 
   by default because there is lots of possible scenarios to manage your assets and 
@@ -245,16 +246,6 @@ line numbers :
             return
 
 Note that previously, ``CodeMirrorWidget`` required the ``codemirror_attrs`` to directly receives settings as a dict. This is not the behavior anymore, because the widget was not aware of the settings name that is needed with the Assets bundle system. If you don't want to use Assets bundles and want to directly specify settings as a dict, you will have to use the ``CodeMirrorAttrsWidget`` that accepts the same argument as ``CodeMirrorWidget`` but with ``codemirror_attrs`` instead of ``codemirror_settings_name``.
-
-Medias
-------
-
-The widget load automatically all his needed medias and static files, you just have to 
-put this in your templates : ::
-
-  {{ form.media }}
-
-This behavior is inherited by `DjangoCodeMirrorField`_ and `CodeMirrorField`_.
 
 CodeMirrorField
 ***************

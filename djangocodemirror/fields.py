@@ -91,7 +91,7 @@ class CodeMirrorAttrsWidget(forms.Textarea):
         This is only working on setting items : preview_url, help_link, quicksave_url
         """
         for name in ['preview_url', 'help_link', 'quicksave_url', 'settings_url']:
-            if name in field_settings and not isinstance(field_settings.get(name, ''), basestring):
+            if name in field_settings and field_settings.get(name, None) is not None and not isinstance(field_settings.get(name, None), basestring):
                 args = []
                 kwargs = {}
                 urlname = field_settings[name][0]
@@ -126,6 +126,7 @@ class CodeMirrorWidget(CodeMirrorAttrsWidget):
     
     * ``codemirror_settings_name`` name of the settings to use, a valid key name from 
       ``settings.CODEMIRROR_SETTINGS``;
+    * ``codemirror_settings_extra`` an optional dict to override some settings;
     * ``codemirror_only`` to disable DjangoCodeMirror and use directly CodeMirror. By 
       default DjangoCodeMirror is always used;
     * ``embed_settings`` a boolean to active the automatic embed of the needed 
@@ -139,24 +140,28 @@ class CodeMirrorWidget(CodeMirrorAttrsWidget):
             raise TypeError("CodeMirrorWidget does not accept anymore the 'codemirror_attrs' named argument, for this see at CodeMirrorAttrsWidget")
         
         self.codemirror_settings_name = kwargs.pop('codemirror_settings_name', 'default')
+        self.codemirror_settings_extra = kwargs.pop('codemirror_settings_extra', {})
         kwargs['codemirror_attrs'] = settings_local.CODEMIRROR_SETTINGS[self.codemirror_settings_name]
+        kwargs['codemirror_attrs'].update(self.codemirror_settings_extra)
         super(CodeMirrorWidget, self).__init__(*args, **kwargs)
 
 class CodeMirrorField(forms.CharField):
     """
     CharField dedicated to CodeMirror
     
-    Accept one suplementary arguments ``codemirror_attrs``
-    (the same as for ``CodeMirrorWidget``)
+    Accept two additional arguments ``codemirror_settings_name`` and 
+    ``codemirror_settings_extra`` (the same as for ``CodeMirrorWidget``)
     """
     widget = CodeMirrorWidget
     
-    def __init__(self, max_length=None, min_length=None, codemirror_settings_name='default', *args, **kwargs):
+    def __init__(self, max_length=None, min_length=None, codemirror_settings_name='default', codemirror_settings_extra={}, *args, **kwargs):
         super(CodeMirrorField, self).__init__(max_length=max_length, min_length=min_length, *args, **kwargs)
         
         self.widget.codemirror_only = True
         self.widget.codemirror_settings_name = codemirror_settings_name
+        self.widget.codemirror_settings_extra = codemirror_settings_extra
         self.widget.codemirror_attrs = settings_local.CODEMIRROR_SETTINGS[codemirror_settings_name]
+        self.widget.codemirror_attrs.update(codemirror_settings_extra)
         
         self.widget.public_opts()
 
@@ -164,16 +169,18 @@ class DjangoCodeMirrorField(forms.CharField):
     """
     CharField dedicated to DjangoCodeMirror
     
-    Accept one suplementary arguments ``codemirror_attrs``
-    (the same as for ``CodeMirrorWidget``).
+    Accept two additional arguments ``codemirror_settings_name`` and 
+    ``codemirror_settings_extra`` (the same as for ``CodeMirrorWidget``)
     """
     widget = CodeMirrorWidget
     
-    def __init__(self, max_length=None, min_length=None, codemirror_settings_name=settings_local.DJANGOCODEMIRROR_DEFAULT_SETTING, *args, **kwargs):
+    def __init__(self, max_length=None, min_length=None, codemirror_settings_name=settings_local.DJANGOCODEMIRROR_DEFAULT_SETTING, codemirror_settings_extra={}, *args, **kwargs):
         super(DjangoCodeMirrorField, self).__init__(max_length=max_length, min_length=min_length, *args, **kwargs)
         
         self.widget.codemirror_only = False
         self.widget.codemirror_settings_name = codemirror_settings_name
+        self.widget.codemirror_settings_extra = codemirror_settings_extra
         self.widget.codemirror_attrs = settings_local.CODEMIRROR_SETTINGS[codemirror_settings_name]
+        self.widget.codemirror_attrs.update(codemirror_settings_extra)
         
         self.widget.public_opts()
