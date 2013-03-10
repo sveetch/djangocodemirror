@@ -19,7 +19,7 @@
         
         $("#djangocodemirror-sample a.demo_content_loadlink").click(function () {
             var cm_instance = $('#{{ form.content.auto_id }}').data('djangocodemirror').codemirror;
-            cm_instance.setValue( $("#djangocodemirror-sample_demo_content").val() );
+            cm_instance.setValue( $("#sample_demo_content").val() );
             cm_instance.clearHistory();
             cm_instance.focus();
             return false;
