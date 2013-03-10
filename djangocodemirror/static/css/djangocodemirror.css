@@ -881,12 +881,12 @@ hr,
     Pour la démo
 */
 /* line 375, ../scss/djangocodemirror.scss */
-#sample {
+#djangocodemirror-sample {
   margin: auto;
   width: 800px;
 }
 /* line 379, ../scss/djangocodemirror.scss */
-#sample .DjangoCodeMirror {
+#djangocodemirror-sample .DjangoCodeMirror {
   padding: 0;
   float: none;
   width: 100%;

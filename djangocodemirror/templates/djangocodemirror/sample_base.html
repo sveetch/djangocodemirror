@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% load i18n djangocodemirror_inputs djangocodemirror_assets %}
+{% extends "base_fixed.html" %}
+{% load i18n djangocodemirror_inputs autobreadcrumb djangocodemirror_assets %}
 
 {% comment %}Translators: Demonstration page title{% endcomment %}
 {% block head_title %}{% trans "DjangoCodeMirror sample" %}{% endblock %}
@@ -11,15 +11,15 @@
     DCM_lang = "{{ LANGUAGE_CODE }}";
     $(document).ready(function() {
         {% comment %}Translators: Link name to load demonstration content{% endcomment %}
-        $("#sample h2:first").after('<p id="menu"><a class="demo_content_loadlink" href="">{% filter addslashes %}{% trans "Load demo content" %}{% endfilter %}</a></p>');
+        $("#djangocodemirror-sample h2:first").after('<p id="menu"><a class="demo_content_loadlink" href="">{% filter addslashes %}{% trans "Load demo content" %}{% endfilter %}</a></p>');
         {% comment %}Translators: Link name to user settings form{% endcomment %}
         $("#menu").append(' - <a href="{% url djangocodemirror-settings %}">{% filter addslashes %}{% trans "Change your editor settings" %}{% endfilter %}</a>');
         
         var content_codemirror_instance = $('#{{ form.content.auto_id }}').djangocodemirror({{ form.content|djangocodemirror_init_input }});
         
-        $("#sample a.demo_content_loadlink").click(function () {
+        $("#djangocodemirror-sample a.demo_content_loadlink").click(function () {
             var cm_instance = $('#{{ form.content.auto_id }}').data('djangocodemirror').codemirror;
-            cm_instance.setValue( $("#sample_demo_content").val() );
+            cm_instance.setValue( $("#djangocodemirror-sample_demo_content").val() );
             cm_instance.clearHistory();
             cm_instance.focus();
             return false;
@@ -30,7 +30,7 @@
 {% endblock %}
 
 {% block content %}
-    <div id="sample">
+    <div id="djangocodemirror-sample">
         <h2>{% trans "DjangoCodeMirror sample" %}</h2>
         <form method="post" action="">{% csrf_token %}
             <div>{{ form.content }}</div>
