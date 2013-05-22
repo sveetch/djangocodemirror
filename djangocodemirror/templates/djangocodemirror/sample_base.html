@@ -3,7 +3,7 @@
 
 {% comment %}Translators: Demonstration page title{% endcomment %}
 {% block head_title %}{% trans "DjangoCodeMirror sample" %}{% endblock %}
-{% block head_more_js %}{{ block.super }} 
+{% block html_more_js %}{{ block.super }} 
     {% get_current_language as LANGUAGE_CODE %}
     {% block djangocodemirror_assets_loading %}{% djangocodemirror_get_assets form.content %}{% endblock %}
     <script type="text/javascript">

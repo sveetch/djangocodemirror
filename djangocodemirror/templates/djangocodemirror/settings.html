@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block head_title %}{% trans "Your settings" %}{% endblock %}
-{% block head_more_links %}
+{% block html_more_links %}{{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}uni_form/uni-form.css" type="text/css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}uni_form/default.uni-form.css" type="text/css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}sveedocuments/css/forms.css" type="text/css" />
