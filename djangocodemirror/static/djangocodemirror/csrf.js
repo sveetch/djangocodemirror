@@ -42,6 +42,6 @@ function CSRFpass(xhr, settings) {
     }
 
     if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
-        xhr.setRequestHeader("X-CSRFToken", $.cookies.get( 'csrftoken'));
+        xhr.setRequestHeader("X-CSRFToken", jQuery.cookies.get( 'csrftoken'));
     }
 }

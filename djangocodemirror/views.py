@@ -15,7 +15,6 @@ from rstview import local_settings as rstview_local_settings
 
 from djangocodemirror import settings_local
 from djangocodemirror.forms import DjangoCodeMirrorSampleForm, DjangoCodeMirrorSettingsForm
-from djangocodemirror.fields import CodeMirrorField, DjangoCodeMirrorField
 
 try:
     from rstview.parser import SourceParser

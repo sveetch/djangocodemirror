@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
 from djangocodemirror import settings_local
+from djangocodemirror.widgets import CodeMirrorWidget
 from djangocodemirror.fields import DjangoCodeMirrorField
 
 THEME_CHOICES = [(v.split('/')[-1].split('.')[0], k) for k,v in settings_local.CODEMIRROR_THEMES]

@@ -20,6 +20,8 @@ if DJANGO_ASSETS_INSTALLED:
     def agregate_bundles_contents(opts, themes=[], translations=[]):
         """
         Agregate all needed assets files
+        
+        TODO: this should use templatetags.djangocodemirror_assets.FieldAssetsMixin.find_assets
         """
         css = []
         js = []

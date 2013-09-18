@@ -231,6 +231,9 @@ The widget accept two additional arguments :
   by default because there is lots of possible scenarios to manage your assets and 
   Javascript code. So if you active this, DjangoCodeMirror assets must be loaded 
   BEFORE your field appear in the HTML code;
+* ``add_jquery`` an string to specify a path to the jQuery lib to add to 
+  the used assets, it's not really usefull because generally your pages allready 
+  embed it;
 
 Another example where the ``content`` field will be a `CodeMirror`_ editor with enabled 
 line numbers :
@@ -246,6 +249,29 @@ line numbers :
             return
 
 Note that previously, ``CodeMirrorWidget`` required the ``codemirror_attrs`` to directly receives settings as a dict. This is not the behavior anymore, because the widget was not aware of the settings name that is needed with the Assets bundle system. If you don't want to use Assets bundles and want to directly specify settings as a dict, you will have to use the ``CodeMirrorAttrsWidget`` that accepts the same argument as ``CodeMirrorWidget`` but with ``codemirror_attrs`` instead of ``codemirror_settings_name``.
+
+Using within the Django admin
+-----------------------------
+
+To use the plugin within your model forms without to edit their admin templates or admin forms, you will have to specify some special arguments. The process is to use the ``_media`` property so the admin can automatically load all of them.
+
+So for example with a model like this : ::
+
+    class MyModel(models.Model):
+        title = models.CharField('title', blank=False, max_length=255)
+        content = models.TextField('content', blank=False)
+
+You would have a model admin like this : ::
+
+    class MyModelAdmin(admin.ModelAdmin):
+        formfield_overrides = {
+            models.TextField: {'widget': CodeMirrorWidget(codemirror_settings_name='default', embed_settings=True, add_jquery="js/jquery.js")},
+        }
+
+Note the ``embed_settings`` and ``add_jquery`` arguments :
+
+* ``embed_settings`` specify to add the Javascript settings directly bellow the textarea tag and the second one;
+* ``add_jquery`` specify a path to load the jQuery lib in the widget medias (because the shipped one within Django admin is outdated and binded on a specify spacename);
 
 CodeMirrorField
 ***************
