@@ -12,7 +12,7 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 from djangocodemirror import settings_local
-from djangocodemirror.templatetags.djangocodemirror_assets import FieldAssetsMixin
+from djangocodemirror.config import ConfigManager
 
 class CodeMirrorAttrsWidget(forms.Textarea):
     """
@@ -34,8 +34,9 @@ class CodeMirrorAttrsWidget(forms.Textarea):
       the used assets, it's not really usefull because generally your pages allready 
       embed it;
     """
-    def __init__(self, attrs=None, codemirror_attrs=None, codemirror_only=False, embed_settings=False, add_jquery=False):
-        self.codemirror_attrs = codemirror_attrs or {}
+    def __init__(self, attrs=None, codemirror_attrs=None, codemirror_only=False, embed_settings=False, add_jquery=False, codemirror_settings_name='default'):
+        self.codemirror_settings_name = codemirror_settings_name
+        self.codemirror_attrs = codemirror_attrs
         self.codemirror_only = codemirror_only
         self.embed_settings = embed_settings
         self.add_jquery = add_jquery
@@ -46,77 +47,48 @@ class CodeMirrorAttrsWidget(forms.Textarea):
             default_attrs.update(attrs)
             
         super(CodeMirrorAttrsWidget, self).__init__(default_attrs)
-        
-        self.public_opts()
 
-    def public_opts(self):
-        """
-        Agregate some settings and release them to instance attributes, so they can be 
-        used by templatetags and others
-        """
-        self.opt_csrf_method_name = self.codemirror_attrs.get('csrf', False)
-        self.opt_translations_plugins = settings_local.DJANGOCODEMIRROR_TRANSLATIONS
-        self.opt_search_enabled = self.codemirror_attrs.get('search_enabled', False)
-        self.opt_mode_syntax = None
-        if 'mode' in self.codemirror_attrs:
-            self.opt_mode_syntax = dict(settings_local.CODEMIRROR_MODES).get(self.codemirror_attrs['mode'], None)
+    def init_editor_config(self):
+        return ConfigManager(
+            codemirror_settings_name=self.codemirror_settings_name,
+            codemirror_attrs=self.codemirror_attrs,
+            codemirror_only=self.codemirror_only,
+            embed_settings=self.embed_settings,
+            add_jquery=self.add_jquery,
+        )
 
     def render(self, name, value, attrs=None):
+        self.editor_config_manager = self.init_editor_config()
+        
         if value is None: value = ''
         final_attrs = self.build_attrs(attrs, name=name)
         assert 'id' in final_attrs, "CodeMirror widget attributes must contain 'id'"
         
-        field_settings = self._get_codemirror_settings(final_attrs)
+        self.editor_config_manager.merge_config(**final_attrs)
         
         html = [u'<textarea%s>%s</textarea>' % (flatatt(final_attrs), escape(value))]
+        # Append HTML for the Javascript settings just below the textarea
         if self.embed_settings:
-            html.append(self._build_codemirror_settings(final_attrs, field_settings))
-            
-        #test to remove, needed sometime because the property() catch exceptions
-        #print self._media()
+            html.append(self._build_codemirror_settings(final_attrs, self.editor_config_manager.editor_config))
             
         return mark_safe(u'\n'.join(html))
 
-    def _get_codemirror_settings(self, final_attrs):
-        if self._field_settings_cache is None:
-            self._field_settings_cache = self._reverse_setting_urls( self.codemirror_attrs )
-        return self._field_settings_cache
-
-    def _build_codemirror_settings(self, final_attrs, field_settings):
+    def _build_codemirror_settings(self, final_attrs, editor_config):
+        """build HTML for the Javascript settings"""
         html = settings_local.DJANGOCODEMIRROR_FIELD_INIT_JS
         if self.codemirror_only:
             html = settings_local.CODEMIRROR_FIELD_INIT_JS
-        return html.format(inputid=final_attrs['id'], settings=json.dumps(field_settings))
-
-    def _reverse_setting_urls(self, field_settings):
-        """
-        Reverse urls with args and kwargs from a tuple ``(urlname, args, kwargs)``, 
-        items than are strings are not reversed.
-        
-        This is only working on setting items : preview_url, help_link, quicksave_url
-        """
-        for name in ['preview_url', 'help_link', 'quicksave_url', 'settings_url']:
-            if name in field_settings and field_settings.get(name, None) is not None and not isinstance(field_settings.get(name, None), basestring):
-                args = []
-                kwargs = {}
-                urlname = field_settings[name][0]
-                if len(field_settings[name])>1:
-                    args = field_settings[name][1]
-                    if len(field_settings[name])>2:
-                        kwargs = field_settings[name][2]
-                field_settings[name] = reverse(urlname, args=args, kwargs=kwargs)
-        return field_settings
+        return html.format(inputid=final_attrs['id'], settings=json.dumps(editor_config))
     
     def _media(self):
         """
         Adds necessary files (Js/CSS) to the widget's medias
         """
-        mix = FieldAssetsMixin()
-        app_settings = copy.deepcopy(mix._default_app_settings)
-        app_settings = mix.get_app_settings(app_settings, self)
-        css, js = mix.find_assets(app_settings, self)
+        if not hasattr(self, "editor_config_manager"):
+            self.editor_config_manager = self.init_editor_config()
+        css, js = self.editor_config_manager.find_assets()
         return forms.Media(
-            css=css,
+            css={"all": css},
             js=js
         )
     media = property(_media)
@@ -142,7 +114,61 @@ class CodeMirrorWidget(CodeMirrorAttrsWidget):
             raise TypeError("CodeMirrorWidget does not accept anymore the 'codemirror_attrs' named argument, for this see at CodeMirrorAttrsWidget")
         
         self.codemirror_settings_name = kwargs.pop('codemirror_settings_name', 'default')
-        self.codemirror_settings_extra = kwargs.pop('codemirror_settings_extra', {})
-        kwargs['codemirror_attrs'] = settings_local.CODEMIRROR_SETTINGS[self.codemirror_settings_name]
-        kwargs['codemirror_attrs'].update(self.codemirror_settings_extra)
+        
         super(CodeMirrorWidget, self).__init__(*args, **kwargs)
+
+class NewCodeMirrorWidget(forms.Textarea):
+    """
+    ...
+    """
+    def __init__(self, attrs=None):
+        default_attrs = {'cols': '40', 'rows': '10'}
+        if attrs:
+            default_attrs.update(attrs)
+            
+        super(NewCodeMirrorWidget, self).__init__(default_attrs)
+
+    def init_editor_config(self):
+        return ConfigManager(
+            codemirror_settings_name=self.codemirror_settings_name,
+            codemirror_attrs=self.codemirror_attrs,
+            codemirror_only=self.codemirror_only,
+            embed_settings=self.embed_settings,
+            add_jquery=self.add_jquery,
+        )
+
+    def render(self, name, value, attrs=None):
+        self.editor_config_manager = self.init_editor_config()
+        
+        if value is None: value = ''
+        final_attrs = self.build_attrs(attrs, name=name)
+        assert 'id' in final_attrs, "CodeMirror widget attributes must contain 'id'"
+        
+        self.editor_config_manager.merge_config(**final_attrs)
+        
+        html = [u'<textarea%s>%s</textarea>' % (flatatt(final_attrs), escape(value))]
+        # Append HTML for the Javascript settings just below the textarea
+        if self.embed_settings:
+            html.append(self._build_codemirror_settings(final_attrs, self.editor_config_manager.editor_config))
+            
+        return mark_safe(u'\n'.join(html))
+
+    def _build_codemirror_settings(self, final_attrs, editor_config):
+        """build HTML for the Javascript settings"""
+        html = settings_local.DJANGOCODEMIRROR_FIELD_INIT_JS
+        if self.codemirror_only:
+            html = settings_local.CODEMIRROR_FIELD_INIT_JS
+        return html.format(inputid=final_attrs['id'], settings=json.dumps(editor_config))
+    
+    def _media(self):
+        """
+        Adds necessary files (Js/CSS) to the widget's medias
+        """
+        if not hasattr(self, "editor_config_manager"):
+            self.editor_config_manager = self.init_editor_config()
+        css, js = self.editor_config_manager.find_assets()
+        return forms.Media(
+            css={"all": css},
+            js=js
+        )
+    media = property(_media)

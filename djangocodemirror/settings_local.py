@@ -11,11 +11,14 @@ CODEMIRROR_FIELD_INIT_JS = getattr(settings, 'CODEMIRROR_FIELD_INIT_JS', u"""<sc
 DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME = getattr(settings, 'DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME', "djangocodemirror_user_settings")
 DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE = getattr(settings, 'SESSION_COOKIE_AGE', (60 * 60 * 24 * 7 * 8))
 
+# The default path to use with the ``add_jquery`` widget argument
+DEFAULT_JQUERY_PATH = "js/jquery/jquery.min.js"
+
 # Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
     'default': {
-        'codemirror_only': True,
         'lineNumbers': True,
+        'YouGotDefaultSettings': True,
     },
     'djangocodemirror': {
         'mode': 'rst',
@@ -45,13 +48,18 @@ CODEMIRROR_SETTINGS = {
 }
 CODEMIRROR_SETTINGS.update(getattr(settings, 'CODEMIRROR_SETTINGS', {}))
 
-# Default setting key to use for DjangoCodeMirror
+# Default setting key to use for DjangoCodeMirror field
 DJANGOCODEMIRROR_DEFAULT_SETTING = getattr(settings, 'DJANGOCODEMIRROR_DEFAULT_SETTING', 'djangocodemirror')
 
 # List of translations
 DJANGOCODEMIRROR_TRANSLATIONS = getattr(settings, 'DJANGOCODEMIRROR_TRANSLATIONS', (
     ('djangocodemirror/djangocodemirror.fr.js'),
 ))
+
+# Path to the buttons Javascript file
+DJANGOCODEMIRROR_LIB_BUTTONS_PATH = getattr(settings, 'DJANGOCODEMIRROR_LIB_BUTTONS_PATH', 'djangocodemirror/buttons.js')
+# Path to the syntax methods Javascript file
+DJANGOCODEMIRROR_LIB_SYNTAX_METHODS_PATH = getattr(settings, 'DJANGOCODEMIRROR_LIB_SYNTAX_METHODS_PATH', 'djangocodemirror/syntax_methods.js')
 
 # List of available CSS themes for CodeMirror
 CODEMIRROR_THEMES = getattr(settings, 'CODEMIRROR_THEMES', (
@@ -93,7 +101,6 @@ CODEMIRROR_MODES = getattr(settings, 'CODEMIRROR_MODES', (
     (u'plsql', u'CodeMirror/mode/plsql/plsql.js'),
     (u'python', u'CodeMirror/mode/python/python.js'),
     (u'r', u'CodeMirror/mode/r/r.js'),
-    (u'rpm', u'CodeMirror/mode/rpm/rpm.js'),
     (u'rst', u'CodeMirror/mode/rst/rst.js'),
     (u'ruby', u'CodeMirror/mode/ruby/ruby.js'),
     (u'rust', u'CodeMirror/mode/rust/rust.js'),
@@ -105,7 +112,6 @@ CODEMIRROR_MODES = getattr(settings, 'CODEMIRROR_MODES', (
     (u'velocity', u'CodeMirror/mode/velocity/velocity.js'),
     (u'verilog', u'CodeMirror/mode/verilog/verilog.js'),
     (u'xml', u'CodeMirror/mode/xml/xml.js'),
-    (u'xmlpure', u'CodeMirror/mode/xmlpure/xmlpure.js'),
     (u'yaml', u'CodeMirror/mode/yaml/yaml.js'),
 ))
 

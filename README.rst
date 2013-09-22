@@ -219,7 +219,7 @@ Usage example on a form field :
         def save(self, *args, **kwargs):
             return
 
-The widget accept two additional arguments :
+The widget accept some additional arguments :
 
 * ``codemirror_only`` A *boolean* to disable the `DjangoCodeMirror`_ usage at benefit of 
   `CodeMirror`_. It is ``False`` by default;
@@ -265,13 +265,13 @@ You would have a model admin like this : ::
 
     class MyModelAdmin(admin.ModelAdmin):
         formfield_overrides = {
-            models.TextField: {'widget': CodeMirrorWidget(codemirror_settings_name='default', embed_settings=True, add_jquery="js/jquery.js")},
+            models.TextField: {'widget': CodeMirrorWidget(codemirror_settings_name='default', embed_settings=True, add_jquery=True)},
         }
 
 Note the ``embed_settings`` and ``add_jquery`` arguments :
 
 * ``embed_settings`` specify to add the Javascript settings directly bellow the textarea tag and the second one;
-* ``add_jquery`` specify a path to load the jQuery lib in the widget medias (because the shipped one within Django admin is outdated and binded on a specify spacename);
+* ``add_jquery`` specify a path to load the jQuery lib in the widget medias (because the shipped one within Django admin is outdated and binded on a specify spacename). See `DEFAULT_JQUERY_PATH`_;
 
 CodeMirrorField
 ***************
@@ -370,6 +370,13 @@ DJANGOCODEMIRROR_DEFAULT_SETTING
 The keyword to use to select the default settings with `DjangoCodeMirrorField`_. Note 
 that `CodeMirrorField`_ always use the keyword ``default`` to select his default 
 settings.
+
+DEFAULT_JQUERY_PATH
+*******************
+
+**Type :** *string*
+
+The default path to use with the ``add_jquery`` widget argument. It will only be used if the ``add_jquery`` argument is ``True``. If ``add_jquery`` argument is a string, the string will be used as the path. The default value for this settings is pointed to a jQuery version (1.10.x) embedded in the djangocodemirror statics.
 
 DJANGOCODEMIRROR_TRANSLATIONS
 *****************************

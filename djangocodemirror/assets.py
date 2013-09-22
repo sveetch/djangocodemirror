@@ -5,7 +5,8 @@ A bundle is computed for each avalaible settings item in
 "settings.CODEMIRROR_SETTINGS".
 
 In the template you will have to load the bundle accordly to your field settings, there 
-is a templatetag and an include template to do this automatically from your form field.
+is a templatetag and an include template to do this automatically from your form field,
+see the doc.
 """
 try:
     from django_assets import Bundle, register
@@ -16,66 +17,48 @@ else:
 
 if DJANGO_ASSETS_INSTALLED:
     from djangocodemirror import settings_local
+    #from djangocodemirror.templatetags.djangocodemirror_assets import FieldAssetsMixin
+    
+    #class DummyWidget(object):
+        #"""
+        #Dummy to fake a form widget instance
+        #"""
+        #codemirror_only = False
+        #themes = False
+        #opt_search_enabled = False
+        #mode = False
+        #csrf = False
+        #translations = False
 
-    def agregate_bundles_contents(opts, themes=[], translations=[]):
-        """
-        Agregate all needed assets files
+    #def agregate_bundles_contents(opts, themes=[], translations=[]):
+        #"""
+        #Agregate all needed assets files
+        #"""
+        #widget = DummyWidget()
+        #widget.codemirror_only = opts.get('codemirror_only')
+        #widget.opt_search_enabled = opts.get('search_enabled')
+        #widget.opt_mode_syntax = opts.get('mode')
+        #widget.opt_csrf_method_name = opts.get('csrf')
+        #widget.themes = themes
+        #widget.translations = translations
+        ## Find assets
+        #mix = FieldAssetsMixin()
+        #opts = mix.get_app_settings(opts, widget)
+        #css, js = mix.find_assets(opts, widget)
         
-        TODO: this should use templatetags.djangocodemirror_assets.FieldAssetsMixin.find_assets
-        """
-        css = []
-        js = []
+        #return css, js
+    
+    ## Build all Bundles from available editor settings
+    #for settings_name,settings_values in settings_local.CODEMIRROR_SETTINGS.items():
+        #css_name = settings_local.BUNDLES_CSS_NAME.format(settings_name=settings_name)
+        #js_name = settings_local.BUNDLES_JS_NAME.format(settings_name=settings_name)
         
-        if not opts.get('codemirror_only'):
-            css.append("css/djangocodemirror.css")
-        else:
-            css.append("CodeMirror/lib/codemirror.css")
-
-        css.append("js/qtip/jquery.qtip.min.css")
-
-        for k,v in themes:
-            css.append(v)
-
-        js.append("CodeMirror/lib/codemirror.js")
-        if opts.get('search_enabled'):
-            js.append("CodeMirror/lib/util/dialog.js")
-            js.append("CodeMirror/lib/util/search.js")
-            js.append("CodeMirror/lib/util/searchcursor.js")
-
-        if opts.get('mode'):
-            js.append(dict(settings_local.CODEMIRROR_MODES)[opts.get('mode')])
-
-        if not opts.get('codemirror_only'):
-            js.append("js/jquery/jquery.cookies.2.2.0.js") # TODO: This should be optional, as 
-                                                        # some other things like Foundation allready embed it
-            js.append("djangocodemirror/djangocodemirror.translation.js")
-            for item in translations:
-                js.append(item)
-
-            js.append("djangocodemirror/buttons.js")
-            js.append("djangocodemirror/syntax_methods.js")
-            js.append("djangocodemirror/djangocodemirror.js")
-
-            if opts.get('csrf'):
-                js.append("djangocodemirror/csrf.js")
-
-            js.append("js/qtip/jquery.qtip.js")
-            js.append("djangocodemirror/qtip_console.js")
+        #css_options = settings_local.BUNDLES_CSS_OPTIONS.copy()
+        #css_options['output'] = css_options['output'].format(settings_name=settings_name)
+        #js_options = settings_local.BUNDLES_JS_OPTIONS.copy()
+        #js_options['output'] = js_options['output'].format(settings_name=settings_name)
         
-        return css, js
-
-    # Build all Bundles from available editor settings
-    for settings_name,settings_values in settings_local.CODEMIRROR_SETTINGS.items():
-        #print settings_name
-        css_name = settings_local.BUNDLES_CSS_NAME.format(settings_name=settings_name)
-        js_name = settings_local.BUNDLES_JS_NAME.format(settings_name=settings_name)
+        #css_contents, js_contents = agregate_bundles_contents(settings_values, themes=settings_local.CODEMIRROR_THEMES, translations=settings_local.DJANGOCODEMIRROR_TRANSLATIONS)
         
-        css_options = settings_local.BUNDLES_CSS_OPTIONS.copy()
-        css_options['output'] = css_options['output'].format(settings_name=settings_name)
-        js_options = settings_local.BUNDLES_JS_OPTIONS.copy()
-        js_options['output'] = js_options['output'].format(settings_name=settings_name)
-        
-        css_contents, js_contents = agregate_bundles_contents(settings_values, themes=settings_local.CODEMIRROR_THEMES, translations=settings_local.DJANGOCODEMIRROR_TRANSLATIONS)
-        
-        register(css_name, Bundle(*css_contents, **css_options))
-        register(js_name, Bundle(*js_contents, **js_options))
+        #register(css_name, Bundle(*css_contents, **css_options))
+        #register(js_name, Bundle(*js_contents, **js_options))

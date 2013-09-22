@@ -30,9 +30,7 @@ def djangocodemirror_init_input(field):
         </script>
 
     """
-    field_settings = field.field.widget._field_settings_cache
-    if field_settings is None:
-        field_settings = {}
-    return mark_safe( json.dumps(field_settings) )
+    widget = field.field.widget
+    return mark_safe( json.dumps(widget.editor_config_manager.editor_config) )
 djangocodemirror_init_input.is_safe = True
 register.filter(djangocodemirror_init_input)

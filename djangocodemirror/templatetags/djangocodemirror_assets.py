@@ -21,20 +21,21 @@ class FieldAssetsMixin(object):
         'codemirror_only': False,
         'themes': [item[1] for item in settings_local.CODEMIRROR_THEMES],
         'search_enabled': False,
-        'modes': [],
         'translations': settings_local.DJANGOCODEMIRROR_TRANSLATIONS,
         'csrf': False,
         'cookies_lib': False,
         'codemirror_settings_name': 'default',
         'css_bundle_name': settings_local.BUNDLES_CSS_NAME.format(settings_name='default'),
         'js_bundle_name': settings_local.BUNDLES_JS_NAME.format(settings_name='default'),
+        'lib_buttons_path': settings_local.DJANGOCODEMIRROR_LIB_BUTTONS_PATH,
+        'lib_syntax_methods_path': settings_local.DJANGOCODEMIRROR_LIB_SYNTAX_METHODS_PATH,
     }
     
     def get_app_settings(self, app_settings, widget_instance):
         """
         Return the right app settings (a dict) for the given widget instance
         """
-        if getattr(widget_instance, 'add_jquery'):
+        if getattr(widget_instance, 'add_jquery', None):
             app_settings['add_jquery'] = widget_instance.add_jquery
         if widget_instance.codemirror_only:
             app_settings['codemirror_only'] = True
@@ -49,8 +50,13 @@ class FieldAssetsMixin(object):
             app_settings['js_bundle_name'] = settings_local.BUNDLES_JS_NAME.format(settings_name=app_settings['codemirror_settings_name'])
         
         # Agregate modes
+        if 'modes' not in app_settings:
+            app_settings['modes'] = []
         if widget_instance.opt_mode_syntax:
-            app_settings['modes'].append(widget_instance.opt_mode_syntax)
+            mode_name = widget_instance.opt_mode_syntax
+            if isinstance(mode_name, dict):
+                mode_name = mode_name['name']
+            app_settings['modes'].append(dict(settings_local.CODEMIRROR_MODES).get(mode_name, None))
         
         return app_settings
     
@@ -58,7 +64,7 @@ class FieldAssetsMixin(object):
         """
         Return the right app settings (a dict) for the given widget instance
         """
-        css, js = {"all": []}, []
+        css, js = [], []
         
         js.append("CodeMirror/lib/codemirror.js")
             
@@ -70,14 +76,14 @@ class FieldAssetsMixin(object):
         for item in app_settings.get('modes', []):
             js.append(item)
         
-        if app_settings.get('codemirror_only'):
-            css['all'].append("CodeMirror/lib/codemirror.css")
+        if widget_instance.codemirror_only:
+            css.append("CodeMirror/lib/codemirror.css")
         else:
-            if app_settings.get('add_jquery'):
+            if getattr(widget_instance, 'add_jquery', None):
                 js.append(app_settings['add_jquery'])
                 
-            css['all'].append("css/djangocodemirror.css")
-            css['all'].append("js/qtip/jquery.qtip.min.css")
+            css.append("css/djangocodemirror.css")
+            css.append("js/qtip/jquery.qtip.min.css")
             
             js.append("js/jquery/jquery.cookies.2.2.0.min.js")
             js.append("djangocodemirror/djangocodemirror.translation.js")
@@ -85,22 +91,22 @@ class FieldAssetsMixin(object):
             for item in app_settings.get('translations', []):
                 js.append(item)
 
-            js.append("djangocodemirror/buttons.js")
-            js.append("djangocodemirror/syntax_methods.js")
+            js.append(settings_local.DJANGOCODEMIRROR_LIB_BUTTONS_PATH)
+            js.append(settings_local.DJANGOCODEMIRROR_LIB_SYNTAX_METHODS_PATH)
             js.append("djangocodemirror/djangocodemirror.js")
 
-            if app_settings.get('csrf_enabled'):
+            if widget_instance.opt_csrf_method_name:
                 js.append("djangocodemirror/csrf.js")
 
             js.append("js/qtip/jquery.qtip.min.js")
             js.append("djangocodemirror/qtip_console.js")
         
         for item in app_settings.get('themes', []):
-            css['all'].append(item)
+            css.append(item)
         
         return css, js
 
-class HtmlAssetsRender(FieldAssetsMixin, template.Node):
+class HtmlAssetsRender(template.Node):
     """
     Generate HTML of the node *HtmlMediaRender*
     """
@@ -135,7 +141,11 @@ class HtmlAssetsRender(FieldAssetsMixin, template.Node):
         :param context: Objet du contexte du tag.
         
         :rtype: string
-        :return: Le rendu généré pour le tag capturé.
+        :return: Generated HTML to load needed assets (CSS, JS)
+        
+        TODO: 'mode' setting will not be accumulated, so for multiple fields with 
+              different mode, only one will have its right mode.
+              We should go for another solution wich merge assets list.
         """
         template_path = self.default_template
         given_fields = self.resolve_items(self.args, context)
@@ -145,16 +155,22 @@ class HtmlAssetsRender(FieldAssetsMixin, template.Node):
         if len(given_fields)>0 and isinstance(given_fields[0], basestring):
             template_path = given_fields.pop(0)
         
-        app_settings = copy.deepcopy(self._default_app_settings)
+        first_field = given_fields.pop(0)
+        app_settings = first_field.field.widget.editor_config_manager.editor_config
         
+        css, js = first_field.field.widget.editor_config_manager.find_assets()
         # Update a global context for all fields, so we save only actived option, this 
         # will load all needed assets for all given fields
         for field in given_fields:
             field_widget = field.field.widget
             
-            app_settings = self.get_app_settings(app_settings, field_widget)
+            app_settings = self.editor_config_manager.editor_config
+            app_settings.update(self.editor_config_manager.editor_config)
+            css_sup, js_sup = first_field.field.widget.editor_config_manager.find_assets()
+            css = css + css_sup
+            js = js + js_sup
             
-        context.update(app_settings)
+        context.update({'djangocodemirror_css':css, 'djangocodemirror_js':js})
         html = template.loader.get_template(template_path).render(template.Context(context))
         
         return mark_safe(html)
@@ -212,4 +228,3 @@ def do_djangocodemirror_get_bundles(parser, token):
         return HtmlAssetsRender("djangocodemirror/include_field_bundles.html", *args[1:])
 
 do_djangocodemirror_get_bundles.is_safe = True
-

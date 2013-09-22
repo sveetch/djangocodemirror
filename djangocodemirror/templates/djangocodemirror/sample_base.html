@@ -1,9 +1,12 @@
-{% extends "base_fixed.html" %}
-{% load i18n djangocodemirror_inputs autobreadcrumb djangocodemirror_assets %}
+{% extends "skeleton.html" %}
+{% comment %}{% extends "base_fixed.html" %}{% endcomment %}
+{% comment %}{% load i18n djangocodemirror_inputs autobreadcrumb djangocodemirror_assets %}{% endcomment %}
+{% load i18n djangocodemirror_inputs djangocodemirror_assets %}
 
 {% comment %}Translators: Demonstration page title{% endcomment %}
 {% block head_title %}{% trans "DjangoCodeMirror sample" %}{% endblock %}
-{% block html_more_js %}{{ block.super }} 
+{% comment %}{% block html_more_js %}{{ block.super }} {% endcomment %}
+{% block foot_more_js %}{{ block.super }} 
     {% get_current_language as LANGUAGE_CODE %}
     {% block djangocodemirror_assets_loading %}
         {% djangocodemirror_get_assets form.content %}
@@ -33,7 +36,8 @@
     </script>
 {% endblock %}
 
-{% block content %}
+{% comment %}{% block content %}{% endcomment %}
+{% block base_content %}
     <div id="djangocodemirror-sample">
         <h2>{% trans "DjangoCodeMirror sample" %}</h2>
         <form method="post" action="">{% csrf_token %}
