@@ -17,48 +17,18 @@ else:
 
 if DJANGO_ASSETS_INSTALLED:
     from djangocodemirror import settings_local
-    #from djangocodemirror.templatetags.djangocodemirror_assets import FieldAssetsMixin
+    from djangocodemirror.config import ConfigManager
     
-    #class DummyWidget(object):
-        #"""
-        #Dummy to fake a form widget instance
-        #"""
-        #codemirror_only = False
-        #themes = False
-        #opt_search_enabled = False
-        #mode = False
-        #csrf = False
-        #translations = False
-
-    #def agregate_bundles_contents(opts, themes=[], translations=[]):
-        #"""
-        #Agregate all needed assets files
-        #"""
-        #widget = DummyWidget()
-        #widget.codemirror_only = opts.get('codemirror_only')
-        #widget.opt_search_enabled = opts.get('search_enabled')
-        #widget.opt_mode_syntax = opts.get('mode')
-        #widget.opt_csrf_method_name = opts.get('csrf')
-        #widget.themes = themes
-        #widget.translations = translations
-        ## Find assets
-        #mix = FieldAssetsMixin()
-        #opts = mix.get_app_settings(opts, widget)
-        #css, js = mix.find_assets(opts, widget)
+    # Build all Bundles from available editor settings
+    for settings_name,settings_values in settings_local.CODEMIRROR_SETTINGS.items():
+        config = ConfigManager(config_name=settings_name)
         
-        #return css, js
-    
-    ## Build all Bundles from available editor settings
-    #for settings_name,settings_values in settings_local.CODEMIRROR_SETTINGS.items():
-        #css_name = settings_local.BUNDLES_CSS_NAME.format(settings_name=settings_name)
-        #js_name = settings_local.BUNDLES_JS_NAME.format(settings_name=settings_name)
+        css_options = settings_local.BUNDLES_CSS_OPTIONS.copy()
+        css_options['output'] = css_options['output'].format(settings_name=settings_name)
+        js_options = settings_local.BUNDLES_JS_OPTIONS.copy()
+        js_options['output'] = js_options['output'].format(settings_name=settings_name)
         
-        #css_options = settings_local.BUNDLES_CSS_OPTIONS.copy()
-        #css_options['output'] = css_options['output'].format(settings_name=settings_name)
-        #js_options = settings_local.BUNDLES_JS_OPTIONS.copy()
-        #js_options['output'] = js_options['output'].format(settings_name=settings_name)
+        css_contents, js_contents = config.find_assets()
         
-        #css_contents, js_contents = agregate_bundles_contents(settings_values, themes=settings_local.CODEMIRROR_THEMES, translations=settings_local.DJANGOCODEMIRROR_TRANSLATIONS)
-        
-        #register(css_name, Bundle(*css_contents, **css_options))
-        #register(js_name, Bundle(*js_contents, **js_options))
+        register(config.settings['css_bundle_name'], Bundle(*css_contents, **css_options))
+        register(config.settings['js_bundle_name'], Bundle(*js_contents, **js_options))

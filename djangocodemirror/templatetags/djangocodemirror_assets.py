@@ -13,99 +13,6 @@ from djangocodemirror import settings_local
 
 register = template.Library()
 
-class FieldAssetsMixin(object):
-    """
-    Base mixin
-    """
-    _default_app_settings = {
-        'codemirror_only': False,
-        'themes': [item[1] for item in settings_local.CODEMIRROR_THEMES],
-        'search_enabled': False,
-        'translations': settings_local.DJANGOCODEMIRROR_TRANSLATIONS,
-        'csrf': False,
-        'cookies_lib': False,
-        'codemirror_settings_name': 'default',
-        'css_bundle_name': settings_local.BUNDLES_CSS_NAME.format(settings_name='default'),
-        'js_bundle_name': settings_local.BUNDLES_JS_NAME.format(settings_name='default'),
-        'lib_buttons_path': settings_local.DJANGOCODEMIRROR_LIB_BUTTONS_PATH,
-        'lib_syntax_methods_path': settings_local.DJANGOCODEMIRROR_LIB_SYNTAX_METHODS_PATH,
-    }
-    
-    def get_app_settings(self, app_settings, widget_instance):
-        """
-        Return the right app settings (a dict) for the given widget instance
-        """
-        if getattr(widget_instance, 'add_jquery', None):
-            app_settings['add_jquery'] = widget_instance.add_jquery
-        if widget_instance.codemirror_only:
-            app_settings['codemirror_only'] = True
-        if widget_instance.opt_search_enabled:
-            app_settings['search_enabled'] = True
-        if widget_instance.opt_csrf_method_name:
-            app_settings['csrf_enabled'] = True
-        # This one is not "cumulative", the last one is allways used, need another solution
-        if hasattr(widget_instance, 'codemirror_settings_name'):
-            app_settings['codemirror_settings_name'] = getattr(widget_instance, 'codemirror_settings_name')
-            app_settings['css_bundle_name'] = settings_local.BUNDLES_CSS_NAME.format(settings_name=app_settings['codemirror_settings_name'])
-            app_settings['js_bundle_name'] = settings_local.BUNDLES_JS_NAME.format(settings_name=app_settings['codemirror_settings_name'])
-        
-        # Agregate modes
-        if 'modes' not in app_settings:
-            app_settings['modes'] = []
-        if widget_instance.opt_mode_syntax:
-            mode_name = widget_instance.opt_mode_syntax
-            if isinstance(mode_name, dict):
-                mode_name = mode_name['name']
-            app_settings['modes'].append(dict(settings_local.CODEMIRROR_MODES).get(mode_name, None))
-        
-        return app_settings
-    
-    def find_assets(self, app_settings, widget_instance):
-        """
-        Return the right app settings (a dict) for the given widget instance
-        """
-        css, js = [], []
-        
-        js.append("CodeMirror/lib/codemirror.js")
-            
-        if app_settings.get('search_enabled'):
-            js.append("CodeMirror/lib/util/dialog.js")
-            js.append("CodeMirror/lib/util/search.js")
-            js.append("CodeMirror/lib/util/searchcursor.js")
-        
-        for item in app_settings.get('modes', []):
-            js.append(item)
-        
-        if widget_instance.codemirror_only:
-            css.append("CodeMirror/lib/codemirror.css")
-        else:
-            if getattr(widget_instance, 'add_jquery', None):
-                js.append(app_settings['add_jquery'])
-                
-            css.append("css/djangocodemirror.css")
-            css.append("js/qtip/jquery.qtip.min.css")
-            
-            js.append("js/jquery/jquery.cookies.2.2.0.min.js")
-            js.append("djangocodemirror/djangocodemirror.translation.js")
-            
-            for item in app_settings.get('translations', []):
-                js.append(item)
-
-            js.append(settings_local.DJANGOCODEMIRROR_LIB_BUTTONS_PATH)
-            js.append(settings_local.DJANGOCODEMIRROR_LIB_SYNTAX_METHODS_PATH)
-            js.append("djangocodemirror/djangocodemirror.js")
-
-            if widget_instance.opt_csrf_method_name:
-                js.append("djangocodemirror/csrf.js")
-
-            js.append("js/qtip/jquery.qtip.min.js")
-            js.append("djangocodemirror/qtip_console.js")
-        
-        for item in app_settings.get('themes', []):
-            css.append(item)
-        
-        return css, js
-
 class HtmlAssetsRender(template.Node):
     """
     Generate HTML of the node *HtmlMediaRender*
@@ -170,7 +77,12 @@ class HtmlAssetsRender(template.Node):
             css = css + css_sup
             js = js + js_sup
             
-        context.update({'djangocodemirror_css':css, 'djangocodemirror_js':js})
+        context.update({
+            'djangocodemirror_css': css,
+            'djangocodemirror_js': js,
+            'css_bundle_name': first_field.field.widget.editor_config_manager.settings['css_bundle_name'],
+            'js_bundle_name': first_field.field.widget.editor_config_manager.settings['js_bundle_name'],
+        })
         html = template.loader.get_template(template_path).render(template.Context(context))
         
         return mark_safe(html)

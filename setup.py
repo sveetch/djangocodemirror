@@ -24,7 +24,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     install_requires=[
-        'rstview',
+        'rstview==0.1.2',
     ],
     include_package_data=True,
     zip_safe=False

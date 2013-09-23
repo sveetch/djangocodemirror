@@ -9,11 +9,11 @@
 {% block foot_more_js %}{{ block.super }} 
     {% get_current_language as LANGUAGE_CODE %}
     {% block djangocodemirror_assets_loading %}
-        {% djangocodemirror_get_assets form.content %}
+        {% comment %}{% djangocodemirror_get_assets form.content %}{% endcomment %}
         {% comment %}You could also use the bundle mode if you have installed django-assets (but only 
         if you don't directly use the 'CodeMirrorAttrsWidget' widget, just remove the previous 
-        djangocodemirror_get_assets' line and uncomment the following :
-        {% djangocodemirror_get_bundles form.content %}{% endcomment %}
+        djangocodemirror_get_assets' line and uncomment the following :{% endcomment %}
+        {% djangocodemirror_get_bundles form.content %}
     {% endblock %}
     <script type="text/javascript">
     //<![CDATA[

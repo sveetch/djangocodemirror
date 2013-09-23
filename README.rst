@@ -223,7 +223,7 @@ The widget accept some additional arguments :
 
 * ``codemirror_only`` A *boolean* to disable the `DjangoCodeMirror`_ usage at benefit of 
   `CodeMirror`_. It is ``False`` by default;
-* ``codemirror_settings_name`` : name of the settings to use, a valid key name from 
+* ``config_name`` : name of the settings to use, a valid key name from 
   ``settings.CODEMIRROR_SETTINGS``;
 * ``codemirror_settings_extra`` an optional dict to override some settings;
 * ``embed_settings`` : A *boolean* to active the automatic embed of the needed 
@@ -243,12 +243,12 @@ line numbers :
     from djangocodemirror.fields import CodeMirrorWidget
     
     class CodeMirrorSampleForm(forms.Form):
-        content = forms.CharField(label="Your content", widget=CodeMirrorWidget(codemirror_only=True, codemirror_settings_name='default'}))
+        content = forms.CharField(label="Your content", widget=CodeMirrorWidget(config_name='default'}))
         
         def save(self, *args, **kwargs):
             return
 
-Note that previously, ``CodeMirrorWidget`` required the ``codemirror_attrs`` to directly receives settings as a dict. This is not the behavior anymore, because the widget was not aware of the settings name that is needed with the Assets bundle system. If you don't want to use Assets bundles and want to directly specify settings as a dict, you will have to use the ``CodeMirrorAttrsWidget`` that accepts the same argument as ``CodeMirrorWidget`` but with ``codemirror_attrs`` instead of ``codemirror_settings_name``.
+Note that previously, ``CodeMirrorWidget`` required the ``codemirror_attrs`` to directly receives settings as a dict. This is not the behavior anymore, because the widget was not aware of the settings name that is needed with the Assets bundle system. If you don't want to use Assets bundles and want to directly specify settings as a dict, you will have to use the ``CodeMirrorAttrsWidget`` that accepts the same argument as ``CodeMirrorWidget`` but with ``codemirror_attrs`` instead of ``config_name``.
 
 Using within the Django admin
 -----------------------------
@@ -265,7 +265,7 @@ You would have a model admin like this : ::
 
     class MyModelAdmin(admin.ModelAdmin):
         formfield_overrides = {
-            models.TextField: {'widget': CodeMirrorWidget(codemirror_settings_name='default', embed_settings=True, add_jquery=True)},
+            models.TextField: {'widget': CodeMirrorWidget(config_name='default', embed_settings=True, add_jquery=True)},
         }
 
 Note the ``embed_settings`` and ``add_jquery`` arguments :
@@ -280,7 +280,7 @@ This inherit from ``django.forms.CharField`` to automatically use `CodeMirrorWid
 the widget field. The widget set the ``codemirror_only`` attribute to ``True`` to use 
 only the `CodeMirror`_ editor.
 
-It take an additional named argument ``codemirror_settings_name`` like `CodeMirrorWidget`_, his 
+It take an additional named argument ``config_name`` like `CodeMirrorWidget`_, his 
 default value correspond to the ``default`` setting of `CODEMIRROR_SETTINGS`_.
 
 ::
@@ -289,7 +289,7 @@ default value correspond to the ``default`` setting of `CODEMIRROR_SETTINGS`_.
     from djangocodemirror.fields import CodeMirrorField
     
     class CodeMirrorSampleForm(forms.Form):
-        content_codemirror = CodeMirrorField(label=u"Your content", codemirror_settings_name='default'})
+        content_codemirror = CodeMirrorField(label=u"Your content", config_name='default'})
         
         def save(self, *args, **kwargs):
             return
@@ -300,7 +300,7 @@ DjangoCodeMirrorField
 It is identical as `CodeMirrorField`_ but for usage of `DjangoCodeMirror`_ as the widget 
 field.
 
-His default value for ``codemirror_settings_name`` corresponds to 
+His default value for ``config_name`` corresponds to 
 `DJANGOCODEMIRROR_DEFAULT_SETTING`_.
 
 ::
@@ -309,7 +309,7 @@ His default value for ``codemirror_settings_name`` corresponds to
     from djangocodemirror.fields import CodeMirrorField
     
     class CodeMirrorSampleForm(forms.Form):
-        content_djangocodemirror = DjangoCodeMirrorField(label=u"Your content", codemirror_settings_name='djangocodemirror'})
+        content_djangocodemirror = DjangoCodeMirrorField(label=u"Your content", config_name='djangocodemirror'})
         
         def save(self, *args, **kwargs):
             return
@@ -318,12 +318,8 @@ Application settings
 ====================
 
 All default app settings is located in the ``settings_local.py`` file of 
-``djangocodemirror``, you can modify them in your project settings.
-
-.. NOTE:: All app settings are overwritten if present in your project settings with the 
-          exception of dict variables. This is to be remembered when you want to add a 
-          new entry in a list variable, you will have to copy the default version in 
-          your settings with the new entry otherwise default variable will be lost.
+``djangocodemirror``, you can modify them in your project settings using
+the ``CODEMIRROR_SETTINGS`` setting.
 
 CODEMIRROR_FIELD_INIT_JS
 ************************

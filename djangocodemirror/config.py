@@ -22,7 +22,6 @@ class ConfigManager(object):
         'embed_settings': None,
         'csrf': None,
         'search_enabled': None,
-        'cookies_lib': None,
         
         'add_jquery': None,
         
@@ -45,54 +44,23 @@ class ConfigManager(object):
     _pass_to_public = {
         #INTERNAL_NAME: PUBLIC_NAME,
         'mode': None,
-        #'csrf': None,
+        'csrf': None,
     }
     
-    def __init__(self, *args, **kwargs):
-        self.kwargs = kwargs or {} # internal store
-        
-        self.codemirror_attrs = kwargs.pop('codemirror_attrs', None) #to pass js settings only
-        self.codemirror_settings_extra = kwargs.pop('codemirror_settings_extra', {}) #to override some codemirror_attrs
-        
-        # Init with default config
+    def __init__(self, config_name='default'):
+        self.config_name = config_name
         self.settings = copy.deepcopy(self._default_app_settings)
+        self.settings.update(copy.deepcopy(settings_local.CODEMIRROR_SETTINGS[config_name]))
         
-        # Fill default config with codemirror_attrs
-        if self.codemirror_attrs:
-            self.settings.update(self.codemirror_attrs)
         
-        # Then fill config with given instance arguments
-        self.settings.update(kwargs)
-        
-        # Compute some settings
-        self.compute()
-        
-    def compute(self):
-        # Resolve codemirror_attrs from the settings name
-        if self.codemirror_attrs is None:
-            self.codemirror_attrs = copy.deepcopy(settings_local.CODEMIRROR_SETTINGS[self.settings['codemirror_settings_name']])
-            self.codemirror_attrs.update(self.codemirror_settings_extra)
-            # TODO: this will overwrite on given kwargs, it's not what we want initially
-            self.settings.update(self.codemirror_attrs)
-        
-        # Bundle assets key name
-        if self.settings['codemirror_settings_name']:
-            self.settings['css_bundle_name'] = settings_local.BUNDLES_CSS_NAME.format(settings_name=self.settings['codemirror_settings_name'])
-            self.settings['js_bundle_name'] = settings_local.BUNDLES_JS_NAME.format(settings_name=self.settings['codemirror_settings_name'])
+        self.settings['css_bundle_name'] = settings_local.BUNDLES_CSS_NAME.format(settings_name=config_name)
+        self.settings['js_bundle_name'] = settings_local.BUNDLES_JS_NAME.format(settings_name=config_name)
         
         if 'mode' in self.settings and self.settings['mode']:
             self.settings['current_mode_name'], self.settings['current_mode_path'] = self._resolve_mode(self.settings['mode'])
         
         if self.settings['add_jquery'] is not None and self.settings['add_jquery'] is True:
             self.settings['add_jquery'] = settings_local.DEFAULT_JQUERY_PATH
-    
-    def merge_config(self, **kwargs):
-        """
-        Merge given dict config within internal settings
-        """
-        self.settings.update(kwargs)
-        # Re-Compute
-        self.compute()
     
     def debug_internal_config(self):
         print "="*60
@@ -113,7 +81,7 @@ class ConfigManager(object):
         Return a dict config only with public options (with reversed urls if any)
         """
         published = copy.deepcopy(self.settings)
-        filtred = self._filtred+[a for a in self._default_app_settings.keys() if a not in self._pass_to_public]
+        filtred = [a for a in self._default_app_settings.keys() if a not in self._pass_to_public]
         # Remove internal values except those from authorized list '_pass_to_public'
         for opt in self.settings:
             if opt in filtred:
