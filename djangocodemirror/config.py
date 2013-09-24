@@ -148,9 +148,9 @@ class ConfigManager(object):
                 js.append(self.settings['add_jquery'])
                 
             css.append("css/djangocodemirror.css")
-            css.append("js/qtip/jquery.qtip.min.css")
+            css.append("js/qtip/jquery.qtip.css")
             
-            js.append("js/jquery/jquery.cookies.2.2.0.min.js")
+            js.append("js/jquery/jquery.cookies.2.2.0.js")
             js.append("djangocodemirror/djangocodemirror.translation.js")
             
             for item in self.settings['translations']:
@@ -163,7 +163,7 @@ class ConfigManager(object):
             if self.settings['csrf']:
                 js.append("djangocodemirror/csrf.js")
 
-            js.append("js/qtip/jquery.qtip.min.js")
+            js.append("js/qtip/jquery.qtip.js")
             js.append("djangocodemirror/qtip_console.js")
         
         for item in self.settings['themes']:
