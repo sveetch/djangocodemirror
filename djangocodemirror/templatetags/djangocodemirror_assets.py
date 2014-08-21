@@ -63,6 +63,10 @@ class HtmlAssetsRender(template.Node):
             template_path = given_fields.pop(0)
         
         first_field = given_fields.pop(0)
+        
+        # We need to trigger Widget's media attribute to have the 'editor_config_manager' attribute
+        first_field.field.widget.media
+        
         app_settings = first_field.field.widget.editor_config_manager.editor_config
         
         css, js = first_field.field.widget.editor_config_manager.find_assets()
