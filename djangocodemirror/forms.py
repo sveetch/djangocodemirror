@@ -65,6 +65,8 @@ class DjangoCodeMirrorSettingsForm(forms.Form):
     """
     Editor settings form
     """
+    editor_settings_url = 'djangocodemirror-settings'
+    
     theme = forms.ChoiceField(label=_('theme'), initial=settings_local.DJANGOCODEMIRROR_DEFAULT_THEME, choices=THEME_CHOICES, required=False, help_text=_("The theme to style the editor with."))
     lineWrapping = forms.BooleanField(label=_('line wrapping'), initial=True, required=False, help_text=_("Whether CodeMirror should scroll or wrap for long lines."))
     no_tab_char = forms.BooleanField(label=_('avoid tabulation'), initial=True, required=False, help_text=_("Disable usage of any tabulation character, instead each tabulation will be replaced by 4 space characters."))
@@ -72,7 +74,7 @@ class DjangoCodeMirrorSettingsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.helper = get_form_helper()
         if self.helper is not None:
-            self.helper.form_action = reverse('djangocodemirror-settings')
+            self.helper.form_action = reverse(self.editor_settings_url)
         
         super(DjangoCodeMirrorSettingsForm, self).__init__(*args, **kwargs)
     
