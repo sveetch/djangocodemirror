@@ -7,7 +7,6 @@
 .. _Django internationalization system: https://docs.djangoproject.com/en/dev/topics/i18n/
 .. _django-assets: http://pypi.python.org/pypi/django-assets
 .. _ReStructuredText: http://docutils.sourceforge.net/rst.html
-.. _qTip2: http://craigsworks.com/projects/qtip2/
 
 Introduction
 ============
@@ -43,8 +42,8 @@ Requires
 
 Your project will have to includes a copy of these Javascript libraries :
 
-* `jQuery`_ >= 1.7;
-* `CodeMirror`_ but it is included as a git submodule;
+* `jQuery`_ >= 1.7 (2.0 has not been tested);
+* `CodeMirror`_ == 3.0 but it is allready included as a git submodule or in the Python package;
 
 Optionnally, to use Assets bundles instead of plain assets, you can install `django-assets`_.
 
@@ -188,8 +187,7 @@ A full example of these settings with the plugin :
 
 The plugin use some additional libraries (allready shipped) :
 
-* `jquery.cookies <http://plugins.jquery.com/project/Cookie>`_;
-* `qTip2`_;
+* `jquery.cookie <https://github.com/carhartl/jquery-cookie>`_ >= 1.3.1 but note that if you use Foundation5 this library is allready shipped in its vendor Javascript libraries;
 
 .. NOTE:: If you directly use the plugin, you will have to load yourself all needed 
           libaries, see `Fields static files`_ for a details of these.
@@ -231,9 +229,6 @@ The widget accept some additional arguments :
   by default because there is lots of possible scenarios to manage your assets and 
   Javascript code. So if you active this, DjangoCodeMirror assets must be loaded 
   BEFORE your field appear in the HTML code;
-* ``add_jquery`` an string to specify a path to the jQuery lib to add to 
-  the used assets, it's not really usefull because generally your pages allready 
-  embed it;
 
 Another example where the ``content`` field will be a `CodeMirror`_ editor with enabled 
 line numbers :
@@ -265,13 +260,10 @@ You would have a model admin like this : ::
 
     class MyModelAdmin(admin.ModelAdmin):
         formfield_overrides = {
-            models.TextField: {'widget': CodeMirrorWidget(config_name='default', embed_settings=True, add_jquery=True)},
+            models.TextField: {'widget': CodeMirrorWidget(config_name='default', embed_settings=True)},
         }
 
-Note the ``embed_settings`` and ``add_jquery`` arguments :
-
-* ``embed_settings`` specify to add the Javascript settings directly bellow the textarea tag and the second one;
-* ``add_jquery`` specify a path to load the jQuery lib in the widget medias (because the shipped one within Django admin is outdated and binded on a specify spacename). See `DEFAULT_JQUERY_PATH`_;
+Note the ``embed_settings``, it specifies to add the Javascript settings directly bellow the textarea tag and the second one;
 
 CodeMirrorField
 ***************
@@ -366,13 +358,6 @@ DJANGOCODEMIRROR_DEFAULT_SETTING
 The keyword to use to select the default settings with `DjangoCodeMirrorField`_. Note 
 that `CodeMirrorField`_ always use the keyword ``default`` to select his default 
 settings.
-
-DEFAULT_JQUERY_PATH
-*******************
-
-**Type :** *string*
-
-The default path to use with the ``add_jquery`` widget argument. It will only be used if the ``add_jquery`` argument is ``True``. If ``add_jquery`` argument is a string, the string will be used as the path. The default value for this settings is pointed to a jQuery version (1.10.x) embedded in the djangocodemirror statics.
 
 DJANGOCODEMIRROR_TRANSLATIONS
 *****************************

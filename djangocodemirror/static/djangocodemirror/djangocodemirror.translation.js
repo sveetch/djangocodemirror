@@ -10,7 +10,7 @@ DCM_Translations = {};
 * If lang is not given, use the default language. Keys should be strings writed in the 
 * default language so he don't need to have a translation.
 * 
-* If the key or lang does not exist in the registry, this simply return the given 
+* If the key or lang does not exist in the registry, this simply returns the given 
 * key.
 */
 function safegettext(key, lang) {

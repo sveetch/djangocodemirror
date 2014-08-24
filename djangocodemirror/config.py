@@ -23,8 +23,6 @@ class ConfigManager(object):
         'csrf': None,
         'search_enabled': None,
         
-        'add_jquery': None,
-        
         'mode': None,
         'current_mode_name': None,
         'current_mode_path': None,
@@ -58,9 +56,6 @@ class ConfigManager(object):
         
         if 'mode' in self.settings and self.settings['mode']:
             self.settings['current_mode_name'], self.settings['current_mode_path'] = self._resolve_mode(self.settings['mode'])
-        
-        if self.settings['add_jquery'] is not None and self.settings['add_jquery'] is True:
-            self.settings['add_jquery'] = settings_local.DEFAULT_JQUERY_PATH
     
     def debug_internal_config(self):
         print "="*60
@@ -146,7 +141,7 @@ class ConfigManager(object):
         else:
             css.append("css/djangocodemirror.css")
             
-            js.append("js/jquery/jquery.cookies.2.2.0.js")
+            #js.append("js/jquery/jquery.cookies.2.2.0.js")
             js.append("djangocodemirror/djangocodemirror.translation.js")
             
             for item in self.settings['translations']:

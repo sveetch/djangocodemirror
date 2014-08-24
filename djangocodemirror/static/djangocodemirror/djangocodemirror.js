@@ -31,64 +31,57 @@ var methods = {
      */
     init : function(options) {
         // Default editor settings
-        var settings = jQuery.extend( {
-            // Default settings to edit without any tab character and allways use 4 
-            // spaces instead
-            "indentUnit": 4,
-            "tabSize": 4,
-            "indentWithTabs": false,
-            // To enable the automatic line wrapping
-            "lineWrapping": true,
-            // To display line numbers
-            "lineNumbers": false,
-            // For DjangoCodeMirror only
-            "fullscreen": true,
-            "help_link": '',
-            "enable_active_line": true,
-            "display_cursor_position": true,
-            "undo_buttons": true,
-            // Used by some features
-            "csrf": false,
-            // For the preview feature
-            "preview_url": false,
-            // For the quicksave feature
-            "quicksave_url": '',
-            "quicksave_datas": {},
-            // For the editor settings feature
-            "settings_cookie": '',
-            "settings_url": '',
-            // Deprecated?
-            "preview_padding": 10,
-            "preview_borders": 0
-        }, options);
-        // Default button settings
-        var default_button_settings = {
-            "id" : '',
-            "name" : '',
-            "funcname" : 'common',
-            "method" : 'syntax',
-            "classname" : '',
-            "key" : false,
-            "linechar" : false,
-            "url" : false,
-            "placeholder" : '',
-            "begin_with" : false,
-            "close_with" : false,
-            "move_cursor_char" : 0,
-            "separator" : false
-        };
+        var settings = jQuery.extend({
+                // Default settings to edit without any tab character and allways use 4 
+                // spaces instead
+                "indentUnit": 4,
+                "tabSize": 4,
+                "indentWithTabs": false,
+                // To enable the automatic line wrapping
+                "lineWrapping": true,
+                // To display line numbers
+                "lineNumbers": false,
+                // For DjangoCodeMirror only
+                "fullscreen": true,
+                "help_link": '',
+                "enable_active_line": true,
+                "display_cursor_position": true,
+                "undo_buttons": true,
+                // Used by some features
+                "csrf": false,
+                // For the preview feature
+                "preview_url": false,
+                // For the quicksave feature
+                "quicksave_url": '',
+                "quicksave_datas": {},
+                // For the editor settings feature
+                "settings_cookie": '',
+                "settings_url": '',
+                // Deprecated?
+                "preview_padding": 10,
+                "preview_borders": 0
+            }, options),
+            // Default button settings
+            default_button_settings = {
+                "id" : '',
+                "name" : '',
+                "funcname" : 'common',
+                "method" : 'syntax',
+                "classname" : '',
+                "key" : false,
+                "linechar" : false,
+                "url" : false,
+                "placeholder" : '',
+                "begin_with" : false,
+                "close_with" : false,
+                "move_cursor_char" : 0,
+                "separator" : false
+            };
         
         // Build DjangoTribune for each selected element
         return this.each(function() {
-            // Update settings from these saved in cookie, if any
-            if(settings.settings_cookie) {
-                var cookie = jQuery.cookies.get("djangocodemirror_user_settings");
-                if(cookie){
-                    settings = jQuery.extend(settings, cookie);
-                }
-            }
-            
-            var input_source = jQuery(this), // this is allways the input source from where is created djangocodemirror
+            var cookie, codemirror_instance, buttons, button_settings,
+                input_source = jQuery(this), // this is allways the input source from where is created djangocodemirror
                 instance_id = "dcm-" + (input_source.attr('id')||'default'), // djangocodemirror instance ID
                 container = jQuery("<div class=\"DjangoCodeMirror\"></div>"),
                 header = jQuery("<div class=\"DjangoCodeMirror_menu\"><ul></ul><div class=\"cale\"></div></div>"),
@@ -96,6 +89,14 @@ var methods = {
                 tab_preview_on = jQuery("<li class=\"tab preview\"><a>"+safegettext("Preview")+"</a></li>"),
                 tab_preview_off = jQuery("<li class=\"tab editor tabactive\"><a>"+safegettext("Edit")+"</a></li>"),
                 cursorpos_element = "<div class=\"cursor_pos\">"+safegettext("Line")+"&nbsp;:&nbsp;<span class=\"line\">1</span> &nbsp;&nbsp; "+safegettext("Col")+"&nbsp;:&nbsp;<span class=\"ch\">1</span></div>";
+            
+            // Update settings from these saved in cookie, if any
+            if(settings.settings_cookie) {
+                cookie = jQuery.cookie("djangocodemirror_user_settings");
+                if(cookie){
+                    settings = jQuery.extend(settings, JSON.parse(cookie));
+                }
+            }
             
             // Append container, append its menu header, move the input in the container
             jQuery(this).before(container);
@@ -115,9 +116,9 @@ var methods = {
             }
             
             // Build CodeMirror
-            var codemirror_instance = CodeMirror.fromTextArea(this, settings);
-            // Force some certain key biding
+            codemirror_instance = CodeMirror.fromTextArea(this, settings);
             
+            // Force some certain key biding
             codemirror_instance.setOption('extraKeys', {
                 "Tab": "indentMore", 
                 "Shift-Tab": "indentLess",
@@ -144,10 +145,10 @@ var methods = {
             });
             
             // Build buttons bar
-            var buttons = coreutils.buttons_preprocessing(settings, DCM_Buttons_settings);
+            buttons = coreutils.buttons_preprocessing(settings, DCM_Buttons_settings);
             jQuery.each(buttons, function(item_index, item_value) {
                 if(item_value) {
-                    var button_settings = jQuery.extend({}, default_button_settings, item_value);
+                    button_settings = jQuery.extend({}, default_button_settings, item_value);
                     if(button_settings.separator) {
                         input_source.djangocodemirror('add_bar_separator', container)
                     } else {
@@ -221,7 +222,8 @@ var events = {
      *       so there should allways be improvements in this code to speed up things
      */
     cursor_activity: function(input_source) {
-        var instance_data = input_source.data("djangocodemirror"),
+        var history,
+            instance_data = input_source.data("djangocodemirror"),
             cur = instance_data.codemirror.getCursor();
         // Reset previous highlighted lines
         if(instance_data.settings.enable_active_line){
@@ -231,13 +233,13 @@ var events = {
         jQuery(".DjangoCodeMirror_tabs .cursor_pos span.line", instance_data.container).html((cur.line+1));
         jQuery(".DjangoCodeMirror_tabs .cursor_pos span.ch", instance_data.container).html((cur.ch+1));
         // Update the undo/redo buttons class from history items
-        var histo = instance_data.codemirror.historySize();
-        if(histo.undo>0) {
+        history = instance_data.codemirror.historySize();
+        if(history.undo>0) {
             jQuery("#"+instance_data.instance_id+"-Undo").addClass("active").removeClass("inactive");
         } else {
             jQuery("#"+instance_data.instance_id+"-Undo").addClass("inactive").removeClass("active");
         }
-        if(histo.redo>0) {
+        if(history.redo>0) {
             jQuery("#"+instance_data.instance_id+"-Redo").addClass("active").removeClass("inactive");
         } else {
             jQuery("#"+instance_data.instance_id+"-Redo").addClass("inactive").removeClass("active");
@@ -251,7 +253,8 @@ var events = {
      * Handle click on common button (aka using the public syntax methods)
      */
     button_click: function(event) {
-        var input_source = jQuery(event.data.input_source),
+        var value,
+            input_source = jQuery(event.data.input_source),
             button_settings = event.data.button_settings,
             instance_data = input_source.data("djangocodemirror");
         
@@ -259,7 +262,7 @@ var events = {
             button_settings.placeholder = safegettext(button_settings.placeholder);
         }
         // Get the content value if not empty, else use the placeholder value
-        var value = instance_data.codemirror.getSelection()||button_settings.placeholder;
+        value = instance_data.codemirror.getSelection()||button_settings.placeholder;
         // Evaluate method
         // TODO: should not use a constant for methods object container
         eval("DCM_Syntax_Methods."+button_settings.funcname)(value, instance_data.codemirror, button_settings);
@@ -325,7 +328,8 @@ var events = {
      * Maximize editor size
      */
     maximize_editor: function(event) {
-        var input_source = jQuery(event.data.input_source),
+        var scene, old_place_scene, elems_css,
+            input_source = jQuery(event.data.input_source),
             instance_data = input_source.data("djangocodemirror");
         
         jQuery("body","html").css({'height':"100%", 'width':"100%"});
@@ -334,8 +338,8 @@ var events = {
         instance_data.container.addClass("fullScreen");
         // Build new scene where will be moved the editor in maximized size and add a 
         // empty container to mark the initial editor position
-        var scene = jQuery('<div>').attr('id', "DjangoCodeMirror_fullscreen_scene");
-        var old_place_scene = jQuery('<div>').attr('id', "DjangoCodeMirror_old_place");
+        scene = jQuery('<div>').attr('id', "DjangoCodeMirror_fullscreen_scene");
+        old_place_scene = jQuery('<div>').attr('id', "DjangoCodeMirror_old_place");
         
         // Save initial editor size to restore after exiting the maximized mode
         jQuery(".CodeMirror", instance_data.container).data('original_size', jQuery(".CodeMirror", instance_data.container).height());
@@ -357,7 +361,7 @@ var events = {
         jQuery("body").append(scene);
         
         // Calcul et applique les nouvelles dimensions
-        var elems_css = coreutils.get_fullscreen_sizes(input_source);
+        elems_css = coreutils.get_fullscreen_sizes(input_source);
         scene.css(elems_css[0]).attr('id', "DjangoCodeMirror_fullscreen_scene");
         instance_data.container.css("width", "100%");
         // Met la hauteur de CodeMirror à la dimension qui lui est disponible
@@ -461,19 +465,20 @@ var events = {
                 }
             },
             success: function(data) {
-                var elems_css = coreutils.get_preview_sizes(input_source);
+                var scene, content,
+                    elems_css = coreutils.get_preview_sizes(input_source),
+                    preview_id = "DCM_preview_id_"+jQuery.now();
                 // ID unique du conteneur de la preview à lier au conteneur de SPM
-                var preview_id = "DCM_preview_id_"+jQuery.now();
                 instance_data.container.data("DCM_preview_markid", preview_id);
                 
                 // Scène principal par dessus l'éditeur
-                var scene = jQuery("<div>").css(elems_css[0]);
+                scene = jQuery("<div>").css(elems_css[0]);
                 scene.addClass("DjangoCodeMirrorPreviewScene")
                 scene.attr("id", preview_id);
                 jQuery("body").append(scene);
                 
                 // Conteneur de la preview renvoyée par le parser
-                var content = jQuery("<div>").css(elems_css[1]);
+                content = jQuery("<div>").css(elems_css[1]);
                 content.addClass("PreviewContent")
                 content.addClass("restructuredtext_container")
                 scene.append(content);
@@ -485,10 +490,10 @@ var events = {
                 // Contrôle du clic dans la preview, ouvre les liens dans une nouvelle 
                 // fenêtre et bloque les ancres
                 jQuery("a", content).click(function () {
-                    var url = jQuery(this).attr('href');
-                    var is_anchor = (url && url.indexOf('#')==0) ? true : false;
+                    var url = jQuery(this).attr('href'),
+                        is_anchor = (url && url.indexOf('#')==0) ? true : false;
                     if(url && !is_anchor) {
-                        window.open( url );
+                        window.open(url);
                     }
                     return false;
                 });
@@ -505,7 +510,8 @@ var events = {
      * Close preview display and get back to editor
      */
     hide_preview: function(event) {
-        var input_source = jQuery(event.data.input_source),
+        var preview_id,
+            input_source = jQuery(event.data.input_source),
             instance_data = input_source.data("djangocodemirror");
         
         // Don't add a new preview it if another one is allready displayed
@@ -514,7 +520,7 @@ var events = {
         }
         jQuery(".DjangoCodeMirror_tabs li.editor", instance_data.container).addClass("tabactive");
         jQuery(".DjangoCodeMirror_tabs li.preview", instance_data.container).removeClass("tabactive");
-        var preview_id = instance_data.container.data("DCM_preview_markid");
+        preview_id = instance_data.container.data("DCM_preview_markid");
         jQuery("#"+preview_id).remove();
         jQuery(window).unbind("resize.djc_preview");
         instance_data.container.removeData("DCM_preview_markid");
@@ -536,17 +542,15 @@ var events = {
      */
     show_settings: function(event) {
         var input_source = jQuery(event.data.input_source),
-            instance_data = input_source.data("djangocodemirror");
-        
-        var border = instance_data.container.outerWidth(false) - instance_data.container.innerWidth();
-        var panel = jQuery('<div>').addClass("DjangoCodeMirror_settings_panel").css({
-            "position": "absolute",
-            "z-index": 5000,
-            "width": (instance_data.container.outerWidth()-border)+"px",
-            "height": (instance_data.container.outerHeight()-border)+"px"
-        });
-        
-        var close_link = jQuery('<a/>').attr("href", "#").addClass("close").html("Close");
+            instance_data = input_source.data("djangocodemirror"),
+            border = instance_data.container.outerWidth(false) - instance_data.container.innerWidth(),
+            panel = jQuery('<div>').addClass("DjangoCodeMirror_settings_panel").css({
+                "position": "absolute",
+                "z-index": 5000,
+                "width": (instance_data.container.outerWidth()-border)+"px",
+                "height": (instance_data.container.outerHeight()-border)+"px"
+            }),
+            close_link = jQuery('<a/>').attr("href", "#").addClass("close").html("Close");
         close_link.appendTo(panel);
         jQuery("<h2>"+safegettext("Settings")+"</h2>").appendTo(panel);
         
@@ -643,8 +647,8 @@ var coreutils = {
         // Assume that there are two buttons followed by a separator
         if( button_indexes['FullscreenEnter'] != undefined && button_indexes['FullscreenEnter'] != null){
             if(!settings.fullscreen){
-                var pos_enter = button_indexes['FullscreenEnter'];
-                var pos_exit = button_indexes['FullscreenExit'];
+                var pos_enter = button_indexes['FullscreenEnter'],
+                    pos_exit = button_indexes['FullscreenExit'];
                 delete buttons[pos_enter];
                 delete buttons[pos_exit];
                 if(buttons[pos_exit+1].separator) {
@@ -709,38 +713,37 @@ var coreutils = {
             // TODO: These ones are for a dirty little hack on the top position, there should be 
             //       a better way, at least a more flexible
             fullscreen_enabled = (jQuery("#DjangoCodeMirror_fullscreen_scene").length>0) ? true : false,
-            pos_top_border = (fullscreen_enabled) ? 0 : 1;
-        
-        var scene_css = {
-            'position': "absolute",
-            'z-index': 3000,
-            'left': editor_container.offset().left,
-            'top': editor_container.offset().top-menu_height+pos_top_border,
-            'width': editor_container.outerWidth()-(instance_data.settings.preview_borders*2),
-            'height': editor_container.outerHeight()+menu_height-(instance_data.settings.preview_borders*2),
-            'overflow': 'auto',
-            'padding': instance_data.settings.preview_padding
-        };
-        var content_css = {
-            'width': editor_container.width()-(instance_data.settings.preview_padding*4),
-            'height': editor_container.height()-(instance_data.settings.preview_padding*4),
-            'border-size': 1
-        };
+            pos_top_border = (fullscreen_enabled) ? 0 : 1,
+            scene_css = {
+                'position': "absolute",
+                'z-index': 3000,
+                'left': editor_container.offset().left,
+                'top': editor_container.offset().top-menu_height+pos_top_border,
+                'width': editor_container.outerWidth()-(instance_data.settings.preview_borders*2),
+                'height': editor_container.outerHeight()+menu_height-(instance_data.settings.preview_borders*2),
+                'overflow': 'auto',
+                'padding': instance_data.settings.preview_padding
+            },
+            content_css = {
+                'width': editor_container.width()-(instance_data.settings.preview_padding*4),
+                'height': editor_container.height()-(instance_data.settings.preview_padding*4),
+                'border-size': 1
+            };
         return [scene_css, content_css];
     },
     get_fullscreen_sizes: function(input_source) {
         var instance_data = input_source.data("djangocodemirror"),
             window_elem = jQuery(window),
-            computed_margins = instance_data.container.outerHeight(true) - jQuery(".CodeMirror", instance_data.container).outerHeight(true);
-        var scene_css = {
-            'position': "absolute",
-            'z-index': 2000,
-            'left': 0,
-            'top': window_elem.scrollTop(),
-            'width': window_elem.width(),
-            'height': window_elem.height()
-        };
-        var content_css = {'height':(window_elem.height() - computed_margins) + "px"};
+            computed_margins = instance_data.container.outerHeight(true) - jQuery(".CodeMirror", instance_data.container).outerHeight(true),
+            scene_css = {
+                'position': "absolute",
+                'z-index': 2000,
+                'left': 0,
+                'top': window_elem.scrollTop(),
+                'width': window_elem.width(),
+                'height': window_elem.height()
+            },
+            content_css = {'height':(window_elem.height() - computed_margins) + "px"};
         return [scene_css, content_css];
     }
 };

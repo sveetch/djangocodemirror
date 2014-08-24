@@ -1,49 +1,7 @@
 # -*- coding: utf-8 -*-
-import sys
-sys.path[0:0] = [
-  '/home/django/Emencia/parrot-oem/eggs/Pillow-1.7.8-py2.6-linux-x86_64.egg',
-  '/home/django/Emencia/parrot-oem/eggs/Django-1.4.6-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_cms-2.3.7-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_filebrowser_no_grappelli-3.1.1-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/sorl_thumbnail-11.12-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/djangocms_text_ckeditor-1.0.10-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/South-0.7.6-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/crispy_forms_foundation-0.2.2-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_blog_zinnia-0.12.3-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/cmsplugin_zinnia-0.4-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_admin_tools-0.5.1-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_assets-0.8-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/yuicompressor-2.4.7-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/argparse-1.2.1-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_debug_toolbar-0.9.4-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_google_tools-1.0.0-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_excel_response-1.0-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_recaptcha-0.0.6-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/django-apps-src/djangocodemirror',
-  '/home/django/Emencia/parrot-oem/eggs/emencia.django.countries-0.1-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/django-apps-src/emencia-cms-snippet',
-  '/home/django/Emencia/parrot-oem/django-apps-src/emencia-django-slideshows',
-  '/home/django/Emencia/parrot-oem/eggs/django_registration-1.0-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/djangorecipe-1.5-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/zc.recipe.egg-2.0.0-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/zc.buildout-2.2.0-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/setuptools-0.8-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/rstview-0.2-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/webassets-0.8-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/pytz-2013b-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/pyparsing-1.5.7-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_xmlrpc-0.1.5-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_tagging-0.3.1-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_mptt-0.5.2-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/BeautifulSoup-3.2.1-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_crispy_forms-1.2.7-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/html5lib-0.95-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_sekizai-0.7-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/django_classy_tags-0.4-py2.6.egg',
-  '/home/django/Emencia/parrot-oem/eggs/docutils-0.11-py2.6.egg',
-  '/home/django/Emencia/parrot-oem',
-]
-
+"""
+DEPRECATED: These tests are not up-to-date to  with the new API since 0.8, they should be removed.
+"""
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = "project.settings_development"
 

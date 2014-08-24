@@ -11,9 +11,6 @@ CODEMIRROR_FIELD_INIT_JS = getattr(settings, 'CODEMIRROR_FIELD_INIT_JS', u"""<sc
 DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME = getattr(settings, 'DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_NAME', "djangocodemirror_user_settings")
 DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE = getattr(settings, 'SESSION_COOKIE_AGE', (60 * 60 * 24 * 7 * 8))
 
-# The default path to use with the ``add_jquery`` widget argument
-DEFAULT_JQUERY_PATH = "js/jquery/jquery.min.js"
-
 # Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
     'default': {

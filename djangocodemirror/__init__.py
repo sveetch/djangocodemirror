@@ -2,4 +2,4 @@
 """
 Rich Textarea for Django with CodeMirror and some enhancement
 """
-__version__ = '0.9.5'
+__version__ = '0.9.6'
