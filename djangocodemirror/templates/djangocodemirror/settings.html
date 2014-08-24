@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "skeleton.html" %}
 {% load i18n %}
 
 {% block head_title %}{% trans "Your settings" %}{% endblock %}
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}sveedocuments/css/forms.css" type="text/css" />
 {% endblock %}
 
-{% block content %}
+{% block base_content %}
     <h3>{% trans "Your settings" %} </h3>
     {% if save_success %}<p>Your settings has been saved.</p>{% endif %}
     {% include "djangocodemirror/include_settings_form.html" %}

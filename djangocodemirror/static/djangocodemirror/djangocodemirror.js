@@ -18,6 +18,10 @@ jQuery.fn.djangocodemirror = function(method) {
 };
 
 
+function createGrowl(element_instance, kind, title, message, persistent){
+    return
+}
+
 /*
  * Plugin methods
  */
@@ -34,7 +38,7 @@ var methods = {
             "tabSize": 4,
             "indentWithTabs": false,
             // To enable the automatic line wrapping
-            "lineWrapping": false,
+            "lineWrapping": true,
             // To display line numbers
             "lineNumbers": false,
             // For DjangoCodeMirror only
@@ -214,7 +218,7 @@ var events = {
     /*
      * Set some marks and do some computing for each cursor activity
      * NOTE: this is heavily called because the cursor activity is constantly used,
-     *       so there should be improvements in this code to speed up things
+     *       so there should allways be improvements in this code to speed up things
      */
     cursor_activity: function(input_source) {
         var instance_data = input_source.data("djangocodemirror"),

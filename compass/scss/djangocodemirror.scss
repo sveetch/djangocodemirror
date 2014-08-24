@@ -1,11 +1,10 @@
 /*
-* Styles pour DjangoCodeMirror
-* Créé par David THENON en Février 2012
+* DjangoCodeMirror stylesheet
 */
 
 // Load CodeMirror core stylesheets
-@import "CodeMirror/codemirror";
-@import "CodeMirror/dialog";
+@import "components/codemirror";
+@import "components/dialog";
 
 // Load icon files
 @import "djangocodemirror-icons/*.png";
@@ -13,19 +12,18 @@
 // TODO: Remove this fucking "cale" and use a correct clearfix instead
 hr,
 .cale{
-    margin:0;
-    padding:0;
-    visibility:hidden;
-    width:0px;
-    height:0.05px;
-    font-size:0;
-    clear:both;
+    margin: 0;
+    padding: 0;
+    visibility: hidden;
+    width: 0px;
+    height: 0.05px;
+    font-size: 0;
+    clear: both;
 }
 
 /*___________________________
     Ajustements sur CodeMirror
 */
-
 .DjangoCodeMirror{
     padding:0;
     float: left;
@@ -35,11 +33,11 @@ hr,
     background-color: #ffffff;
     
     .CodeMirror{
-        font-size:1.1em;
-        line-height:1.1em;
+/*        font-size: 1.1em;
+        line-height:1.1em;*/
         // Force font to monospace, as some codemirror themes defines other family fonts 
         // like serif or sans-serif like..
-        // NOTE: This does not work, theme selectors are higher than this..
+        // NOTE: Theme selectors are higher than this..
         font-family: monospace !important;
         
         .CodeMirror-scroll{
@@ -243,10 +241,10 @@ hr,
     &.fullScreen{
         border:0;
         border-radius:0;
-        font-size:1.1em;
+/*         font-size:1.1em; */
         
         .CodeMirror{
-            line-height:1.3em;
+/*             line-height:1.3em; */
         }
         
         .CodeMirror-scroll{
@@ -342,32 +340,6 @@ hr,
     border: 0;
     border-radius: 0;
 }
-
-/*______________________________________
-//  Pour les retours d'erreur du parser ReST
-//  TODO: Move to RST stylesheet, this have nothing to do within djangocodemirror 
-//  stylesheet
-//
-.system-message {
-  padding: 8px 35px 8px 14px;
-  margin-bottom: 18px;
-  color: #c09853;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  background-color: #fcf8e3;
-  border: 1px solid #fbeed5;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  color: #b94a48;
-  background-color: #f2dede;
-  border-color: #eed3d7;
-}
-
-.system-message-title {
-  color: inherit;
-  font-weight: bold;
-}
-*/
 
 /*____________________________________
     Pour la démo

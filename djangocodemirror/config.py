@@ -144,11 +144,7 @@ class ConfigManager(object):
         if self.settings['codemirror_only']:
             css.append("CodeMirror/lib/codemirror.css")
         else:
-            if self.settings['add_jquery']:
-                js.append(self.settings['add_jquery'])
-                
             css.append("css/djangocodemirror.css")
-            css.append("js/qtip/jquery.qtip.css")
             
             js.append("js/jquery/jquery.cookies.2.2.0.js")
             js.append("djangocodemirror/djangocodemirror.translation.js")
@@ -162,9 +158,6 @@ class ConfigManager(object):
 
             if self.settings['csrf']:
                 js.append("djangocodemirror/csrf.js")
-
-            js.append("js/qtip/jquery.qtip.js")
-            js.append("djangocodemirror/qtip_console.js")
         
         for item in self.settings['themes']:
             css.append(item)
