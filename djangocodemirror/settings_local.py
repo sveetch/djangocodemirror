@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 App default settings
+
+DEPRECATED
 """
 from django.conf import settings
 
@@ -15,7 +17,6 @@ DJANGOCODEMIRROR_USER_SETTINGS_COOKIE_MAXAGE = getattr(settings, 'SESSION_COOKIE
 CODEMIRROR_SETTINGS = {
     'default': {
         'lineNumbers': True,
-        'YouGotDefaultSettings': True,
         'mode': 'rst',
     },
     'djangocodemirror': {
