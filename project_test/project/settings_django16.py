@@ -154,6 +154,7 @@ CODEMIRROR_SETTINGS = {
         'mode': 'rst',
         'lineWrapping': True,
         'lineNumbers': True,
+        'theme': 'elegant',
         'themes': ['eclipse', 'elegant'],
     },
     'rst-with-all': {
@@ -166,6 +167,7 @@ CODEMIRROR_SETTINGS = {
             "CodeMirror/lib/util/searchcursor.js",
         ],
         'modes': ['rst', 'python', 'css'],
+        'theme': 'nice_lesser_dark',
         'themes': ['eclipse', 'nice_lesser_dark'],
     },
 }

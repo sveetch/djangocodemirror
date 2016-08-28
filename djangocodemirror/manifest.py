@@ -11,6 +11,11 @@ import copy, json
 
 from django.conf import settings
 
+
+class NotRegistered(Exception):
+    pass
+
+
 class CodeMirrorManifest(object):
     """
     CodeMirror config and assets manifest
@@ -19,8 +24,8 @@ class CodeMirrorManifest(object):
         registry (dict): Configuration registry.
         default_internal_config (dict): Editor internal parameters, they
             won't be exposed in codemirror parameters until present in
-            ``_internal_to_codemirror``.
-        _internal_to_codemirror (dict): Name of internal parameters that will
+            ``_internal_only``.
+        _internal_only (list): Names of internal parameters only that will not
             be passed into codemirror parameters.
     """
     # Default config base to extend for every registred config
@@ -33,7 +38,7 @@ class CodeMirrorManifest(object):
         'js_bundle_name': None, # Javascript bundle name to fill
     }
 
-    _internal_to_codemirror = ['mode']
+    _internal_only = ['modes', 'addons', 'themes', 'css_bundle_name', 'js_bundle_name']
 
     def __init__(self):
         self.registry = {}
@@ -81,11 +86,16 @@ class CodeMirrorManifest(object):
         ``settings.CODEMIRROR_MODES`` map.
 
         Raises:
-            TODO: raise explicit error about unknowed mode name
+            NotRegistered: When given name does not exist in
+            ``settings.CODEMIRROR_MODES``.
 
         Returns:
             string: Mode file path.
         """
+        if name not in settings.CODEMIRROR_MODES:
+            raise NotRegistered(("Given name '{}' does not exists "
+                                 "'settings.CODEMIRROR_MODES'."))
+
         return settings.CODEMIRROR_MODES.get(name)
 
     def resolve_theme(self, name):
@@ -101,9 +111,9 @@ class CodeMirrorManifest(object):
         """
         return settings.CODEMIRROR_THEMES.get(name)
 
-    def get_config(self, name=None):
+    def get_configs(self, name=None):
         """
-        Returns configurations.
+        Returns registred configurations.
 
         * If ``name`` argument is not given, default behavior is to return
           every config from all registred config;
@@ -120,6 +130,41 @@ class CodeMirrorManifest(object):
             return {name: self.registry[name]}
         return self.registry
 
+    def get_config(self, name):
+        """
+        Return a registred configuration for given config name.
+
+        Arguments:
+            name (string): A registred config name.
+
+        Returns:
+            dict: Configuration.
+        """
+        return copy.deepcopy(self.registry[name])
+
+    def get_codemirror_config(self, name):
+        """
+        Return CodeMirror configuration for given config name.
+
+        Arguments:
+            name (string): Config name from available ones in
+                ``settings.CODEMIRROR_SETTINGS``.
+
+        Returns:
+            dict: Configuration.
+        """
+        config = self.get_config(name)
+
+        for k,v in config.items():
+            if k in self._internal_only:
+                del config[k]
+
+        # Default mode value is None, if so we dont expose it
+        if not config['mode']:
+            del config['mode']
+
+        return config
+
     def js(self, name=None):
         """
         Returns all needed Javascript filepaths for given config name (if
@@ -133,7 +178,7 @@ class CodeMirrorManifest(object):
         """
         filepaths = copy.copy(settings.CODEMIRROR_BASE_JS)
 
-        configs = self.get_config(name)
+        configs = self.get_configs(name)
 
         # Addons first
         for name,opts in configs.items():
@@ -146,6 +191,9 @@ class CodeMirrorManifest(object):
         for name,opts in configs.items():
             # 'mode' opts is for current mode, automatically add it to 'modes'
             # list
+            # TODO: If mode is none but modes is not empty, use the first modes
+            # item as current mode (this is the codemirror behavior, make it
+            # python explicit)
             if 'mode' in opts:
                 if isinstance(opts['mode'], basestring):
                     opts['modes'] = [opts['mode']] + opts['modes']
@@ -171,7 +219,7 @@ class CodeMirrorManifest(object):
         """
         filepaths = copy.copy(settings.CODEMIRROR_BASE_CSS)
 
-        configs = self.get_config(name)
+        configs = self.get_configs(name)
 
         # Process theme names
         for name,opts in configs.items():
@@ -182,21 +230,3 @@ class CodeMirrorManifest(object):
                     filepaths.append(resolved)
 
         return filepaths
-
-    def get_codemirror_config(self, name, json=False):
-        """
-        Return CodeMirror configuration for given config name.
-
-        Arguments:
-            name (string): Config name from available ones in
-                ``settings.CODEMIRROR_SETTINGS``.
-
-        Keyword Arguments:
-            json (bool): If ``True`` will return config as a JSON string,
-                default is ``False``.
-
-        Returns:
-            dict or string: Configuration as a Python dict or a JSON string
-            depending on ``json`` argument.
-        """
-        return []
