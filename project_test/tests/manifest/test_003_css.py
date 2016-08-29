@@ -5,6 +5,8 @@ import pytest
 
 from django.conf import settings
 
+from djangocodemirror.manifest import UnknowTheme
+
 
 def test_css_empty_registry(settings, manifesto):
     """Empty registry"""
@@ -16,6 +18,17 @@ def test_css_registred_empty(settings, manifesto):
     manifesto.autoregister()
 
     assert manifesto.css('empty') == settings.CODEMIRROR_BASE_CSS
+
+
+def test_resolve_theme_success(settings, manifesto):
+    """Resolve a theme name"""
+    assert manifesto.resolve_theme('ambiance') == settings.CODEMIRROR_THEMES['ambiance']
+
+
+def test_resolve_theme_error(settings, manifesto):
+    """Try to resolve a theme name that does not exist"""
+    with pytest.raises(UnknowTheme):
+        manifesto.resolve_theme('theme-nope')
 
 
 def test_css_registred_singles(settings, manifesto):

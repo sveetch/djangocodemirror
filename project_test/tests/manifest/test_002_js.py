@@ -5,6 +5,8 @@ import pytest
 
 from django.conf import settings
 
+from djangocodemirror.manifest import UnknowMode
+
 
 # Since we dont have names for addons, name it here to avoid retyping them for
 # every test
@@ -23,6 +25,17 @@ def test_js_registred_empty(settings, manifesto):
     manifesto.autoregister()
 
     assert manifesto.js('empty') == settings.CODEMIRROR_BASE_JS
+
+
+def test_resolve_mode_success(settings, manifesto):
+    """Resolve a mode name"""
+    assert manifesto.resolve_mode('python') == settings.CODEMIRROR_MODES['python']
+
+
+def test_resolve_mode_error(settings, manifesto):
+    """Try to resolve a mode name that does not exist"""
+    with pytest.raises(UnknowMode):
+        manifesto.resolve_mode('mode-nope')
 
 
 def test_js_registred_singles(settings, manifesto):
