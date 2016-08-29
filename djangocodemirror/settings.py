@@ -79,19 +79,19 @@ CODEMIRROR_MODES = {
 }
 
 #: Key name template used for Javascript bundles
-CODEMIRROR_BUNDLES_CSS_NAME = "dcm-{settings_name}_css"
+CODEMIRROR_BUNDLE_CSS_NAME = "dcm-{settings_name}_css"
 
 #: Key name template used for CSS bundles
-CODEMIRROR_BUNDLES_JS_NAME = "dcm-{settings_name}_js"
+CODEMIRROR_BUNDLE_JS_NAME = "dcm-{settings_name}_js"
 
 #: Option arguments used for CSS bundles
-CODEMIRROR_BUNDLES_CSS_OPTIONS = {
+CODEMIRROR_BUNDLE_CSS_OPTIONS = {
     'filters':'yui_css',
     'output':'css/dcm-{settings_name}.min.css',
 }
 
 #: Option arguments used for Javascript bundles
-CODEMIRROR_BUNDLES_JS_OPTIONS = {
+CODEMIRROR_BUNDLE_JS_OPTIONS = {
     'filters':'yui_js',
     'output':'js/dcm-{settings_name}.min.js',
 }

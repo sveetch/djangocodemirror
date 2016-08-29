@@ -1,33 +1,42 @@
 """
-Compute some Bundles for webassets/django-assets
+Webassets bundles
+=============
 
-A bundle is computed for each avalaible settings item in
+Compute some Bundles for ``webassets`` + ``django-assets``.
+
+Bundles are computed from each avalaible settings item in
 "settings.CODEMIRROR_SETTINGS".
-
-In the template you will have to load the bundle accordly to your field settings, there
-is a templatetag and an include template to do this automatically from your form field,
-see the doc.
 """
 try:
-    from django_assets import Bundle, register
+    from django_assets import Bundle
+    from django_assets import register as asset_register
 except ImportError:
     DJANGO_ASSETS_INSTALLED = False
 else:
+    import copy
+
     DJANGO_ASSETS_INSTALLED = True
-    # NOTE: Disabled until related issues are fixed from refactoring
-    #from djangocodemirror import settings
-    #from djangocodemirror.config import ConfigManager
 
-    ## Build all Bundles from available editor settings
-    #for settings_name,settings_values in settings.CODEMIRROR_SETTINGS.items():
-        #config = ConfigManager(config_name=settings_name)
+    from django.conf import settings
+    from djangocodemirror.manifest import CodeMirrorManifest
 
-        #css_options = settings.BUNDLES_CSS_OPTIONS.copy()
-        #css_options['output'] = css_options['output'].format(settings_name=settings_name)
-        #js_options = settings.BUNDLES_JS_OPTIONS.copy()
-        #js_options['output'] = js_options['output'].format(settings_name=settings_name)
+    for name, opts in settings.CODEMIRROR_SETTINGS.items():
+        manifesto = CodeMirrorManifest()
 
-        #css_contents, js_contents = config.find_assets()
+        manifesto.register(name)
+        config = manifesto.registry[name]
 
-        #register(config.settings['css_bundle_name'], Bundle(*css_contents, **css_options))
-        #register(config.settings['js_bundle_name'], Bundle(*js_contents, **js_options))
+        css_options = copy.deepcopy(settings.BUNDLES_CSS_OPTIONS)
+        css_options['output'] = css_options['output'].format(
+            settings_name=name
+        )
+        css_bundle = Bundle(*manifesto.css(name), **css_options)
+
+        js_options = copy.deepcopy(settings.BUNDLES_JS_OPTIONS)
+        js_options['output'] = js_options['output'].format(
+            settings_name=name
+        )
+        js_bundle = Bundle(*manifesto.js(name), **js_options)
+
+        asset_register(config.settings['css_bundle_name'], css_bundle)
+        asset_register(config.settings['js_bundle_name'], js_bundle)

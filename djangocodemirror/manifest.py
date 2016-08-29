@@ -78,11 +78,11 @@ class CodeMirrorManifest(object):
         ))
 
         # Add asset bundles name
-        css_template_name = settings.CODEMIRROR_BUNDLES_CSS_NAME
+        css_template_name = settings.CODEMIRROR_BUNDLE_CSS_NAME
         parameters['css_bundle_name'] = css_template_name.format(
             settings_name=name
         )
-        js_template_name = settings.CODEMIRROR_BUNDLES_JS_NAME
+        js_template_name = settings.CODEMIRROR_BUNDLE_JS_NAME
         parameters['js_bundle_name']= js_template_name.format(
             settings_name=name
         )
