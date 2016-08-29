@@ -6,6 +6,8 @@ CodeMirror manifest
 Every assets paths should be relative path to your static directory. In fact it
 depends how you will use them, but commonly it should be so.
 
+Todo:
+    Describe config format.
 """
 import copy, json
 
@@ -47,7 +49,8 @@ class CodeMirrorManifest(object):
         'js_bundle_name': None, # Javascript bundle name to fill
     }
 
-    _internal_only = ['modes', 'addons', 'themes', 'css_bundle_name', 'js_bundle_name']
+    _internal_only = ['modes', 'addons', 'themes', 'css_bundle_name',
+                      'js_bundle_name']
 
     def __init__(self):
         self.registry = {}
@@ -83,6 +86,16 @@ class CodeMirrorManifest(object):
         parameters['js_bundle_name']= js_template_name.format(
             settings_name=name
         )
+
+        # If mode is none but modes is not empty, use the first modes
+        # item as current mode (this is the codemirror behavior, make it
+        # python explicit)
+        if not parameters.get('mode') and len(parameters.get('modes', []))>0:
+            parameters['mode'] = self.resolve_mode(parameters['modes'][0])
+        # Else if mode is not empty, add it as first item in modes
+        elif 'mode' in parameters:
+            if isinstance(parameters['mode'], basestring):
+                parameters['modes'] = [parameters['mode']] + parameters['modes']
 
         self.registry[name] = parameters
 
@@ -211,23 +224,12 @@ class CodeMirrorManifest(object):
         # Addons first
         for name,opts in configs.items():
             for item in opts.get('addons', []):
-                # Uniqueness
                 if item not in filepaths:
                     filepaths.append(item)
 
-        # Then Modes
+        # Process modes
         for name,opts in configs.items():
-            # 'mode' opts is for current mode, automatically add it to 'modes'
-            # list
-            # TODO: If mode is none but modes is not empty, use the first modes
-            # item as current mode (this is the codemirror behavior, make it
-            # python explicit)
-            if 'mode' in opts:
-                if isinstance(opts['mode'], basestring):
-                    opts['modes'] = [opts['mode']] + opts['modes']
-            # Process modes
             for item in opts['modes']:
-                # Uniqueness
                 resolved = self.resolve_mode(item)
                 if resolved not in filepaths:
                     filepaths.append(resolved)

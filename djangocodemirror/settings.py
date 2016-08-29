@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 Default app settings
+====================
+
 """
-# HTML Code to insert for instanciate CodeMirror with a field
+#: HTML Code to insert for instanciate CodeMirror with a field
 CODEMIRROR_FIELD_INIT_JS = ("""<script type="text/javascript">"""
     """//<![CDATA[\n{inputid}_codemirror_instance = """
     """CodeMirror.fromTextArea(document.getElementById('{inputid}'), """
     """{settings});\n//]]></script>""")
 
-# Default settings for CodeMirror
+#: Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
     'rst-editor': {
         'mode': 'rst',
@@ -17,13 +19,15 @@ CODEMIRROR_SETTINGS = {
     },
 }
 
-# Javascript base files for CodeMirror, they will be loaded before every other CodeMirror Javascript components.
+#: Javascript base files for CodeMirror, they will be loaded before every other
+#: CodeMirror Javascript components.
 CODEMIRROR_BASE_JS = ["CodeMirror/lib/codemirror.js"]
 
-# CSS base files for CodeMirror, they will be loaded before every other CodeMirror CSS components.
+#: CSS base files for CodeMirror, they will be loaded before every other
+#: CodeMirror CSS components.
 CODEMIRROR_BASE_CSS = ["CodeMirror/lib/codemirror.css"]
 
-# Available CodeMirror CSS theme files
+#: Available CodeMirror CSS theme files
 CODEMIRROR_THEMES = {
     'ambiance': 'CodeMirror/theme/ambiance.css',
     'eclipse': 'CodeMirror/theme/eclipse.css',
@@ -34,7 +38,7 @@ CODEMIRROR_THEMES = {
     'nice_lesser_dark': 'djangocodemirror/theme/nice-lesser-dark.css',
 }
 
-# Available CodeMirror Javascript mode files
+#: Available CodeMirror Javascript mode files
 CODEMIRROR_MODES = {
     'clike': 'CodeMirror/mode/clike/clike.js',
     'clojure': 'CodeMirror/mode/clojure/clojure.js',
@@ -74,15 +78,19 @@ CODEMIRROR_MODES = {
     'yaml': 'CodeMirror/mode/yaml/yaml.js',
 }
 
-# Internal key names used for bundles
+#: Key name template used for Javascript bundles
 CODEMIRROR_BUNDLES_CSS_NAME = "dcm-{settings_name}_css"
+
+#: Key name template used for CSS bundles
 CODEMIRROR_BUNDLES_JS_NAME = "dcm-{settings_name}_js"
 
-# Option arguments use on the bundles
+#: Option arguments used for CSS bundles
 CODEMIRROR_BUNDLES_CSS_OPTIONS = {
     'filters':'yui_css',
     'output':'css/dcm-{settings_name}.min.css',
 }
+
+#: Option arguments used for Javascript bundles
 CODEMIRROR_BUNDLES_JS_OPTIONS = {
     'filters':'yui_js',
     'output':'js/dcm-{settings_name}.min.js',

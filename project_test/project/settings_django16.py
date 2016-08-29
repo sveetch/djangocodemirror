@@ -129,6 +129,11 @@ from djangocodemirror.settings import *
 
 CODEMIRROR_SETTINGS = {
     'empty': {},
+    'mode-naive': {
+        'lineWrapping': True,
+        'lineNumbers': True,
+        'modes': ['python', 'javascript'],
+    },
     'rst-basic': {
         'mode': 'rst',
         'lineWrapping': True,
