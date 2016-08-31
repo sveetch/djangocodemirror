@@ -13,7 +13,7 @@ CODEMIRROR_FIELD_INIT_JS = ("""<script type="text/javascript">"""
 #: Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
     'rst-editor': {
-        'mode': 'rst',
+        'mode': 'reStructuredText',
         'lineWrapping': True,
         'lineNumbers': True,
     },
@@ -27,55 +27,50 @@ CODEMIRROR_BASE_JS = ["CodeMirror/lib/codemirror.js"]
 #: CodeMirror CSS components.
 CODEMIRROR_BASE_CSS = ["CodeMirror/lib/codemirror.css"]
 
-#: Available CodeMirror CSS theme files
+#: Available CodeMirror CSS theme files, this is only a subset of available
+#: themes
 CODEMIRROR_THEMES = {
-    'ambiance': 'CodeMirror/theme/ambiance.css',
-    'eclipse': 'CodeMirror/theme/eclipse.css',
-    'elegant': 'CodeMirror/theme/elegant.css',
-    'lesser_dark': 'CodeMirror/theme/lesser-dark.css',
-    'neat': 'CodeMirror/theme/neat.css',
-    'nice_ambiance': 'djangocodemirror/theme/nice-ambiance.css',
-    'nice_lesser_dark': 'djangocodemirror/theme/nice-lesser-dark.css',
+    "ambiance": "CodeMirror/theme/ambiance.css",
+    "ambiance-mobile": "CodeMirror/theme/ambiance-mobile.css",
+    "base16-dark": "CodeMirror/theme/base16-dark.css",
+    "bespin": "CodeMirror/theme/bespin.css",
+    "dracula": "CodeMirror/theme/dracula.css",
+    "eclipse": "CodeMirror/theme/eclipse.css",
+    "elegant": "CodeMirror/theme/elegant.css",
+    "neat": "CodeMirror/theme/neat.css",
+    "neo": "CodeMirror/theme/neo.css",
+    "night": "CodeMirror/theme/night.css",
+    "panda-syntax": "CodeMirror/theme/panda-syntax.css",
+    "xq-light": "CodeMirror/theme/xq-light.css",
+    "yeti": "CodeMirror/theme/yeti.css",
+    "zenburn": "CodeMirror/theme/zenburn.css",
 }
 
-#: Available CodeMirror Javascript mode files
+#: Available CodeMirror Javascript mode files, this is only a subset of
+#: available modes
 CODEMIRROR_MODES = {
-    'clike': 'CodeMirror/mode/clike/clike.js',
-    'clojure': 'CodeMirror/mode/clojure/clojure.js',
-    'coffeescript': 'CodeMirror/mode/coffeescript/coffeescript.js',
-    'css': 'CodeMirror/mode/css/css.js',
-    'diff': 'CodeMirror/mode/diff/diff.js',
-    'gfm': 'CodeMirror/mode/gfm/gfm.js',
-    'go': 'CodeMirror/mode/go/go.js',
-    'groovy': 'CodeMirror/mode/groovy/groovy.js',
-    'haskell': 'CodeMirror/mode/haskell/haskell.js',
-    'htmlembedded': 'CodeMirror/mode/htmlembedded/htmlembedded.js',
-    'htmlmixed': 'CodeMirror/mode/htmlmixed/htmlmixed.js',
-    'javascript': 'CodeMirror/mode/javascript/javascript.js',
-    'jinja2': 'CodeMirror/mode/jinja2/jinja2.js',
-    'less': 'CodeMirror/mode/less/less.js',
-    'lua': 'CodeMirror/mode/lua/lua.js',
-    'markdown': 'CodeMirror/mode/markdown/markdown.js',
-    'mysql': 'CodeMirror/mode/mysql/mysql.js',
-    'ntriples': 'CodeMirror/mode/ntriples/ntriples.js',
-    'pascal': 'CodeMirror/mode/pascal/pascal.js',
-    'perl': 'CodeMirror/mode/perl/perl.js',
-    'php': 'CodeMirror/mode/php/php.js',
-    'plsql': 'CodeMirror/mode/plsql/plsql.js',
-    'python': 'CodeMirror/mode/python/python.js',
-    'r': 'CodeMirror/mode/r/r.js',
-    'rst': 'CodeMirror/mode/rst/rst.js',
-    'ruby': 'CodeMirror/mode/ruby/ruby.js',
-    'rust': 'CodeMirror/mode/rust/rust.js',
-    'scheme': 'CodeMirror/mode/scheme/scheme.js',
-    'smalltalk': 'CodeMirror/mode/smalltalk/smalltalk.js',
-    'sparql': 'CodeMirror/mode/sparql/sparql.js',
-    'stex': 'CodeMirror/mode/stex/stex.js',
-    'tiddlywiki': 'CodeMirror/mode/tiddlywiki/tiddlywiki.js',
-    'velocity': 'CodeMirror/mode/velocity/velocity.js',
-    'verilog': 'CodeMirror/mode/verilog/verilog.js',
-    'xml': 'CodeMirror/mode/xml/xml.js',
-    'yaml': 'CodeMirror/mode/yaml/yaml.js',
+    "C": "CodeMirror/mode/c/c.js",
+    "C++": "CodeMirror/mode/c++/c++.js",
+    "CSS": "CodeMirror/mode/css/css.js",
+    "CoffeeScript": "CodeMirror/mode/coffeescript/coffeescript.js",
+    "Django": "CodeMirror/mode/django/django.js",
+    "Dockerfile": "CodeMirror/mode/dockerfile/dockerfile.js",
+    "HTML": "CodeMirror/mode/html/html.js",
+    "JSON": "CodeMirror/mode/json/json.js",
+    "Java": "CodeMirror/mode/java/java.js",
+    "JavaScript": "CodeMirror/mode/javascript/javascript.js",
+    "Jinja2": "CodeMirror/mode/jinja2/jinja2.js",
+    "LESS": "CodeMirror/mode/less/less.js",
+    "LaTeX": "CodeMirror/mode/latex/latex.js",
+    "Markdown": "CodeMirror/mode/markdown/markdown.js",
+    "PHP": "CodeMirror/mode/php/php.js",
+    "Perl": "CodeMirror/mode/perl/perl.js",
+    "Python": "CodeMirror/mode/python/python.js",
+    "SCSS": "CodeMirror/mode/scss/scss.js",
+    "SQL": "CodeMirror/mode/sql/sql.js",
+    "reStructuredText": "CodeMirror/mode/restructuredtext/restructuredtext.js",
+    "Sass": "CodeMirror/mode/sass/sass.js",
+    "Shell": "CodeMirror/mode/shell/shell.js",
 }
 
 #: Key name template used for Javascript bundles

@@ -29,7 +29,7 @@ def test_js_registred_empty(settings, manifesto):
 
 def test_resolve_mode_success(settings, manifesto):
     """Resolve a mode name"""
-    assert manifesto.resolve_mode('python') == settings.CODEMIRROR_MODES['python']
+    assert manifesto.resolve_mode('Python') == settings.CODEMIRROR_MODES['Python']
 
 
 def test_resolve_mode_error(settings, manifesto):
@@ -47,7 +47,7 @@ def test_js_registred_singles(settings, manifesto):
         ADDON_DIALOG,
         ADDON_SEARCH,
         ADDON_SEARCHCURSOR,
-        settings.CODEMIRROR_MODES['rst'],
+        settings.CODEMIRROR_MODES['reStructuredText'],
     ]
 
 
@@ -59,7 +59,7 @@ def test_js_registred_singles(settings, manifesto):
     (
         'rst-basic',
         [
-            settings.CODEMIRROR_MODES['rst'],
+            settings.CODEMIRROR_MODES['reStructuredText'],
         ],
     ),
     (
@@ -68,15 +68,15 @@ def test_js_registred_singles(settings, manifesto):
             ADDON_DIALOG,
             ADDON_SEARCH,
             ADDON_SEARCHCURSOR,
-            settings.CODEMIRROR_MODES['rst'],
+            settings.CODEMIRROR_MODES['reStructuredText'],
         ],
     ),
     (
         'rst-with-modes',
         [
-            settings.CODEMIRROR_MODES['rst'],
-            settings.CODEMIRROR_MODES['python'],
-            settings.CODEMIRROR_MODES['javascript'],
+            settings.CODEMIRROR_MODES['reStructuredText'],
+            settings.CODEMIRROR_MODES['Python'],
+            settings.CODEMIRROR_MODES['JavaScript'],
         ],
     ),
     (
@@ -85,9 +85,9 @@ def test_js_registred_singles(settings, manifesto):
             ADDON_DIALOG,
             ADDON_SEARCH,
             ADDON_SEARCHCURSOR,
-            settings.CODEMIRROR_MODES['rst'],
-            settings.CODEMIRROR_MODES['python'],
-            settings.CODEMIRROR_MODES['css'],
+            settings.CODEMIRROR_MODES['reStructuredText'],
+            settings.CODEMIRROR_MODES['Python'],
+            settings.CODEMIRROR_MODES['CSS'],
         ],
     ),
     (
@@ -96,10 +96,10 @@ def test_js_registred_singles(settings, manifesto):
             ADDON_DIALOG,
             ADDON_SEARCH,
             ADDON_SEARCHCURSOR,
-            settings.CODEMIRROR_MODES['rst'],
-            settings.CODEMIRROR_MODES['python'],
-            settings.CODEMIRROR_MODES['javascript'],
-            settings.CODEMIRROR_MODES['css'],
+            settings.CODEMIRROR_MODES['reStructuredText'],
+            settings.CODEMIRROR_MODES['Python'],
+            settings.CODEMIRROR_MODES['JavaScript'],
+            settings.CODEMIRROR_MODES['CSS'],
         ],
     ),
 ])

@@ -132,15 +132,15 @@ CODEMIRROR_SETTINGS = {
     'mode-naive': {
         'lineWrapping': True,
         'lineNumbers': True,
-        'modes': ['python', 'javascript'],
+        'modes': ['Python', 'JavaScript'],
     },
     'rst-basic': {
-        'mode': 'rst',
+        'mode': 'reStructuredText',
         'lineWrapping': True,
         'lineNumbers': True,
     },
     'rst-with-addons': {
-        'mode': 'rst',
+        'mode': 'reStructuredText',
         'lineWrapping': True,
         'lineNumbers': True,
         'addons': [
@@ -150,20 +150,20 @@ CODEMIRROR_SETTINGS = {
         ],
     },
     'rst-with-modes': {
-        'mode': 'rst',
+        'mode': 'reStructuredText',
         'lineWrapping': True,
         'lineNumbers': True,
-        'modes': ['rst', 'python', 'javascript'],
+        'modes': ['reStructuredText', 'Python', 'JavaScript'],
     },
     'rst-with-themes': {
-        'mode': 'rst',
+        'mode': 'reStructuredText',
         'lineWrapping': True,
         'lineNumbers': True,
         'theme': 'elegant',
         'themes': ['eclipse', 'elegant'],
     },
     'rst-with-all': {
-        'mode': 'rst',
+        'mode': 'reStructuredText',
         'lineWrapping': True,
         'lineNumbers': True,
         'addons': [
@@ -171,8 +171,8 @@ CODEMIRROR_SETTINGS = {
             "CodeMirror/lib/util/search.js",
             "CodeMirror/lib/util/searchcursor.js",
         ],
-        'modes': ['rst', 'python', 'css'],
-        'theme': 'nice_lesser_dark',
-        'themes': ['eclipse', 'nice_lesser_dark'],
+        'modes': ['reStructuredText', 'Python', 'CSS'],
+        'theme': 'neat',
+        'themes': ['eclipse', 'neat'],
     },
 }

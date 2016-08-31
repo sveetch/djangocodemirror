@@ -71,10 +71,10 @@ def test_get_configs_multiple_success(settings, manifesto):
             'js_bundle_name': 'dcm-empty_js',
         },
         'rst-basic': {
-            'mode': 'rst',
+            'mode': 'reStructuredText',
             'lineWrapping': True,
             'lineNumbers': True,
-            'modes': ['rst'],
+            'modes': ['reStructuredText'],
             'addons': [],
             'themes': [],
             'css_bundle_name': 'dcm-rst-basic_css',
@@ -98,7 +98,7 @@ def test_get_configs_single_error(settings, manifesto):
     (
         'rst-basic',
         {
-            'mode': 'rst',
+            'mode': 'reStructuredText',
             'lineWrapping': True,
             'lineNumbers': True,
         },
@@ -106,7 +106,7 @@ def test_get_configs_single_error(settings, manifesto):
     (
         'rst-with-themes',
         {
-            'mode': 'rst',
+            'mode': 'reStructuredText',
             'lineWrapping': True,
             'lineNumbers': True,
             'theme': 'elegant',
@@ -115,10 +115,10 @@ def test_get_configs_single_error(settings, manifesto):
     (
         'rst-with-all',
         {
-            'mode': 'rst',
+            'mode': 'reStructuredText',
             'lineWrapping': True,
             'lineNumbers': True,
-            'theme': 'nice_lesser_dark',
+            'theme': 'neat',
         },
     ),
 ])

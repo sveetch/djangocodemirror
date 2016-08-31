@@ -58,7 +58,7 @@ def test_css_registred_singles(settings, manifesto):
         'rst-with-all',
         [
             settings.CODEMIRROR_THEMES['eclipse'],
-            settings.CODEMIRROR_THEMES['nice_lesser_dark'],
+            settings.CODEMIRROR_THEMES['neat'],
         ],
     ),
     (
@@ -66,7 +66,7 @@ def test_css_registred_singles(settings, manifesto):
         [
             settings.CODEMIRROR_THEMES['eclipse'],
             settings.CODEMIRROR_THEMES['elegant'],
-            settings.CODEMIRROR_THEMES['nice_lesser_dark'],
+            settings.CODEMIRROR_THEMES['neat'],
         ],
     ),
 ])
