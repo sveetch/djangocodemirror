@@ -12,6 +12,7 @@ CODEMIRROR_FIELD_INIT_JS = ("""<script type="text/javascript">"""
 
 #: Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
+    'empty': {},
     'rst-editor': {
         'mode': 'reStructuredText',
         'lineWrapping': True,

@@ -28,7 +28,7 @@ urlpatterns = [
     ), name='home'),
 
     # Sample with codemirror in the raw way
-    url(r'^foo/$', TemplateView.as_view(
-        template_name="sample_raw.html"
-    ), name='sample-raw'),
+    url(r'^basic/$', TemplateView.as_view(
+        template_name="basic.html"
+    ), name='basic'),
 ]
