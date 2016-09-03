@@ -1,67 +1,121 @@
 # -*- coding: utf-8 -*-
 """
-Fields and widgets
+Form field widgets
+==================
+
 """
 import json, copy
 
 from django import forms
-from django.core.urlresolvers import reverse
 
-from django.forms.widgets import flatatt
-from django.utils.html import escape
+from django.conf import settings
 from django.utils.safestring import mark_safe
 
-from djangocodemirror import settings_local
-from djangocodemirror.config import ConfigManager
+from djangocodemirror.manifest import CodeMirrorManifest
+#from djangocodemirror import settings_local
+#from djangocodemirror.config import ConfigManager
+
 
 class CodeMirrorWidget(forms.Textarea):
     """
     Widget to add a CodeMirror or DjangoCodeMirror instance on a textarea
     Take the same arguments than ``forms.Textarea`` and accepts one suplementary
     optionnal arguments :
-    
-    * ``config_name`` name of the settings to use, a valid key name from
-    ``settings.CODEMIRROR_SETTINGS``. Default to "default" that is the default config 
-    with minimal options;
+
+    Arguments:
+        config_name (string): A Codemirror config name available in
+            ``settings.CODEMIRROR_SETTINGS``. Default is ``empty``.
+        embed_config (bool): If ``True`` will add Codemirror Javascript config
+            just below the input. Default is ``False``.
+
+    Attributes:
+        config_name (string): For given config name.
     """
-    def __init__(self, attrs=None, config_name='default', **kwargs):
+    codemirror_field_js = settings.CODEMIRROR_FIELD_INIT_JS
+
+    def __init__(self, attrs=None, config_name='empty', embed_config=False, **kwargs):
         super(CodeMirrorWidget, self).__init__(attrs=attrs, **kwargs)
         self.config_name = config_name
-    
-    def init_editor_config(self):
-        return ConfigManager(
-            config_name=self.config_name,
-        )
+        self.embed_config = embed_config
+
+    def init_manifest(self):
+        """
+        Initialize a manifest instance
+
+        Returns:
+            CodeMirrorManifest: A manifest instance where config (from
+            ``config_name`` attribute) is registred.
+        """
+        manifesto = CodeMirrorManifest()
+        manifesto.register(self.config_name)
+        return manifesto
+
+    def get_codemirror_field_js(self):
+        """
+        Return CodeMirror HTML template string from
+        ``CodeMirrorWidget.codemirror_field_js``.
+
+        Returns:
+            string: HTML template string.
+        """
+        return self.codemirror_field_js
+
+    def build_codemirror_settings(self, final_attrs):
+        """
+        Build CodeMirror HTML for Javascript config
+
+        Returns:
+            string: HTML for field CodeMirror instance.
+        """
+        inputid = final_attrs['id']
+        html = self.get_codemirror_field_js()
+        opts = self.editor_manifest.get_codemirror_config(self.config_name)
+
+        return html.format(inputid=inputid, settings=json.dumps(opts))
 
     def render(self, name, value, attrs=None):
-        if not hasattr(self, "editor_config_manager"):
-            self.editor_config_manager = self.init_editor_config()
-        
-        final_attrs = self.build_attrs(attrs, name=name)
-        
-        html = [super(CodeMirrorWidget, self).render(name, value, attrs)]
-        # Append HTML for the Javascript settings just below the textarea
-        if self.editor_config_manager.settings['embed_settings']:
-            html.append(self._build_codemirror_settings(final_attrs))
-            
-        return mark_safe(u'\n'.join(html))
+        """
+        Render widget HTML
+        """
+        if not hasattr(self, "editor_manifest"):
+            self.editor_manifest = self.init_manifest()
 
-    def _build_codemirror_settings(self, final_attrs):
-        """build HTML for the Javascript settings"""
-        html = settings_local.DJANGOCODEMIRROR_FIELD_INIT_JS
-        if self.editor_config_manager.settings['codemirror_only']:
-            html = settings_local.CODEMIRROR_FIELD_INIT_JS
-        return html.format(inputid=final_attrs['id'], settings=json.dumps(self.editor_config_manager.editor_config))
+        config = self.editor_manifest.get_config(self.config_name)
+
+        final_attrs = self.build_attrs(attrs, name=name)
+
+        # Widget allways need an id to be able to set CodeMirror Javascript config
+        if 'id' not in final_attrs:
+            final_attrs['id'] = 'id_{}'.format(name)
+
+        html = [super(CodeMirrorWidget, self).render(name, value, attrs)]
+
+        # Append HTML for CodeMirror Javascript config just below the textarea
+        if self.embed_config or config.get('embed_config'):
+            html.append(self.build_codemirror_settings(final_attrs))
+
+        return mark_safe(u'\n'.join(html))
 
     @property
     def media(self):
         """
         Adds necessary files (Js/CSS) to the widget's medias
         """
-        if not hasattr(self, "editor_config_manager"):
-            self.editor_config_manager = self.init_editor_config()
-        css, js = self.editor_config_manager.find_assets()
+        if not hasattr(self, "editor_manifest"):
+            self.editor_manifest = self.init_manifest()
+
         return forms.Media(
-            css={"all": css},
-            js=js
+            css={"all": self.editor_manifest.css()},
+            js=self.editor_manifest.js()
         )
+
+
+class CodeMirrorAdminWidget(CodeMirrorWidget):
+    """
+    CodeMirror widget suited for usage in models admins.
+
+    Act like CodeMirrorWidget but allways embed Codemirror Javascript config.
+    """
+    def __init__(self, *args, **kwargs):
+        kwargs['embed_config'] = True
+        super(CodeMirrorAdminWidget, self).__init__(*args, **kwargs)

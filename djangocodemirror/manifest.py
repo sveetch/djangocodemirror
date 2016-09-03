@@ -3,11 +3,21 @@
 CodeMirror manifest
 ===================
 
-Every assets paths should be relative path to your static directory. In fact it
-depends how you will use them, but commonly it should be so.
+From its registred Codemirror configs, manifest is able to:
+
+* Return needed js files, either for all registred configs or a single one;
+* Return needed css files, either for all registred configs or a single one;
+* Return Codemirror configuration options as a dict for a registred config;
+
+A Codemirror config is selected from its name in
+``settings.CODEMIRROR_SETTINGS``.
+
+Note:
+    Every assets paths should be relative path to your static directory. In
+    fact it depends how you will use them, but commonly it should be so.
 
 Todo:
-    Describe config format.
+    Describe config format (well, only the internal ones).
 """
 import copy, json
 

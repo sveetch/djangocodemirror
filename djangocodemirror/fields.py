@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Fields
+======
+
 """
 from django import forms
 
-from djangocodemirror import settings_local
 from djangocodemirror.widgets import CodeMirrorWidget
 
 class DjangoCodeMirrorField(forms.CharField):

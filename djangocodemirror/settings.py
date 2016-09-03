@@ -4,11 +4,12 @@ Default app settings
 ====================
 
 """
-#: HTML Code to insert for instanciate CodeMirror with a field
-CODEMIRROR_FIELD_INIT_JS = ("""<script type="text/javascript">"""
-    """//<![CDATA[\n{inputid}_codemirror_instance = """
-    """CodeMirror.fromTextArea(document.getElementById('{inputid}'), """
-    """{settings});\n//]]></script>""")
+#: HTML Code to instanciate CodeMirror for a field
+CODEMIRROR_FIELD_INIT_JS = ("""<script>var {inputid}_codemirror = """
+                            """CodeMirror.fromTextArea("""
+                            """document.getElementById("{inputid}"),"""
+                            """{settings});</script>""")
+
 
 #: Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
@@ -49,6 +50,9 @@ CODEMIRROR_THEMES = {
 
 #: Available CodeMirror Javascript mode files, this is only a subset of
 #: available modes
+# TODO: This is wrong because collected mode name is a display name, not the
+# used keyword by Codemirror to retrieve the mode file (seems its relative dir
+# name instead).
 CODEMIRROR_MODES = {
     "C": "CodeMirror/mode/c/c.js",
     "C++": "CodeMirror/mode/c++/c++.js",

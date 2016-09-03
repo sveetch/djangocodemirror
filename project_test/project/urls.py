@@ -28,6 +28,11 @@ urlpatterns = [
     ), name='home'),
 
     # Sample with codemirror in the raw way
+    url(r'^raw/$', TemplateView.as_view(
+        template_name="raw.html"
+    ), name='raw'),
+
+    # Basic usage
     url(r'^basic/$', TemplateView.as_view(
         template_name="basic.html"
     ), name='basic'),
