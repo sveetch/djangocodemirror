@@ -15,7 +15,7 @@ CODEMIRROR_FIELD_INIT_JS = ("""<script>var {inputid}_codemirror = """
 CODEMIRROR_SETTINGS = {
     'empty': {},
     'rst-editor': {
-        'mode': 'reStructuredText',
+        'mode': 'rst',
         'lineWrapping': True,
         'lineNumbers': True,
     },
@@ -50,32 +50,19 @@ CODEMIRROR_THEMES = {
 
 #: Available CodeMirror Javascript mode files, this is only a subset of
 #: available modes
-# TODO: This is wrong because collected mode name is a display name, not the
-# used keyword by Codemirror to retrieve the mode file (seems its relative dir
-# name instead).
 CODEMIRROR_MODES = {
-    "C": "CodeMirror/mode/c/c.js",
-    "C++": "CodeMirror/mode/c++/c++.js",
-    "CSS": "CodeMirror/mode/css/css.js",
-    "CoffeeScript": "CodeMirror/mode/coffeescript/coffeescript.js",
-    "Django": "CodeMirror/mode/django/django.js",
-    "Dockerfile": "CodeMirror/mode/dockerfile/dockerfile.js",
-    "HTML": "CodeMirror/mode/html/html.js",
-    "JSON": "CodeMirror/mode/json/json.js",
-    "Java": "CodeMirror/mode/java/java.js",
-    "JavaScript": "CodeMirror/mode/javascript/javascript.js",
-    "Jinja2": "CodeMirror/mode/jinja2/jinja2.js",
-    "LESS": "CodeMirror/mode/less/less.js",
-    "LaTeX": "CodeMirror/mode/latex/latex.js",
-    "Markdown": "CodeMirror/mode/markdown/markdown.js",
-    "PHP": "CodeMirror/mode/php/php.js",
-    "Perl": "CodeMirror/mode/perl/perl.js",
-    "Python": "CodeMirror/mode/python/python.js",
-    "SCSS": "CodeMirror/mode/scss/scss.js",
-    "SQL": "CodeMirror/mode/sql/sql.js",
-    "reStructuredText": "CodeMirror/mode/restructuredtext/restructuredtext.js",
-    "Sass": "CodeMirror/mode/sass/sass.js",
-    "Shell": "CodeMirror/mode/shell/shell.js",
+    "css": "CodeMirror/mode/css/css.js",
+    "django": "CodeMirror/mode/django/django.js",
+    "html": "CodeMirror/mode/html/html.js",
+    "json": "CodeMirror/mode/json/json.js",
+    "javascript": "CodeMirror/mode/javascript/javascript.js",
+    "markdown": "CodeMirror/mode/markdown/markdown.js",
+    "php": "CodeMirror/mode/php/php.js",
+    "perl": "CodeMirror/mode/perl/perl.js",
+    "python": "CodeMirror/mode/python/python.js",
+    "scss": "CodeMirror/mode/scss/scss.js",
+    "rst": "CodeMirror/mode/restructuredtext/restructuredtext.js",
+    "shell": "CodeMirror/mode/shell/shell.js",
 }
 
 #: Key name template used for Javascript bundles

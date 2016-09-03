@@ -28,10 +28,10 @@ def test_registry_empty(settings, manifesto):
     (
         'rst-basic',
         {
-            'mode': 'reStructuredText',
+            'mode': 'rst',
             'lineWrapping': True,
             'lineNumbers': True,
-            'modes': ['reStructuredText'],
+            'modes': ['rst'],
             'addons': [],
             'themes': [],
             'css_bundle_name': 'dcm-rst-basic_css',

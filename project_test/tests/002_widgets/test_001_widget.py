@@ -26,4 +26,4 @@ def test_adminwidget_basic():
 
     assert rendered == ("""<textarea cols="40" name="sample" rows="10">\r\n"""
                         """Hello World!</textarea>\n"""
-                        """<script>var id_sample_codemirror = CodeMirror.fromTextArea(document.getElementById("id_sample"),{"lineNumbers": true, "lineWrapping": true, "mode": "reStructuredText"});</script>""")
+                        """<script>var id_sample_codemirror = CodeMirror.fromTextArea(document.getElementById("id_sample"),{"lineNumbers": true, "lineWrapping": true, "mode": "rst"});</script>""")
