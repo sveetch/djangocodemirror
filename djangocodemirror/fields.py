@@ -16,15 +16,16 @@ class DjangoCodeMirrorField(forms.CharField):
         config_name (string): A Codemirror config name available in
             ``settings.CODEMIRROR_SETTINGS``. Default is ``empty``.
     """
-    def __init__(self, config_name='empty', *args, **kwargs):
-        self.config_name = config_name
+    def __init__(self, *args, **kwargs):
+        self.config_name = kwargs.pop('config_name', 'empty')
+        # Add Codemirror widget to the field
         kwargs.update({'widget': CodeMirrorWidget})
 
         # Initialize widget with given config name if the field has been
         # bounded.
-        widget = kwargs.get('widget', self.widget) or self.widget
+        widget = kwargs.get('widget', None) or self.widget
         if isinstance(widget, type):
-            kwargs['widget'] = widget(config_name=config_name)
+            kwargs['widget'] = widget(config_name=self.config_name)
 
         super(DjangoCodeMirrorField, self).__init__(*args, **kwargs)
 

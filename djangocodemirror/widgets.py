@@ -33,21 +33,25 @@ class CodeMirrorWidget(forms.Textarea):
     """
     codemirror_field_js = settings.CODEMIRROR_FIELD_INIT_JS
 
-    def __init__(self, attrs=None, config_name='empty', embed_config=False, **kwargs):
-        super(CodeMirrorWidget, self).__init__(attrs=attrs, **kwargs)
-        self.config_name = config_name
-        self.embed_config = embed_config
+    def __init__(self, *args, **kwargs):
+        self.config_name = kwargs.pop('config_name', 'empty')
+        self.embed_config = kwargs.pop('embed_config', False)
 
-    def init_manifest(self):
+        super(CodeMirrorWidget, self).__init__(*args, **kwargs)
+
+    def init_manifest(self, name):
         """
         Initialize a manifest instance
+
+        Arguments:
+            name (string): Config name to register.
 
         Returns:
             CodeMirrorManifest: A manifest instance where config (from
             ``config_name`` attribute) is registred.
         """
         manifesto = CodeMirrorManifest()
-        manifesto.register(self.config_name)
+        manifesto.register(name)
         return manifesto
 
     def get_codemirror_field_js(self):
@@ -78,13 +82,14 @@ class CodeMirrorWidget(forms.Textarea):
         Render widget HTML
         """
         if not hasattr(self, "editor_manifest"):
-            self.editor_manifest = self.init_manifest()
+            self.editor_manifest = self.init_manifest(self.config_name)
 
         config = self.editor_manifest.get_config(self.config_name)
 
         final_attrs = self.build_attrs(attrs, name=name)
 
-        # Widget allways need an id to be able to set CodeMirror Javascript config
+        # Widget allways need an id to be able to set CodeMirror Javascript
+        # config
         if 'id' not in final_attrs:
             final_attrs['id'] = 'id_{}'.format(name)
 
@@ -102,7 +107,7 @@ class CodeMirrorWidget(forms.Textarea):
         Adds necessary files (Js/CSS) to the widget's medias
         """
         if not hasattr(self, "editor_manifest"):
-            self.editor_manifest = self.init_manifest()
+            self.editor_manifest = self.init_manifest(self.config_name)
 
         return forms.Media(
             css={"all": self.editor_manifest.css()},
