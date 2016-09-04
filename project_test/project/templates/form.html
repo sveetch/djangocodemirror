@@ -1,4 +1,5 @@
 {% extends "skeleton.html" %}
+{% load djangocodemirror %}
 {% load static from staticfiles %}
 
 {% block head_assets %}
@@ -8,11 +9,12 @@
 
 {% block base_content %}
 <div class="row">
-    <form>
-        <textarea id="code" name="code">Lorem ipsum dolor sit amet.</textarea>
+    <form action="." method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit">
     </form>
 </div>
 <script>
-    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {});
+    var editor = {{ form.foo|codemirror_config }};
 </script>
 {% endblock %}

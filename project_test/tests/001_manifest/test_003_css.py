@@ -22,7 +22,10 @@ def test_css_registred_empty(settings, manifesto):
 
 def test_resolve_theme_success(settings, manifesto):
     """Resolve a theme name"""
-    assert manifesto.resolve_theme('ambiance') == settings.CODEMIRROR_THEMES['ambiance']
+    result = manifesto.resolve_theme('ambiance')
+    attempt = settings.CODEMIRROR_THEMES['ambiance']
+
+    assert result == attempt
 
 
 def test_resolve_theme_error(settings, manifesto):

@@ -19,6 +19,8 @@ from django.conf.urls import include, url
 
 from django.views.generic.base import TemplateView
 
+from views import BasicSampleFormView
+
 urlpatterns = [
     #url(r'^admin/', include(admin.site.urls)),
 
@@ -33,7 +35,7 @@ urlpatterns = [
     ), name='raw'),
 
     # Basic usage
-    url(r'^basic/$', TemplateView.as_view(
-        template_name="basic.html"
+    url(r'^form/$', BasicSampleFormView.as_view(
+        template_name="form.html"
     ), name='basic'),
 ]

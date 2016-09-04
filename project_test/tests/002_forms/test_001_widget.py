@@ -1,9 +1,7 @@
 """
-Some dummy pinging to ensure urls are consistent
+Tests against field widgets
 """
 import pytest
-
-from django.core.urlresolvers import reverse
 
 from djangocodemirror.widgets import CodeMirrorWidget, CodeMirrorAdminWidget
 

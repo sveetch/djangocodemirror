@@ -64,16 +64,25 @@ class CodeMirrorWidget(forms.Textarea):
         """
         return self.codemirror_field_js
 
-    def build_codemirror_settings(self, final_attrs):
+    def codemirror_config(self):
         """
-        Build CodeMirror HTML for Javascript config
+        Shortcut to get Codemirror parameters
+
+        Returns:
+            dict: CodeMirror parameters.
+        """
+        return self.editor_manifest.get_codemirror_config(self.config_name)
+
+    def codemirror_script(self, final_attrs):
+        """
+        Build CodeMirror HTML script tag which contains CodeMirror init.
 
         Returns:
             string: HTML for field CodeMirror instance.
         """
         inputid = final_attrs['id']
         html = self.get_codemirror_field_js()
-        opts = self.editor_manifest.get_codemirror_config(self.config_name)
+        opts = self.codemirror_config()
 
         return html.format(inputid=inputid, settings=json.dumps(opts))
 
@@ -97,7 +106,7 @@ class CodeMirrorWidget(forms.Textarea):
 
         # Append HTML for CodeMirror Javascript config just below the textarea
         if self.embed_config or config.get('embed_config'):
-            html.append(self.build_codemirror_settings(final_attrs))
+            html.append(self.codemirror_script(final_attrs))
 
         return mark_safe(u'\n'.join(html))
 

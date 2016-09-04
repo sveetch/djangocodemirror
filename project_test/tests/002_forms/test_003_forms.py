@@ -1,18 +1,11 @@
 """
-Some dummy pinging to ensure urls are consistent
+Tests against field usage inside a form
 """
 import pytest
 
-from django.core.urlresolvers import reverse
 from django import forms
 
-from djangocodemirror.fields import DjangoCodeMirrorField
-
-
-class SampleForm(forms.Form):
-    foo = DjangoCodeMirrorField(label="Foo", required=True,
-                                config_name="rst-basic",
-                                initial='Hello World!')
+from project.forms import SampleForm
 
 
 def test_form_basic():
