@@ -1,5 +1,5 @@
 {% extends "skeleton.html" %}
-{% load djangocodemirror %}
+{% load djangocodemirror_tags %}
 {% load static from staticfiles %}
 
 {% block head_assets %}
@@ -8,6 +8,13 @@
 {% endblock %}
 
 {% block base_content %}
+{% toast "foo" %}
+<hr>
+{% toast "foo" "bar" %}
+<hr>
+{% toast "foo" "bar" "pika" "chu" %}
+<hr>
+
 <div class="row">
     <form action="." method="post">{% csrf_token %}
         {{ form.as_p }}
@@ -15,6 +22,6 @@
     </form>
 </div>
 <script>
-    var editor = {{ form.foo|codemirror_config }};
+    var editor = {{ form.foo|codemirror_parameters }};
 </script>
 {% endblock %}

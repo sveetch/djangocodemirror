@@ -65,6 +65,12 @@ CODEMIRROR_MODES = {
     "shell": "CodeMirror/mode/shell/shell.js",
 }
 
+# Javascript asset tag element
+CODEMIRROR_JS_ASSET_TAG = '<script type="text/javascript" src="{url}"></script>'
+
+# CSS asset tag element
+CODEMIRROR_CSS_ASSET_TAG = '<link rel="stylesheet" href="{url}">'
+
 #: Key name template used for Javascript bundles
 CODEMIRROR_BUNDLE_CSS_NAME = "dcm-{settings_name}_css"
 

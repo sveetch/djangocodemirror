@@ -1,21 +1,40 @@
 """
-Tests against template filter for Codemirror config
+Tests against template tags for Codemirror config
 """
+import json
 import pytest
 
-from django.core.urlresolvers import reverse
-
-from djangocodemirror.templatetags.djangocodemirror import codemirror_config
+from djangocodemirror.widgets import CodeMirrorWidget
+from djangocodemirror.templatetags import djangocodemirror_tags
 
 from project.forms import SampleForm
 
 
-def test_filter_basic():
-    """Just pinging dummy homepage"""
+def test_resolve_widget():
+    """
+    Check widget resolving from a field
+
+    Note:
+        We should test also against BoundField but it seems to involve template
+        resolving and i'm too lazy for that now.
+    """
+    f = SampleForm({'foo': 'bar'})
+
+    w = djangocodemirror_tags.resolve_widget(f.fields['foo'])
+
+    assert isinstance(w, CodeMirrorWidget) == True
+
+
+def test_codemirror_parameters():
+    """Test codemirror_parameters tag"""
     f = SampleForm({'foo': 'bar'})
 
     f.as_p()
 
-    codemirror_config(f.fields['foo'])
+    p = djangocodemirror_tags.codemirror_parameters(f.fields['foo'])
 
-    assert 1 == 1
+    assert json.loads(p) == {
+        "lineNumbers": True,
+        "lineWrapping": True,
+        "mode": "rst"
+    }
