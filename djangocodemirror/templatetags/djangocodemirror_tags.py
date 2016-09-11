@@ -2,7 +2,9 @@
 """
 DjangoCodeMirror template tags and filters for assets
 """
-import copy, json
+import copy
+import json
+import os
 
 from django import template
 from django.utils.safestring import mark_safe
@@ -44,6 +46,22 @@ def resolve_widget(field):
     return widget
 
 
+#@register.simple_tag
+#def codemirror_field_js_assets(*args):
+    #"""
+    #Tag to render CodeMirror Javascript assets needed for all given config
+    #names.
+
+    #TODO
+
+    #Example:
+
+        #{% load djangocodemirror_tags %}
+        #{% codemirror_field_js_assets form.myfield1 form.myfield2 %}
+    #"""
+    #pass
+
+
 @register.simple_tag
 def codemirror_field_js_assets(*args):
     """
@@ -61,8 +79,33 @@ def codemirror_field_js_assets(*args):
         widget = resolve_widget(field)
         manifesto.register(widget.config_name)
 
+    for item in manifesto.js():
+        url = os.path.join(settings.STATIC_URL, item)
+        output.append(settings.CODEMIRROR_JS_ASSET_TAG.format(url=url))
+
+    return '\n'.join(output)
+
+
+@register.simple_tag
+def codemirror_field_css_assets(*args):
+    """
+    Tag to render CodeMirror CSS assets needed for all given fields.
+
+    Example:
+
+        {% load djangocodemirror_tags %}
+        {% codemirror_field_css_assets form.myfield1 form.myfield2 %}
+    """
+    output = []
+
+    manifesto = CodeMirrorManifest()
+    for field in args:
+        widget = resolve_widget(field)
+        manifesto.register(widget.config_name)
+
     for item in manifesto.css():
-        output.append(settings.CODEMIRROR_CSS_ASSET_TAG.format(url=item))
+        url = os.path.join(settings.STATIC_URL, item)
+        output.append(settings.CODEMIRROR_CSS_ASSET_TAG.format(url=url))
 
     return '\n'.join(output)
 
