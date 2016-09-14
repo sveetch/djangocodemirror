@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Form field widgets
-==================
+Form field widget
+=================
 
 """
 import json, copy
@@ -12,8 +12,6 @@ from django.conf import settings
 from django.utils.safestring import mark_safe
 
 from djangocodemirror.manifest import CodeMirrorManifest
-#from djangocodemirror import settings_local
-#from djangocodemirror.config import ConfigManager
 
 
 class CodeMirrorWidget(forms.Textarea):

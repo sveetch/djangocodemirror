@@ -24,7 +24,6 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     install_requires=[
-        'rstview>=0.1.2,<0.3',
         'Django<=1.6',
     ],
     include_package_data=True,

@@ -113,7 +113,6 @@ PROJECT_PATH = os.path.join(BASE_DIR, 'project')
 TESTS_FIXTURES_DIR = os.path.join('project_test', 'tests', 'data_fixtures')
 
 INSTALLED_APPS = INSTALLED_APPS+(
-    'rstview',
     'djangocodemirror',
 )
 
@@ -140,3 +139,5 @@ TEMPLATES[0]['DIRS'] = (os.path.join(PROJECT_PATH, "templates"),)
 # DjangoCodemirror settings
 #
 from djangocodemirror.settings import *
+
+from djangocodemirror_app_settings import *
