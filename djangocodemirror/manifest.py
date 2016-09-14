@@ -40,6 +40,10 @@ class UnknowTheme(KeyError):
     pass
 
 
+class CodeMirrorFieldBundle(KeyError):
+    pass
+
+
 class CodeMirrorManifest(object):
     """
     CodeMirror config and assets manifest.

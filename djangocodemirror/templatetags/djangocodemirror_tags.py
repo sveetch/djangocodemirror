@@ -12,7 +12,7 @@ from django import template
 from django.utils.safestring import mark_safe
 from django.conf import settings
 
-from djangocodemirror.manifest import CodeMirrorManifest
+from djangocodemirror.manifest import CodeMirrorFieldBundle, CodeMirrorManifest
 
 
 register = template.Library()
@@ -111,22 +111,6 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         return '\n'.join(output)
 
 
-#@register.simple_tag
-#def codemirror_field_js_bundle(*args):
-    #"""
-    #Tag to render CodeMirror Javascript assets needed for all given config
-    #names.
-
-    #TODO
-
-    #Example:
-
-        #{% load djangocodemirror_tags %}
-        #{% codemirror_field_js_assets form.myfield1 form.myfield2 %}
-    #"""
-    #pass
-
-
 @register.simple_tag
 def codemirror_field_js_assets(*args):
     """
@@ -157,6 +141,72 @@ def codemirror_field_css_assets(*args):
     manifesto.register_from_fields(*args)
 
     return manifesto.css_html()
+
+
+@register.filter
+def codemirror_field_js_bundle(field):
+    """
+    Filter to get CodeMirror Javascript bundle name needed for a single field.
+
+    Example:
+
+        {% load djangocodemirror_tags %}
+        {{ form.myfield|codemirror_field_js_bundle }}
+
+    Arguments:
+        field (djangocodemirror.fields.CodeMirrorField): A form field
+
+    Raises:
+        CodeMirrorFieldBundle: Raised if Codemirror configuration from field
+        does not have a bundle name.
+
+    Returns:
+        string: Bundle name to load with webassets.
+    """
+    manifesto = CodemirrorAssetTagRender()
+    manifesto.register_from_fields(field)
+
+    try:
+        bundle_name = manifesto.js_bundle_names()[0]
+    except IndexError:
+        raise CodeMirrorFieldBundle(("Given field with configuration name '{}' "
+                                     "does not have a Javascript bundle "
+                                     "name").format(name))
+
+    return bundle_name
+
+
+@register.filter
+def codemirror_field_css_bundle(field):
+    """
+    Filter to get CodeMirror CSS bundle name needed for a single field.
+
+    Example:
+
+        {% load djangocodemirror_tags %}
+        {{ form.myfield|codemirror_field_css_bundle }}
+
+    Arguments:
+        field (djangocodemirror.fields.CodeMirrorField): A form field
+
+    Raises:
+        CodeMirrorFieldBundle: Raised if Codemirror configuration from field
+        does not have a bundle name.
+
+    Returns:
+        string: Bundle name to load with webassets.
+    """
+    manifesto = CodemirrorAssetTagRender()
+    manifesto.register_from_fields(field)
+
+    try:
+        bundle_name = manifesto.css_bundle_names()[0]
+    except IndexError:
+        raise CodeMirrorFieldBundle(("Given field with configuration name '{}' "
+                                     "does not have a CSS bundle "
+                                     "name").format(name))
+
+    return bundle_name
 
 
 @register.filter
