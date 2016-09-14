@@ -24,7 +24,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     install_requires=[
-        'Django<=1.6',
+        'Django>=1.6,<1.7',
     ],
     include_package_data=True,
     zip_safe=False
