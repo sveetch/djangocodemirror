@@ -1,35 +1,33 @@
 """
 Tests against template tags for Codemirror config
-
-TODO: Static dir prefixed for sanity!!!
 """
 import json
 import pytest
 
 from djangocodemirror.widgets import CodeMirrorWidget
-from djangocodemirror.templatetags import djangocodemirror_tags
+from djangocodemirror.templatetags.djangocodemirror_tags import codemirror_field_css_assets
 
 from project.forms import SampleForm, ManyFieldsSampleForm
 
 
 def test_codemirror_single_field_js_assets():
-    """Test codemirror_field_js_assets tag"""
+    """Test codemirror_field_js_assets tag for a single field"""
     f = SampleForm({'foo': 'bar'})
 
     f.as_p()
 
-    assets = djangocodemirror_tags.codemirror_field_css_assets(f.fields['foo'])
+    assets = codemirror_field_css_assets(f.fields['foo'])
 
     assert assets == '<link rel="stylesheet" href="/static/CodeMirror/lib/codemirror.css">'
 
 
 def test_codemirror_multiple_field_js_assets():
-    """Test codemirror_field_js_assets tag"""
+    """Test codemirror_field_js_assets tag for a many field"""
     f = ManyFieldsSampleForm({'foo': 'bar'})
 
     f.as_p()
 
-    assets = djangocodemirror_tags.codemirror_field_css_assets(
+    assets = codemirror_field_css_assets(
         f.fields['foo'],
         f.fields['pika'],
         f.fields['ping']

@@ -109,3 +109,28 @@ def test_js_autoregister(settings, manifesto, name, assets):
     #import json
     #print json.dumps(manifesto.js(name), indent=4)
     assert manifesto.js(name) == settings.CODEMIRROR_BASE_JS+assets
+
+
+def test_js_bundle_names_single(settings, manifesto):
+    """Checking Javascript bundle names for a single config"""
+    manifesto.register('rst-basic') # Registred but not used
+    manifesto.register('rst-with-addons')
+
+    assert manifesto.js_bundle_names('rst-with-addons') == [
+        'dcm-rst-with-addons_js',
+    ]
+
+
+def test_js_bundle_names_all(settings, manifesto):
+    """Checking Javascript bundle names for every registered config"""
+    manifesto.autoregister()
+
+    assert manifesto.js_bundle_names() == [
+        'dcm-rst-with-themes_js',
+        'dcm-rst-with-modes_js',
+        'dcm-mode-naive_js',
+        'dcm-rst-with-all_js',
+        'dcm-rst-with-addons_js',
+        'dcm-empty_js',
+        'dcm-rst-basic_js',
+    ]

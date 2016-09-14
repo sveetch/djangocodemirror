@@ -42,7 +42,7 @@ class UnknowTheme(KeyError):
 
 class CodeMirrorManifest(object):
     """
-    CodeMirror config and assets manifest
+    CodeMirror config and assets manifest.
 
     Attributes:
         registry (dict): Configuration registry.
@@ -97,8 +97,8 @@ class CodeMirrorManifest(object):
             settings_name=name
         )
 
-        # If mode is none but modes is not empty, use the first modes
-        # item as current mode (this is the codemirror behavior, make it
+        # If 'mode' is none but 'modes' is not empty, use the first 'modes'
+        # item as current 'mode' (this is the codemirror behavior, make it
         # python explicit)
         if not parameters.get('mode') and len(parameters.get('modes', []))>0:
             parameters['mode'] = self.resolve_mode(parameters['modes'][0])
@@ -110,6 +110,22 @@ class CodeMirrorManifest(object):
         self.registry[name] = parameters
 
         return parameters
+
+    def register_many(self, *args):
+        """
+        Register many configuration names.
+
+        Arguments:
+            *args: Config names as strings.
+
+        Returns:
+            list: List of registered configs.
+        """
+        params = []
+        for name in args:
+            params.append(self.register(name))
+
+        return params
 
     def autoregister(self):
         """
@@ -246,6 +262,23 @@ class CodeMirrorManifest(object):
 
         return filepaths
 
+    def js_bundle_names(self, name=None):
+        """
+        Returns all needed Javascript Bundle names for given config name (if
+        given) or every registred config instead (if no name is given).
+
+        Arguments:
+            name (string): Specific config name to use instead of all.
+
+        Returns:
+            list: List of webasset bundle names.
+        """
+        configs = self.get_configs(name)
+
+        # Addons first
+        return [opts['js_bundle_name'] for name, opts in configs.items()
+                if 'js_bundle_name' in opts]
+
     def css(self, name=None):
         """
         Returns all needed CSS filepaths for given config name (if
@@ -264,9 +297,25 @@ class CodeMirrorManifest(object):
         # Process theme names
         for name,opts in configs.items():
             for item in opts.get('themes', []):
-                # Uniqueness
                 resolved = self.resolve_theme(item)
                 if resolved not in filepaths:
                     filepaths.append(resolved)
 
         return filepaths
+
+    def css_bundle_names(self, name=None):
+        """
+        Returns all needed CSS Bundle names for given config name (if
+        given) or every registred config instead (if no name is given).
+
+        Arguments:
+            name (string): Specific config name to use instead of all.
+
+        Returns:
+            list: List of webasset bundle names.
+        """
+        configs = self.get_configs(name)
+
+        # Addons first
+        return [opts['css_bundle_name'] for name, opts in configs.items()
+                if 'css_bundle_name' in opts]

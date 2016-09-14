@@ -73,8 +73,33 @@ def test_css_registred_singles(settings, manifesto):
         ],
     ),
 ])
-def test_js_autoregister(settings, manifesto, name, assets):
+def test_css_autoregister(settings, manifesto, name, assets):
     """Checking CSS assets after autoregister"""
     manifesto.autoregister()
 
     assert manifesto.css(name) == settings.CODEMIRROR_BASE_CSS+assets
+
+
+def test_css_bundle_names_single(settings, manifesto):
+    """Checking CSS bundle names for a single config"""
+    manifesto.register('rst-basic') # Registred but not used
+    manifesto.register('rst-with-addons')
+
+    assert manifesto.css_bundle_names('rst-with-addons') == [
+        'dcm-rst-with-addons_css',
+    ]
+
+
+def test_css_bundle_names_all(settings, manifesto):
+    """Checking CSS bundle names for every registered config"""
+    manifesto.autoregister()
+
+    assert manifesto.css_bundle_names() == [
+        'dcm-rst-with-themes_css',
+        'dcm-rst-with-modes_css',
+        'dcm-mode-naive_css',
+        'dcm-rst-with-all_css',
+        'dcm-rst-with-addons_css',
+        'dcm-empty_css',
+        'dcm-rst-basic_css',
+    ]

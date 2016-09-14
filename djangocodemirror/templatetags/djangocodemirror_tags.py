@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 DjangoCodeMirror template tags and filters for assets
+
+TODO: Tags for bundles.
 """
 import copy
 import json
@@ -12,42 +14,105 @@ from django.conf import settings
 
 from djangocodemirror.manifest import CodeMirrorManifest
 
+
 register = template.Library()
 
 
-@register.simple_tag
-def toast(*args):
+class CodemirrorAssetTagRender(CodeMirrorManifest):
     """
-    Toast simple_tag
+    A manifest extend to render Codemirror assets tags HTML.
+
+    Arguments:
+        initial (CodeMirrorManifest): Optional initial manifest.
     """
-    output = '<ul>\n'
-    for name in args:
-        output += '<li>{}</li>'.format(name)
-    output += '</ul>'
-    return output
+    def resolve_widget(self, field):
+        """
+        Given a Field or BoundField, return widget instance.
 
+        Arguments:
+            field (Field or BoundField): A field instance.
 
-def resolve_widget(field):
-    """
-    Given a Field or BoundField, return widget instance.
+        Returns:
+            django.forms.widgets.Widget: Retrieved widget from given field.
+        """
+        # When filter is used within template we have to reach the field instance
+        # through the BoundField.
+        if hasattr(field, 'field'):
+            widget = field.field.widget
+        # When used out of template, we have a direct field instance
+        else:
+            widget = field.widget
 
-    Todo:
-        Should be able to figure if instance value is a string which will be
-        assumed to be a config name ?
-    """
-    # When filter is used within template we have to reach the field instance
-    # through the BoundField.
-    if hasattr(field, 'field'):
-        widget = field.field.widget
-    # When used out of template, we have a direct field instance
-    else:
-        widget = field.widget
+        return widget
 
-    return widget
+    def register_from_fields(self, *args):
+        """
+        Register config name from field widgets
+
+        Arguments:
+            *args: Fields that contains widget
+                ``djangocodemirror.widget.CodeMirrorWidget``.
+
+        Returns:
+            list: List of registered config names from fields.
+        """
+        names = []
+        for field in args:
+            widget = self.resolve_widget(field)
+            self.register(widget.config_name)
+            if widget.config_name not in names:
+                names.append(widget.config_name)
+
+        return names
+
+    def render_asset_html(self, path, tag_template):
+        """
+        Render HTML tag for a given path.
+
+        Arguments:
+            path (string): Relative path from static directory.
+            tag_template (string): Template string for HTML tag.
+
+        Returns:
+            string: HTML tag with url from given path.
+        """
+        url = os.path.join(settings.STATIC_URL, path)
+
+        return tag_template.format(url=url)
+
+    def css_html(self):
+        """
+        Render HTML tags for Javascript assets.
+
+        Returns:
+            string: HTML for CSS assets from every registered config.
+        """
+        output = []
+        for item in self.css():
+            output.append(
+                self.render_asset_html(item, settings.CODEMIRROR_CSS_ASSET_TAG)
+            )
+
+        return '\n'.join(output)
+
+    def js_html(self):
+        """
+        Render HTML tags for Javascript assets.
+
+        Returns:
+            string: HTML for Javascript assets from every registered config.
+        """
+        output = []
+        for item in self.js():
+            output.append(
+                self.render_asset_html(item, settings.CODEMIRROR_JS_ASSET_TAG)
+            )
+
+        return '\n'.join(output)
 
 
 #@register.simple_tag
-#def codemirror_field_js_assets(*args):
+#def codemirror_field_js_bundle(*args):
     #"""
     #Tag to render CodeMirror Javascript assets needed for all given config
     #names.
@@ -72,18 +137,10 @@ def codemirror_field_js_assets(*args):
         {% load djangocodemirror_tags %}
         {% codemirror_field_js_assets form.myfield1 form.myfield2 %}
     """
-    output = []
+    manifesto = CodemirrorAssetTagRender()
+    manifesto.register_from_fields(*args)
 
-    manifesto = CodeMirrorManifest()
-    for field in args:
-        widget = resolve_widget(field)
-        manifesto.register(widget.config_name)
-
-    for item in manifesto.js():
-        url = os.path.join(settings.STATIC_URL, item)
-        output.append(settings.CODEMIRROR_JS_ASSET_TAG.format(url=url))
-
-    return '\n'.join(output)
+    return manifesto.js_html()
 
 
 @register.simple_tag
@@ -96,18 +153,10 @@ def codemirror_field_css_assets(*args):
         {% load djangocodemirror_tags %}
         {% codemirror_field_css_assets form.myfield1 form.myfield2 %}
     """
-    output = []
+    manifesto = CodemirrorAssetTagRender()
+    manifesto.register_from_fields(*args)
 
-    manifesto = CodeMirrorManifest()
-    for field in args:
-        widget = resolve_widget(field)
-        manifesto.register(widget.config_name)
-
-    for item in manifesto.css():
-        url = os.path.join(settings.STATIC_URL, item)
-        output.append(settings.CODEMIRROR_CSS_ASSET_TAG.format(url=url))
-
-    return '\n'.join(output)
+    return manifesto.css_html()
 
 
 @register.filter
@@ -131,10 +180,10 @@ def codemirror_parameters(field):
     Returns:
         string: JSON object for parameters, marked safe for Django templates.
     """
-    widget = resolve_widget(field)
+    manifesto = CodemirrorAssetTagRender()
+    names = manifesto.register_from_fields(field)
 
-    # Get Codemirror config from widget
-    config = widget.codemirror_config()
+    config = manifesto.get_codemirror_config(names[0])
 
     return mark_safe(json.dumps(config))
 

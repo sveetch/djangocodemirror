@@ -46,6 +46,32 @@ def test_register(settings, manifesto, name, options):
     assert registred == options
 
 
+def test_register_many(manifesto):
+    """Register many config"""
+    registred = manifesto.register_many('empty', 'rst-basic')
+
+    assert registred == [
+        {
+            'mode': None,
+            'modes': [],
+            'addons': [],
+            'themes': [],
+            'css_bundle_name': 'dcm-empty_css',
+            'js_bundle_name': 'dcm-empty_js',
+        },
+        {
+            'mode': 'rst',
+            'lineWrapping': True,
+            'lineNumbers': True,
+            'modes': ['rst'],
+            'addons': [],
+            'themes': [],
+            'css_bundle_name': 'dcm-rst-basic_css',
+            'js_bundle_name': 'dcm-rst-basic_js',
+        },
+    ]
+
+
 def test_autoregister(manifesto):
     """Auto register every config from settings"""
     manifesto.autoregister()
