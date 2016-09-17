@@ -1,0 +1,2 @@
+.. automodule:: djangocodemirror.settings
+    :members:

@@ -3,88 +3,116 @@
 Default app settings
 ====================
 
+Note:
+    Every file paths (as in ``settings.CODEMIRROR_BASE_JS``,
+    ``settings.CODEMIRROR_BASE_CSS``, ``settings.CODEMIRROR_THEMES``,
+    ``settings.CODEMIRROR_MODES``, etc..) must be relative to the static
+    directory.
+
 """
-#: HTML Code to instanciate CodeMirror for a field
 CODEMIRROR_FIELD_INIT_JS = ("""<script>var {inputid}_codemirror = """
                             """CodeMirror.fromTextArea("""
                             """document.getElementById("{inputid}"),"""
                             """{settings});</script>""")
+"""Template string for HTML Code to instanciate CodeMirror for a field.
+
+Contains two template variables:
+
+* ``inputid``: Input field id;
+* ``settings``: JSON string for CodeMirror parameters.
+"""
 
 
-#: Default settings for CodeMirror
 CODEMIRROR_SETTINGS = {
     'empty': {},
-    'rst-editor': {
-        'mode': 'rst',
-        'lineWrapping': True,
-        'lineNumbers': True,
-    },
 }
+"""
+Available CodeMirror configurations.
 
-#: Javascript base files for CodeMirror, they will be loaded before every other
-#: CodeMirror Javascript components.
+A CodeMirror configuration is a set of parameter for a CodeMirror instance plus
+some internal ones reserved to the manifest to control some behaviors.
+
+Usually, you should have at least the ``mode`` parameter that should contains a
+valid mode name from ``settings.CODEMIRROR_MODES``. For other available
+configuration parameters, see the CodeMirror documentation.
+
+Every parameter in a configuration will be given to CodeMirror instance
+excepted some internal ones:
+
+* ``modes``: List of mode names to load in addition to the current ``mode``;
+* ``addons``: List of addons path to load in addition to the modes;
+* ``themes`` List of theme name to load;
+* ``css_bundle_name``: CSS bundle name that is automatically builded from the
+  configuration name;
+* ``js_bundle_name``: Javascript bundle name that is automatically builded from
+  the configuration name;
+
+There is only one default configuration named ``empty`` that is an empty
+configuration without any parameter.
+"""
+
+
 CODEMIRROR_BASE_JS = ["CodeMirror/lib/codemirror.js"]
+"""List of CodeMirror Javascript base files that will be loaded before every
+other CodeMirror Javascript components."""
 
-#: CSS base files for CodeMirror, they will be loaded before every other
-#: CodeMirror CSS components.
+
 CODEMIRROR_BASE_CSS = ["CodeMirror/lib/codemirror.css"]
+"""List of CodeMirror CSS base files that will be loaded before themes."""
 
-#: Available CodeMirror CSS theme files, this is only a subset of available
-#: themes
+
 CODEMIRROR_THEMES = {
     "ambiance": "CodeMirror/theme/ambiance.css",
-    "ambiance-mobile": "CodeMirror/theme/ambiance-mobile.css",
-    "base16-dark": "CodeMirror/theme/base16-dark.css",
-    "bespin": "CodeMirror/theme/bespin.css",
-    "dracula": "CodeMirror/theme/dracula.css",
-    "eclipse": "CodeMirror/theme/eclipse.css",
-    "elegant": "CodeMirror/theme/elegant.css",
-    "neat": "CodeMirror/theme/neat.css",
-    "neo": "CodeMirror/theme/neo.css",
-    "night": "CodeMirror/theme/night.css",
-    "panda-syntax": "CodeMirror/theme/panda-syntax.css",
-    "xq-light": "CodeMirror/theme/xq-light.css",
-    "yeti": "CodeMirror/theme/yeti.css",
-    "zenburn": "CodeMirror/theme/zenburn.css",
 }
+"""Available CodeMirror CSS Theme files.
 
-#: Available CodeMirror Javascript mode files, this is only a subset of
-#: available modes
+Default value contains only the *Ambiance* theme (a dark one), so you may add
+yourself all your needed themes."""
+
+
 CODEMIRROR_MODES = {
-    "css": "CodeMirror/mode/css/css.js",
-    "django": "CodeMirror/mode/django/django.js",
-    "html": "CodeMirror/mode/html/html.js",
-    "json": "CodeMirror/mode/json/json.js",
-    "javascript": "CodeMirror/mode/javascript/javascript.js",
-    "markdown": "CodeMirror/mode/markdown/markdown.js",
-    "php": "CodeMirror/mode/php/php.js",
-    "perl": "CodeMirror/mode/perl/perl.js",
-    "python": "CodeMirror/mode/python/python.js",
-    "scss": "CodeMirror/mode/scss/scss.js",
     "rst": "CodeMirror/mode/restructuredtext/restructuredtext.js",
-    "shell": "CodeMirror/mode/shell/shell.js",
 }
+"""Available CodeMirror Javascript mode files.
 
-# Javascript asset tag element
+Default value contains only the *reSructuredText* mode, so you may add yourself
+all your needed modes."""
+
+
 CODEMIRROR_JS_ASSET_TAG = '<script type="text/javascript" src="{url}"></script>'
+"""HTML element to load a Javascript asset. Used by template tags and widget to
+build assets HTML loaders."""
 
-# CSS asset tag element
 CODEMIRROR_CSS_ASSET_TAG = '<link rel="stylesheet" href="{url}">'
+"""HTML element to load a CSS asset. Used by template tags and widget to
+build assets HTML loaders."""
 
-#: Key name template used for Javascript bundles
+
 CODEMIRROR_BUNDLE_CSS_NAME = "dcm-{settings_name}_css"
+"""Template string for Javascript bundle names where ``{settings_name}`` will
+be filled with the configuration name."""
 
-#: Key name template used for CSS bundles
+
 CODEMIRROR_BUNDLE_JS_NAME = "dcm-{settings_name}_js"
+"""Template string for CSS bundle names where ``{settings_name}`` will be
+filled with the configuration name."""
 
-#: Option arguments used for CSS bundles
+
 CODEMIRROR_BUNDLE_CSS_OPTIONS = {
     'filters':'yui_css',
     'output':'css/dcm-{settings_name}.min.css',
 }
+"""Option arguments used to build CSS bundles with ``django-assets``.
 
-#: Option arguments used for Javascript bundles
+Every CSS bundles will share the same arguments (excepted for the ``output``
+one)."""
+
+
 CODEMIRROR_BUNDLE_JS_OPTIONS = {
     'filters':'yui_js',
     'output':'js/dcm-{settings_name}.min.js',
 }
+"""Option arguments used to build Javascript bundles with ``django-assets``.
+
+Every Javascript bundles will share the same arguments (excepted for the
+``output`` one)."""

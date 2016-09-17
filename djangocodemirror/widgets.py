@@ -54,7 +54,7 @@ class CodeMirrorWidget(forms.Textarea):
 
     def get_codemirror_field_js(self):
         """
-        Return CodeMirror HTML template string from
+        Return CodeMirror HTML template from
         ``CodeMirrorWidget.codemirror_field_js``.
 
         Returns:
@@ -64,16 +64,20 @@ class CodeMirrorWidget(forms.Textarea):
 
     def codemirror_config(self):
         """
-        Shortcut to get Codemirror parameters
+        Shortcut to get Codemirror parameters.
 
         Returns:
             dict: CodeMirror parameters.
         """
-        return self.editor_manifest.get_codemirror_config(self.config_name)
+        return self.editor_manifest.get_codemirror_parameters(self.config_name)
 
     def codemirror_script(self, final_attrs):
         """
         Build CodeMirror HTML script tag which contains CodeMirror init.
+
+        Arguments:
+            final_attrs (dict): Widget attributes that must contains the ``id``
+                attribute.
 
         Returns:
             string: HTML for field CodeMirror instance.
@@ -87,6 +91,15 @@ class CodeMirrorWidget(forms.Textarea):
     def render(self, name, value, attrs=None):
         """
         Render widget HTML
+
+        Arguments:
+            name (string): Field input name.
+            value (string): Field input value.
+            attrs (dict): Optional field widget attributes. Default to
+                ``None``.
+
+        Returns:
+            string: Widget HTML representation.
         """
         if not hasattr(self, "editor_manifest"):
             self.editor_manifest = self.init_manifest(self.config_name)
@@ -111,7 +124,11 @@ class CodeMirrorWidget(forms.Textarea):
     @property
     def media(self):
         """
-        Adds necessary files (Js/CSS) to the widget's medias
+        Adds necessary files (Js/CSS) to the widget's medias.
+
+        Returns:
+            django.forms.Media: Media object with all assets from registered
+            config.
         """
         if not hasattr(self, "editor_manifest"):
             self.editor_manifest = self.init_manifest(self.config_name)

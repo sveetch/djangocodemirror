@@ -11,13 +11,6 @@ From its registred Codemirror configs, manifest is able to:
 
 A Codemirror config is selected from its name in
 ``settings.CODEMIRROR_SETTINGS``.
-
-Note:
-    Every assets paths should be relative path to your static directory. In
-    fact it depends how you will use them, but commonly it should be so.
-
-Todo:
-    Describe config format (well, only the internal ones).
 """
 import copy, json
 
@@ -46,13 +39,16 @@ class CodeMirrorFieldBundle(KeyError):
 
 class CodeMirrorManifest(object):
     """
-    CodeMirror config and assets manifest.
+    CodeMirror configurations and assets manifest.
+
+    A configuration contains every parameters and assets to use with a
+    CodeMirror instance.
 
     Attributes:
         registry (dict): Configuration registry.
-        default_internal_config (dict): Default editor internal parameters.
-        _internal_only (list): Names of internal parameters only that will not
-            be passed into codemirror parameters.
+        default_internal_config (dict): Default internal parameters.
+        _internal_only (list): Names of internal parameters only that will be
+            exluded from CodeMirror parameters.
     """
     default_internal_config = {
         'mode': None, # Current mode, automatically added to 'modes'
@@ -75,6 +71,10 @@ class CodeMirrorManifest(object):
 
         Arguments:
             name (string): Config name from available ones in
+                ``settings.CODEMIRROR_SETTINGS``.
+
+        Raises:
+            UnknowConfig: If given config name does not exist in
                 ``settings.CODEMIRROR_SETTINGS``.
 
         Returns:
@@ -133,7 +133,8 @@ class CodeMirrorManifest(object):
 
     def autoregister(self):
         """
-        Register every configuration from ``settings.CODEMIRROR_SETTINGS``.
+        Register every available configuration from
+        ``settings.CODEMIRROR_SETTINGS``.
         """
         for name in settings.CODEMIRROR_SETTINGS:
             self.register(name)
@@ -143,9 +144,12 @@ class CodeMirrorManifest(object):
         From given mode name, return mode file path from
         ``settings.CODEMIRROR_MODES`` map.
 
+        Arguments:
+            name (string): Mode name.
+
         Raises:
             KeyError: When given name does not exist in
-            ``settings.CODEMIRROR_MODES``.
+                ``settings.CODEMIRROR_MODES``.
 
         Returns:
             string: Mode file path.
@@ -161,9 +165,12 @@ class CodeMirrorManifest(object):
         From given theme name, return theme file path from
         ``settings.CODEMIRROR_THEMES`` map.
 
+        Arguments:
+            name (string): Theme name.
+
         Raises:
             KeyError: When given name does not exist in
-            ``settings.CODEMIRROR_THEMES``.
+                ``settings.CODEMIRROR_THEMES``.
 
         Returns:
             string: Theme file path.
@@ -186,6 +193,9 @@ class CodeMirrorManifest(object):
         Arguments:
             name (string): Specific configuration name to return.
 
+        Raises:
+            NotRegistered: If given config name does not exist in registry.
+
         Returns:
             dict: Configurations.
         """
@@ -204,6 +214,9 @@ class CodeMirrorManifest(object):
         Arguments:
             name (string): A registred config name.
 
+        Raises:
+            NotRegistered: If given config name does not exist in registry.
+
         Returns:
             dict: Configuration.
         """
@@ -213,16 +226,18 @@ class CodeMirrorManifest(object):
 
         return copy.deepcopy(self.registry[name])
 
-    def get_codemirror_config(self, name):
+    def get_codemirror_parameters(self, name):
         """
-        Return CodeMirror configuration for given config name.
+        Return CodeMirror parameters for given configuration name.
+
+        This is a reduced configuration from internal parameters.
 
         Arguments:
             name (string): Config name from available ones in
                 ``settings.CODEMIRROR_SETTINGS``.
 
         Returns:
-            dict: Configuration.
+            dict: Parameters.
         """
         config = self.get_config(name)
 

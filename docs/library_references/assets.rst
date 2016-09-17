@@ -1,0 +1,2 @@
+.. automodule:: djangocodemirror.assets
+    :members:

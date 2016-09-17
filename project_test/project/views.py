@@ -2,14 +2,10 @@
 """
 Sample views
 """
-import os
-
-from django.conf import settings
-from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse
 
-from project.forms import SampleForm
+from .forms import SampleForm
 
 
 class BasicSampleFormView(FormView):

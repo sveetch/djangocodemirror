@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-DjangoCodeMirror template tags and filters for assets
+Template tags
+=============
 
-TODO: Tags for bundles.
 """
 import copy
 import json
@@ -21,13 +21,14 @@ register = template.Library()
 class CodemirrorAssetTagRender(CodeMirrorManifest):
     """
     A manifest extend to render Codemirror assets tags HTML.
-
-    Arguments:
-        initial (CodeMirrorManifest): Optional initial manifest.
     """
     def resolve_widget(self, field):
         """
         Given a Field or BoundField, return widget instance.
+
+        Todo:
+            Raise an exception if given field object does not have a
+            widget.
 
         Arguments:
             field (Field or BoundField): A field instance.
@@ -51,7 +52,7 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
 
         Arguments:
             *args: Fields that contains widget
-                ``djangocodemirror.widget.CodeMirrorWidget``.
+                :class:`djangocodemirror.widget.CodeMirrorWidget`.
 
         Returns:
             list: List of registered config names from fields.
@@ -117,6 +118,7 @@ def codemirror_field_js_assets(*args):
     Tag to render CodeMirror Javascript assets needed for all given fields.
 
     Example:
+        ::
 
         {% load djangocodemirror_tags %}
         {% codemirror_field_js_assets form.myfield1 form.myfield2 %}
@@ -126,13 +128,13 @@ def codemirror_field_js_assets(*args):
 
     return manifesto.js_html()
 
-
 @register.simple_tag
 def codemirror_field_css_assets(*args):
     """
     Tag to render CodeMirror CSS assets needed for all given fields.
 
     Example:
+        ::
 
         {% load djangocodemirror_tags %}
         {% codemirror_field_css_assets form.myfield1 form.myfield2 %}
@@ -149,16 +151,18 @@ def codemirror_field_js_bundle(field):
     Filter to get CodeMirror Javascript bundle name needed for a single field.
 
     Example:
+        ::
 
         {% load djangocodemirror_tags %}
         {{ form.myfield|codemirror_field_js_bundle }}
 
     Arguments:
-        field (djangocodemirror.fields.CodeMirrorField): A form field
+        field (django.forms.fields.Field): A form field that contains a widget
+            :class:`djangocodemirror.widget.CodeMirrorWidget`.
 
     Raises:
-        CodeMirrorFieldBundle: Raised if Codemirror configuration from field
-        does not have a bundle name.
+        CodeMirrorFieldBundle: If Codemirror configuration from field does not
+            have a bundle name.
 
     Returns:
         string: Bundle name to load with webassets.
@@ -182,12 +186,13 @@ def codemirror_field_css_bundle(field):
     Filter to get CodeMirror CSS bundle name needed for a single field.
 
     Example:
+        ::
 
         {% load djangocodemirror_tags %}
         {{ form.myfield|codemirror_field_css_bundle }}
 
     Arguments:
-        field (djangocodemirror.fields.CodeMirrorField): A form field
+        field (djangocodemirror.fields.CodeMirrorField): A form field.
 
     Raises:
         CodeMirrorFieldBundle: Raised if Codemirror configuration from field
@@ -220,12 +225,13 @@ def codemirror_parameters(field):
     be correctly initialized.
 
     Example:
+        ::
 
-        {% load djangocodemirror_tags %}
-        {{ form.myfield|codemirror_parameters }}
+            {% load djangocodemirror_tags %}
+            {{ form.myfield|codemirror_parameters }}
 
     Arguments:
-        field (djangocodemirror.fields.CodeMirrorField): A form field
+        field (djangocodemirror.fields.CodeMirrorField): A form field.
 
     Returns:
         string: JSON object for parameters, marked safe for Django templates.
@@ -233,7 +239,7 @@ def codemirror_parameters(field):
     manifesto = CodemirrorAssetTagRender()
     names = manifesto.register_from_fields(field)
 
-    config = manifesto.get_codemirror_config(names[0])
+    config = manifesto.get_codemirror_parameters(names[0])
 
     return mark_safe(json.dumps(config))
 

@@ -10,7 +10,7 @@ def test_raw_config_empty(manifesto):
     """Empty config"""
     manifesto.autoregister()
 
-    config = manifesto.get_codemirror_config('empty')
+    config = manifesto.get_codemirror_parameters('empty')
 
     assert config == {}
 
@@ -122,10 +122,10 @@ def test_get_configs_single_error(settings, manifesto):
         },
     ),
 ])
-def test_config_basic(manifesto, name, options):
-    """Empty config"""
+def test_codemirror_parameters(manifesto, name, options):
+    """CodeMirror parameters"""
     manifesto.autoregister()
 
-    config = manifesto.get_codemirror_config(name)
+    config = manifesto.get_codemirror_parameters(name)
 
     assert config == options

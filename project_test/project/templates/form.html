@@ -2,19 +2,7 @@
 {% load djangocodemirror_tags %}
 {% load static from staticfiles %}
 
-{% block head_assets %}
-<link rel="stylesheet" href="{% static "CodeMirror/lib/codemirror.css" %}">
-<script src="{% static "CodeMirror/lib/codemirror.js" %}"></script>
-{% endblock %}
-
 {% block base_content %}
-{% toast "foo" %}
-<hr>
-{% toast "foo" "bar" %}
-<hr>
-{% toast "foo" "bar" "pika" "chu" %}
-<hr>
-
 <div class="row">
     <form action="." method="post">{% csrf_token %}
         {{ form.as_p }}
@@ -24,4 +12,10 @@
 <script>
     var editor = {{ form.foo|codemirror_parameters }};
 </script>
+{% endblock %}
+
+
+{% block head_assets %}
+{% codemirror_field_css_assets form.foo %}
+{% codemirror_field_js_assets form.foo %}
 {% endblock %}

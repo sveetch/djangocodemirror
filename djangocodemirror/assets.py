@@ -1,11 +1,15 @@
 """
-Webassets bundles
-=================
+.. _django-assets: http://pypi.python.org/pypi/django-assets
 
-Compute some Bundles for ``webassets`` + ``django-assets``.
+django-assets bundles
+=====================
 
-Bundles are computed from each avalaible settings item in
-"settings.CODEMIRROR_SETTINGS".
+If `django-assets`_ is installed, module ``djangocodemirror.assets`` will be
+automatically loaded to enable asset bundles for available configurations
+``settings.CODEMIRROR_SETTINGS``.
+
+A variable ``djangocodemirror.assets.DJANGO_ASSETS_INSTALLED`` will be set to
+``True`` if `django-assets`_ is installed, else ``False``.
 """
 try:
     from django_assets import Bundle
