@@ -9,9 +9,5 @@
         <input type="submit">
     </form>
 </div>
-{% endblock %}
-
-
-{% block head_assets %}
-{% codemirror_instance 'rst-basic' form.foo.name|add:"_codemirror" form.foo.id_for_label %}
+{% codemirror_instance 'javascript' form.foo.name|add:"_codemirror" form.foo.id_for_label %}
 {% endblock %}

@@ -10,8 +10,8 @@ CODEMIRROR_SETTINGS = {
         'lineNumbers': True,
         'modes': ['python', 'javascript'],
     },
-    'rst-basic': {
-        'mode': 'rst',
+    'javascript': {
+        'mode': 'javascript',
         'lineWrapping': True,
         'lineNumbers': True,
     },
@@ -50,6 +50,11 @@ CODEMIRROR_SETTINGS = {
         'modes': ['rst', 'python', 'css'],
         'theme': 'neat',
         'themes': ['eclipse', 'neat'],
+    },
+    'rst-basic': {
+        'mode': 'rst',
+        'lineWrapping': True,
+        'lineNumbers': True,
     },
 }
 
