@@ -10,13 +10,13 @@ This is a major refactoring to adopt Test Driven Development, cleaner behaviors 
 
 * Added Unittests with Py.test;
 * Added documentation;
+* Rewrited every template tags and filters;
 * Better docstring for code;
 * Removed all stuff about reStructuredText editor addons;
 * Removed everything about the CodeMirror rst editor (may probably live again in its own app);
-* Rewrited evert template tags and filters;
+* Removed deprecated templates;
 
 Todo:
 
-* Remove deprecated templates;
 * Update Codemirror copy from Git submodule;
 * Added tox configuration;

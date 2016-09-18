@@ -29,7 +29,7 @@ For this example we will build a restructuredtext editor in a form with CodeMirr
         }
 
         CODEMIRROR_MODES = {
-            "rst": "CodeMirror/mode/restructuredtext/restructuredtext.js",
+            "rst": "CodeMirror/mode/rst/rst.js",
         }
 
 #. Create a **forms.py** file:

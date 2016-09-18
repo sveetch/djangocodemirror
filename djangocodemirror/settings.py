@@ -73,7 +73,7 @@ yourself all your needed themes."""
 
 
 CODEMIRROR_MODES = {
-    "rst": "CodeMirror/mode/restructuredtext/restructuredtext.js",
+    "rst": "CodeMirror/mode/rst/rst.js",
 }
 """Available CodeMirror Javascript mode files.
 

@@ -83,6 +83,6 @@ CODEMIRROR_MODES = {
     "perl": "CodeMirror/mode/perl/perl.js",
     "python": "CodeMirror/mode/python/python.js",
     "scss": "CodeMirror/mode/scss/scss.js",
-    "rst": "CodeMirror/mode/restructuredtext/restructuredtext.js",
+    "rst": "CodeMirror/mode/rst/rst.js",
     "shell": "CodeMirror/mode/shell/shell.js",
 }
