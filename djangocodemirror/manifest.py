@@ -12,7 +12,7 @@ From its registred Codemirror configs, manifest is able to:
 A Codemirror config is selected from its name in
 ``settings.CODEMIRROR_SETTINGS``.
 """
-import copy, json
+import copy
 
 from django.conf import settings
 

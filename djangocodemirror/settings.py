@@ -10,7 +10,7 @@ Note:
     directory.
 
 """
-CODEMIRROR_FIELD_INIT_JS = ("""<script>var {inputid}_codemirror = """
+CODEMIRROR_FIELD_INIT_JS = (u"""<script>var {varname} = """
                             """CodeMirror.fromTextArea("""
                             """document.getElementById("{inputid}"),"""
                             """{settings});</script>""")
@@ -18,6 +18,8 @@ CODEMIRROR_FIELD_INIT_JS = ("""<script>var {inputid}_codemirror = """
 
 Contains two template variables:
 
+* ``varname``: A Javascript variable name which will be set with the CodeMirror
+  instance;
 * ``inputid``: Input field id;
 * ``settings``: JSON string for CodeMirror parameters.
 """
@@ -79,11 +81,11 @@ Default value contains only the *reSructuredText* mode, so you may add yourself
 all your needed modes."""
 
 
-CODEMIRROR_JS_ASSET_TAG = '<script type="text/javascript" src="{url}"></script>'
+CODEMIRROR_JS_ASSET_TAG = u'<script type="text/javascript" src="{url}"></script>'
 """HTML element to load a Javascript asset. Used by template tags and widget to
 build assets HTML loaders."""
 
-CODEMIRROR_CSS_ASSET_TAG = '<link rel="stylesheet" href="{url}">'
+CODEMIRROR_CSS_ASSET_TAG = u'<link rel="stylesheet" href="{url}">'
 """HTML element to load a CSS asset. Used by template tags and widget to
 build assets HTML loaders."""
 

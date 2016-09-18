@@ -9,13 +9,11 @@
         <input type="submit">
     </form>
 </div>
-<script>
-    var editor = {{ form.foo|codemirror_parameters }};
-</script>
+<p>id: {{ form.foo.id_for_label }}</p>
+<p>name: {{ form.foo.name }}</p>
 {% endblock %}
 
 
 {% block head_assets %}
-{% codemirror_field_css_assets form.foo %}
-{% codemirror_field_js_assets form.foo %}
+{% codemirror_instance 'rst-basic' form.foo.name|add:"_codemirror" form.foo.id_for_label %}
 {% endblock %}

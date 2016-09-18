@@ -36,8 +36,8 @@ def test_codemirror_multiple_field_js_assets():
         f.fields['ping']
     )
 
-    assert assets == ("""<link rel="stylesheet" href="/static/CodeMirror/lib/codemirror.css">\n"""
-                      """<link rel="stylesheet" href="/static/CodeMirror/theme/eclipse.css">\n"""
+    assert assets == ("""<link rel="stylesheet" href="/static/CodeMirror/lib/codemirror.css">"""
+                      """<link rel="stylesheet" href="/static/CodeMirror/theme/eclipse.css">"""
                       """<link rel="stylesheet" href="/static/CodeMirror/theme/neat.css">""")
 
 

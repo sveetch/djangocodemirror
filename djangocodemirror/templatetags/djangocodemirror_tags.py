@@ -5,6 +5,7 @@ Template tags
 
 """
 import copy
+import io
 import json
 import os
 
@@ -88,13 +89,17 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         Returns:
             string: HTML for CSS assets from every registered config.
         """
-        output = []
+        output = io.StringIO()
+
         for item in self.css():
-            output.append(
+            output.write(
                 self.render_asset_html(item, settings.CODEMIRROR_CSS_ASSET_TAG)
             )
 
-        return '\n'.join(output)
+        content = output.getvalue()
+        output.close()
+
+        return content
 
     def js_html(self):
         """
@@ -103,13 +108,67 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         Returns:
             string: HTML for Javascript assets from every registered config.
         """
-        output = []
+        output = io.StringIO()
+
         for item in self.js():
-            output.append(
+            output.write(
                 self.render_asset_html(item, settings.CODEMIRROR_JS_ASSET_TAG)
             )
 
-        return '\n'.join(output)
+        content = output.getvalue()
+        output.close()
+
+        return content
+
+    def codemirror_html(self, config_name, varname, field_id):
+        """
+        Render HTML for a CodeMirror instance.
+
+        Since a CodeMirror instance have to be attached to a HTML element, this
+        method requires a HTML element identifier with or without the ``#``
+        prefix, it depends from template in
+        ``settings.CODEMIRROR_FIELD_INIT_JS`` (default one require to not
+        prefix with ``#``).
+
+        Arguments:
+            config_name (string): A registred config name.
+            varname (string): A Javascript variable name.
+            field_id (string): Field input id.
+
+        Returns:
+            string: HTML to instanciate CodeMirror for a field input.
+        """
+        parameters = json.dumps(self.get_codemirror_parameters(config_name))
+        return settings.CODEMIRROR_FIELD_INIT_JS.format(
+            varname=varname,
+            inputid=field_id,
+            settings=parameters,
+        )
+
+    def codemirror_field_html(self, field):
+        """
+        Render HTML for a CodeMirror instance.
+
+        Since a CodeMirror instance have to be attached to a HTML element, this
+        method requires a HTML element identifier with or without the ``#``
+        prefix, it depends from template in
+        ``settings.CODEMIRROR_FIELD_INIT_JS`` (default one require to not
+        prefix with ``#``).
+
+        Arguments:
+            config_name (string): A registred config name.
+            varname (string): A Javascript variable name.
+            field_id (string): Field input id.
+
+        Returns:
+            string: HTML to instanciate CodeMirror for a field input.
+        """
+        parameters = json.dumps(self.get_codemirror_parameters(config_name))
+        return settings.CODEMIRROR_FIELD_INIT_JS.format(
+            varname=varname,
+            inputid=field_id,
+            settings=parameters,
+        )
 
 
 @register.simple_tag
@@ -244,3 +303,49 @@ def codemirror_parameters(field):
     return mark_safe(json.dumps(config))
 
 codemirror_parameters.is_safe = True
+
+
+@register.simple_tag
+def codemirror_instance(config_name, varname, input_id, assets=True):
+    """
+    Return HTML to init a CodeMirror instance for an element.
+
+    This will output the whole HTML needed to initialize a CodeMirror instance
+    with needed assets loading. Assets can be omitted with the ``assets``
+    option.
+
+    Example:
+        ::
+
+            {% load djangocodemirror_tags %}
+            {% codemirror_instance 'a-config-name' 'foo_codemirror' 'foo' %}
+
+    Arguments:
+        config_name (string): A registred config name.
+        varname (string): A Javascript variable name.
+        field_id (string): Field input id.
+
+    Keyword Arguments:
+        assets (Bool): Adds needed assets before the HTML if ``True``, else
+            only CodeMirror instance will be outputed. Default value is
+            ``True``.
+
+    Returns:
+        string: HTML.
+    """
+    output = io.StringIO()
+
+    manifesto = CodemirrorAssetTagRender()
+    manifesto.register(config_name)
+
+    if assets:
+        output.write(manifesto.css_html())
+        output.write(manifesto.js_html())
+
+    html = manifesto.codemirror_html(config_name, varname, input_id)
+    output.write(html)
+
+    content = output.getvalue()
+    output.close()
+
+    return mark_safe(content)

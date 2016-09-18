@@ -82,5 +82,28 @@ def test_js_html(settings):
 
     assets = manifesto.js_html()
 
-    assert assets == ("""<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>\n"""
+    assert assets == ("""<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>"""
                       """<script type="text/javascript" src="/static/CodeMirror/mode/restructuredtext/restructuredtext.js"></script>""")
+
+
+def test_instance_html(settings):
+    # manifesto.
+    manifesto = CodemirrorAssetTagRender()
+
+    f = SampleForm()
+    f.as_p()
+
+    manifesto.register_from_fields(
+        f.fields['foo'],
+    )
+
+    w = manifesto.resolve_widget(f.fields['foo'])
+
+    html = manifesto.codemirror_html(w.config_name, "plop_codemirror", "plop")
+
+    output = ("""<script>var plop_codemirror = CodeMirror.fromTextArea("""
+              """document.getElementById("plop"),"""
+              """{"lineNumbers": true, "lineWrapping": true, "mode": "rst"});"""
+              """</script>""")
+
+    assert html == output

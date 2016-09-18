@@ -83,10 +83,11 @@ class CodeMirrorWidget(forms.Textarea):
             string: HTML for field CodeMirror instance.
         """
         inputid = final_attrs['id']
+        varname = "{}_codemirror".format(inputid)
         html = self.get_codemirror_field_js()
         opts = self.codemirror_config()
 
-        return html.format(inputid=inputid, settings=json.dumps(opts))
+        return html.format(varname=varname, inputid=inputid, settings=json.dumps(opts))
 
     def render(self, name, value, attrs=None):
         """
