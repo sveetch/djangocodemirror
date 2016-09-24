@@ -15,8 +15,10 @@ This is a major refactoring to adopt Test Driven Development, cleaner behaviors 
 * Removed all stuff about reStructuredText editor addons;
 * Removed everything about the CodeMirror rst editor (may probably live again in its own app);
 * Removed deprecated templates;
+* Replaced old Codemirror git submodule with a static copy from ``5.18.2`` version;
 
 Todo:
 
-* Update Codemirror copy from Git submodule;
+* Don't use 'mode' parameter anymore as internal parameter since 'mode' parameter can be used in various forms (a simple mode name, a mode mime-type, a dict of mode options);
+* Finish and validate basic configs for some modes;
 * Added tox configuration;

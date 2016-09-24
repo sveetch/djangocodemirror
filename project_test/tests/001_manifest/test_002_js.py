@@ -3,7 +3,7 @@ Tests against manifest for Javascript assets
 """
 import pytest
 
-from django.conf import settings
+from django.conf import settings as legacy_settings
 
 from djangocodemirror.manifest import UnknowMode
 
@@ -59,7 +59,7 @@ def test_js_registred_singles(settings, manifesto):
     (
         'rst-basic',
         [
-            settings.CODEMIRROR_MODES['rst'],
+            legacy_settings.CODEMIRROR_MODES['rst'],
         ],
     ),
     (
@@ -68,15 +68,15 @@ def test_js_registred_singles(settings, manifesto):
             ADDON_DIALOG,
             ADDON_SEARCH,
             ADDON_SEARCHCURSOR,
-            settings.CODEMIRROR_MODES['rst'],
+            legacy_settings.CODEMIRROR_MODES['rst'],
         ],
     ),
     (
         'rst-with-modes',
         [
-            settings.CODEMIRROR_MODES['rst'],
-            settings.CODEMIRROR_MODES['python'],
-            settings.CODEMIRROR_MODES['javascript'],
+            legacy_settings.CODEMIRROR_MODES['rst'],
+            legacy_settings.CODEMIRROR_MODES['python'],
+            legacy_settings.CODEMIRROR_MODES['javascript'],
         ],
     ),
     (
@@ -85,9 +85,9 @@ def test_js_registred_singles(settings, manifesto):
             ADDON_DIALOG,
             ADDON_SEARCH,
             ADDON_SEARCHCURSOR,
-            settings.CODEMIRROR_MODES['rst'],
-            settings.CODEMIRROR_MODES['python'],
-            settings.CODEMIRROR_MODES['css'],
+            legacy_settings.CODEMIRROR_MODES['rst'],
+            legacy_settings.CODEMIRROR_MODES['python'],
+            legacy_settings.CODEMIRROR_MODES['css'],
         ],
     ),
     (
@@ -96,15 +96,16 @@ def test_js_registred_singles(settings, manifesto):
             ADDON_DIALOG,
             ADDON_SEARCH,
             ADDON_SEARCHCURSOR,
-            settings.CODEMIRROR_MODES['rst'],
-            settings.CODEMIRROR_MODES['python'],
-            settings.CODEMIRROR_MODES['javascript'],
-            settings.CODEMIRROR_MODES['css'],
+            legacy_settings.CODEMIRROR_MODES['rst'],
+            legacy_settings.CODEMIRROR_MODES['python'],
+            legacy_settings.CODEMIRROR_MODES['javascript'],
+            legacy_settings.CODEMIRROR_MODES['css'],
         ],
     ),
 ])
 def test_js_autoregister(settings, manifesto, name, assets):
     """Checking js assets after autoregister"""
+
     manifesto.autoregister()
     #import json
     #print json.dumps(manifesto.js(name), indent=4)

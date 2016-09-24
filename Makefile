@@ -26,7 +26,7 @@ flake:
 	flake8 --show-source djangocodemirror
 
 tests:
-	py.test -vv project_test/
+	py.test -vv --exitfirst project_test/
 
 quality: tests flake
 
