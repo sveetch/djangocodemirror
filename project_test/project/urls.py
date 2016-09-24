@@ -34,8 +34,13 @@ urlpatterns = [
         template_name="raw.html"
     ), name='raw'),
 
-    # Basic usage
+    # Mode index
     url(r'^form/$', BasicSampleFormView.as_view(
+        template_name="form.html"
+    ), name='mode-index'),
+
+    # Basic usage with a mode from a form
+    url(r'^form/(?P<mode>[-\w]+)/$', BasicSampleFormView.as_view(
         template_name="form.html"
     ), name='basic'),
 ]

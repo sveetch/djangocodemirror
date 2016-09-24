@@ -83,7 +83,7 @@ def test_js_html(settings):
     assets = manifesto.js_html()
 
     assert assets == ("""<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>"""
-                      """<script type="text/javascript" src="/static/CodeMirror/mode/restructuredtext/restructuredtext.js"></script>""")
+                      """<script type="text/javascript" src="/static/CodeMirror/mode/rst/rst.js"></script>""")
 
 
 def test_instance_html(settings):

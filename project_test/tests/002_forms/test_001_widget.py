@@ -55,4 +55,4 @@ def test_widget_medias():
 
     assert str(widget.media) == ("""<link href="/static/CodeMirror/lib/codemirror.css" type="text/css" media="all" rel="stylesheet" />\n"""
                                  """<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>\n"""
-                                 """<script type="text/javascript" src="/static/CodeMirror/mode/restructuredtext/restructuredtext.js"></script>""")
+                                 """<script type="text/javascript" src="/static/CodeMirror/mode/rst/rst.js"></script>""")

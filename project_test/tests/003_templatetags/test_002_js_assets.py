@@ -22,7 +22,7 @@ def test_codemirror_single_field_js_assets():
     assets = codemirror_field_js_assets(f.fields['foo'])
 
     assert assets == ("""<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>"""
-                      """<script type="text/javascript" src="/static/CodeMirror/mode/restructuredtext/restructuredtext.js"></script>""")
+                      """<script type="text/javascript" src="/static/CodeMirror/mode/rst/rst.js"></script>""")
 
 
 def test_codemirror_multiple_field_js_assets():
@@ -41,7 +41,7 @@ def test_codemirror_multiple_field_js_assets():
                       """<script type="text/javascript" src="/static/CodeMirror/lib/util/dialog.js"></script>"""
                       """<script type="text/javascript" src="/static/CodeMirror/lib/util/search.js"></script>"""
                       """<script type="text/javascript" src="/static/CodeMirror/lib/util/searchcursor.js"></script>"""
-                      """<script type="text/javascript" src="/static/CodeMirror/mode/restructuredtext/restructuredtext.js"></script>"""
+                      """<script type="text/javascript" src="/static/CodeMirror/mode/rst/rst.js"></script>"""
                       """<script type="text/javascript" src="/static/CodeMirror/mode/python/python.js"></script>"""
                       """<script type="text/javascript" src="/static/CodeMirror/mode/css/css.js"></script>""")
 
