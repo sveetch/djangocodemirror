@@ -31,7 +31,7 @@ tests:
 quality: tests flake
 
 server:
-	cd project_test && ./manage.py runserver 0.0.0.0:8001 --settings=project.settings_django16
+	cd project_test && ./manage.py runserver 0.0.0.0:8001 --settings=project.settings_demo
 
 release:
 	python setup.py sdist
