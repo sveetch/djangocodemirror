@@ -19,7 +19,6 @@ def test_get_config_success(settings, manifesto):
     """Use get_config on non registered name"""
     manifesto.autoregister()
     assert manifesto.get_config('empty') == {
-        'mode': None,
         'modes': [],
         'addons': [],
         'themes': [],
@@ -38,13 +37,12 @@ def test_get_config_error(settings, manifesto):
 def test_get_configs_single_success(settings, manifesto):
     """Use get_configs for one registred config"""
     manifesto.register('empty')
-    manifesto.register('rst-basic')
+    manifesto.register('basic')
 
     registred = manifesto.get_configs('empty')
 
     assert registred == {
         'empty': {
-            'mode': None,
             'modes': [],
             'addons': [],
             'themes': [],
@@ -57,28 +55,25 @@ def test_get_configs_single_success(settings, manifesto):
 def test_get_configs_multiple_success(settings, manifesto):
     """Use get_configs for all registred configs"""
     manifesto.register('empty')
-    manifesto.register('rst-basic')
+    manifesto.register('basic')
 
     registred = manifesto.get_configs()
 
     assert registred == {
         'empty': {
-            'mode': None,
             'modes': [],
             'addons': [],
             'themes': [],
             'css_bundle_name': 'dcm-empty_css',
             'js_bundle_name': 'dcm-empty_js',
         },
-        'rst-basic': {
+        'basic': {
             'mode': 'rst',
-            'lineWrapping': True,
-            'lineNumbers': True,
-            'modes': ['rst'],
+            'modes': [],
             'addons': [],
             'themes': [],
-            'css_bundle_name': 'dcm-rst-basic_css',
-            'js_bundle_name': 'dcm-rst-basic_js',
+            'css_bundle_name': 'dcm-basic_css',
+            'js_bundle_name': 'dcm-basic_js',
         },
     }
 
@@ -96,7 +91,13 @@ def test_get_configs_single_error(settings, manifesto):
         {},
     ),
     (
-        'rst-basic',
+        'basic',
+        {
+            'mode': 'rst',
+        },
+    ),
+    (
+        'with-options',
         {
             'mode': 'rst',
             'lineWrapping': True,
@@ -104,16 +105,14 @@ def test_get_configs_single_error(settings, manifesto):
         },
     ),
     (
-        'rst-with-themes',
+        'with-themes',
         {
             'mode': 'rst',
-            'lineWrapping': True,
-            'lineNumbers': True,
             'theme': 'elegant',
         },
     ),
     (
-        'rst-with-all',
+        'with-all',
         {
             'mode': 'rst',
             'lineWrapping': True,

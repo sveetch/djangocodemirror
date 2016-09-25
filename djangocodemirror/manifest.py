@@ -51,7 +51,6 @@ class CodeMirrorManifest(object):
             exluded from CodeMirror parameters.
     """
     default_internal_config = {
-        'mode': None, # Current mode, automatically added to 'modes'
         'modes': [], # Enabled modes
         'addons': [], # Addons filepaths to load
         'themes': [], # Themes filepaths to load
@@ -100,16 +99,6 @@ class CodeMirrorManifest(object):
         parameters['js_bundle_name']= js_template_name.format(
             settings_name=name
         )
-
-        # If 'mode' is none but 'modes' is not empty, use the first 'modes'
-        # item as current 'mode' (this is the codemirror behavior, make it
-        # python explicit)
-        if not parameters.get('mode') and len(parameters.get('modes', []))>0:
-            parameters['mode'] = self.resolve_mode(parameters['modes'][0])
-        # Else if mode is not empty, add it as first item in modes
-        elif 'mode' in parameters:
-            if isinstance(parameters['mode'], basestring):
-                parameters['modes'] = [parameters['mode']] + parameters['modes']
 
         self.registry[name] = parameters
 
@@ -245,10 +234,6 @@ class CodeMirrorManifest(object):
             if k in self._internal_only:
                 del config[k]
 
-        # Default mode value is None, if so we dont expose it
-        if not config['mode']:
-            del config['mode']
-
         return config
 
     def js(self, name=None):
@@ -295,8 +280,8 @@ class CodeMirrorManifest(object):
         configs = self.get_configs(name)
 
         # Addons first
-        return [opts['js_bundle_name'] for name, opts in configs.items()
-                if 'js_bundle_name' in opts]
+        return sorted([opts['js_bundle_name'] for name, opts in configs.items()
+                if 'js_bundle_name' in opts])
 
     def css(self, name=None):
         """
@@ -336,5 +321,5 @@ class CodeMirrorManifest(object):
         configs = self.get_configs(name)
 
         # Addons first
-        return [opts['css_bundle_name'] for name, opts in configs.items()
-                if 'css_bundle_name' in opts]
+        return sorted([opts['css_bundle_name'] for name, opts in configs.items()
+                if 'css_bundle_name' in opts])

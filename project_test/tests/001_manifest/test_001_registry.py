@@ -17,7 +17,6 @@ def test_registry_empty(settings, manifesto):
     (
         'empty',
         {
-            'mode': None,
             'modes': [],
             'addons': [],
             'themes': [],
@@ -26,16 +25,14 @@ def test_registry_empty(settings, manifesto):
         },
     ),
     (
-        'rst-basic',
+        'basic',
         {
             'mode': 'rst',
-            'lineWrapping': True,
-            'lineNumbers': True,
-            'modes': ['rst'],
+            'modes': [],
             'addons': [],
             'themes': [],
-            'css_bundle_name': 'dcm-rst-basic_css',
-            'js_bundle_name': 'dcm-rst-basic_js',
+            'css_bundle_name': 'dcm-basic_css',
+            'js_bundle_name': 'dcm-basic_js',
         },
     ),
 ])
@@ -48,11 +45,10 @@ def test_register(settings, manifesto, name, options):
 
 def test_register_many(manifesto):
     """Register many config"""
-    registred = manifesto.register_many('empty', 'rst-basic')
+    registred = manifesto.register_many('empty', 'basic')
 
     assert registred == [
         {
-            'mode': None,
             'modes': [],
             'addons': [],
             'themes': [],
@@ -61,13 +57,11 @@ def test_register_many(manifesto):
         },
         {
             'mode': 'rst',
-            'lineWrapping': True,
-            'lineNumbers': True,
-            'modes': ['rst'],
+            'modes': [],
             'addons': [],
             'themes': [],
-            'css_bundle_name': 'dcm-rst-basic_css',
-            'js_bundle_name': 'dcm-rst-basic_js',
+            'css_bundle_name': 'dcm-basic_css',
+            'js_bundle_name': 'dcm-basic_js',
         },
     ]
 
@@ -77,8 +71,8 @@ def test_autoregister(manifesto):
     manifesto.autoregister()
     # Check only about some names, not all
     assert ('empty' in manifesto.registry) == True
-    assert ('rst-basic' in manifesto.registry) == True
-    assert ('rst-with-all' in manifesto.registry) == True
+    assert ('basic' in manifesto.registry) == True
+    assert ('with-all' in manifesto.registry) == True
 
 
 def test_register_nonexistent(settings, manifesto):

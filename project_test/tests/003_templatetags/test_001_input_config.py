@@ -7,19 +7,32 @@ import pytest
 from djangocodemirror.widgets import CodeMirrorWidget
 from djangocodemirror.templatetags import djangocodemirror_tags
 
-from project.forms import SampleForm
+from project.forms import ManyFieldsSampleForm
 
 
-def test_codemirror_parameters():
+@pytest.mark.parametrize('name,attempted', [
+    (
+        'foo',
+        {
+            "mode": "rst",
+        }
+    ),
+    (
+        'ping',
+        {
+            "mode": "rst",
+            "lineNumbers": True,
+            "lineWrapping": True,
+            "theme": "neat",
+        }
+    ),
+], ids=["foo-basic", "ping-with-all"])
+def test_codemirror_parameters(name, attempted):
     """Test codemirror_parameters tag"""
-    f = SampleForm({'foo': 'bar'})
+    f = ManyFieldsSampleForm()
 
     f.as_p()
 
-    p = djangocodemirror_tags.codemirror_parameters(f.fields['foo'])
+    p = djangocodemirror_tags.codemirror_parameters(f.fields[name])
 
-    assert json.loads(p) == {
-        "lineNumbers": True,
-        "lineWrapping": True,
-        "mode": "rst"
-    }
+    assert json.loads(p) == attempted

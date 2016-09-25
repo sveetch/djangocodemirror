@@ -9,7 +9,7 @@ from djangocodemirror.fields import CodeMirrorField
 def test_field_basic():
     """Basic field usage"""
     field = CodeMirrorField(label="Foo", required=True,
-                                  config_name="rst-basic",
+                                  config_name="basic",
                                   initial='Hello World!')
 
     rendered = field.widget.render("foo", "bar")

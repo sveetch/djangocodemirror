@@ -37,7 +37,7 @@ def test_register_from_fields(settings):
         f.fields['ping']
     )
 
-    assert configs == ['rst-basic', 'rst-with-all']
+    assert configs == ['basic', 'with-all']
 
 
 def test_render_asset_html(settings):
@@ -51,8 +51,7 @@ def test_render_asset_html(settings):
 
     assert css == """<link rel="stylesheet" href="/static/foo/bar.css">"""
 
-    assert js == ("""<script type="text/javascript" """
-                  """src="/static/foo/plop/bar.js"></script>""")
+    assert js == """<script type="text/javascript" src="/static/foo/plop/bar.js"></script>"""
 
 
 def test_css_html(settings):
@@ -70,40 +69,65 @@ def test_css_html(settings):
     assert assets == '<link rel="stylesheet" href="/static/CodeMirror/lib/codemirror.css">'
 
 
-def test_js_html(settings):
+@pytest.mark.parametrize('name,attempted', [
+    (
+        'foo',
+        """<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>"""
+    ),
+    (
+        'ping',
+        ("""<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>"""
+         """<script type="text/javascript" src="/static/CodeMirror/lib/util/dialog.js"></script>"""
+         """<script type="text/javascript" src="/static/CodeMirror/mode/rst/rst.js"></script>"""
+         """<script type="text/javascript" src="/static/CodeMirror/mode/python/python.js"></script>""")
+    ),
+], ids=["foo-basic", "ping-with-all"])
+def test_js_html(settings, name, attempted):
     manifesto = CodemirrorAssetTagRender()
 
-    f = SampleForm()
+    f = ManyFieldsSampleForm()
     f.as_p()
 
     manifesto.register_from_fields(
-        f.fields['foo'],
+        f.fields[name],
     )
 
     assets = manifesto.js_html()
 
-    assert assets == ("""<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>"""
-                      """<script type="text/javascript" src="/static/CodeMirror/mode/rst/rst.js"></script>""")
+    assert assets == attempted
 
 
-def test_instance_html(settings):
+@pytest.mark.parametrize('name,attempted', [
+    (
+        'foo',
+        ("""<script>var plop_codemirror = CodeMirror.fromTextArea("""
+         """document.getElementById("plop"),"""
+         """{"mode": "rst"});"""
+         """</script>""")
+    ),
+    (
+        'ping',
+        ("""<script>var plop_codemirror = CodeMirror.fromTextArea("""
+         """document.getElementById("plop"),"""
+         """{"lineNumbers": true, "theme": "neat", "lineWrapping": true"""
+         """, "mode": "rst"});</script>""")
+    ),
+], ids=["foo-basic", "ping-with-all"])
+def test_instance_html(settings, name, attempted):
     # manifesto.
     manifesto = CodemirrorAssetTagRender()
 
-    f = SampleForm()
+    f = ManyFieldsSampleForm()
     f.as_p()
 
     manifesto.register_from_fields(
-        f.fields['foo'],
+        f.fields[name],
     )
 
-    w = manifesto.resolve_widget(f.fields['foo'])
+    w = manifesto.resolve_widget(f.fields[name])
 
     html = manifesto.codemirror_html(w.config_name, "plop_codemirror", "plop")
 
-    output = ("""<script>var plop_codemirror = CodeMirror.fromTextArea("""
-              """document.getElementById("plop"),"""
-              """{"lineNumbers": true, "lineWrapping": true, "mode": "rst"});"""
-              """</script>""")
+    output = attempted
 
     assert html == output

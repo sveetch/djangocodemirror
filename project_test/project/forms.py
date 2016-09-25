@@ -12,7 +12,7 @@ class SampleForm(forms.Form):
     """
     foo = CodeMirrorField(label="Foo",
                           required=True,
-                          config_name="rst-basic",
+                          config_name="basic",
                           initial='Hello World!')
 
 
@@ -22,13 +22,13 @@ class ManyFieldsSampleForm(forms.Form):
     """
     foo = CodeMirrorField(label="Foo",
                           required=True,
-                          config_name="rst-basic",
+                          config_name="basic",
                           initial='Hello World!')
     pika = CodeMirrorField(label="Pika",
                           required=True,
-                          config_name="rst-basic",
+                          config_name="basic",
                           initial='Catch them all')
     ping = CodeMirrorField(label="Ping",
                           required=True,
-                          config_name="rst-with-all",
+                          config_name="with-all",
                           initial='Zouip')

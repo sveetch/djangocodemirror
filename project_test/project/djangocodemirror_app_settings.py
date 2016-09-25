@@ -5,51 +5,41 @@ settings.
 # Some CodeMirror configurations for testing purposes
 CODEMIRROR_SETTINGS = {
     'empty': {},
-    'mode-naive': {
-        'lineWrapping': True,
-        'lineNumbers': True,
-        'modes': ['python', 'javascript'],
+
+    # These configs won't work for real, this is just for unittests
+    'basic': {
+        'mode': 'rst',
     },
-    'rst-with-modes': {
+    'with-options': {
         'mode': 'rst',
         'lineWrapping': True,
         'lineNumbers': True,
-        'modes': ['rst', 'python', 'javascript'],
     },
-    'rst-with-themes': {
+    'with-modes': {
         'mode': 'rst',
-        'lineWrapping': True,
-        'lineNumbers': True,
+        'modes': ['rst', 'python'],
+    },
+    'with-themes': {
+        'mode': 'rst',
         'theme': 'elegant',
         'themes': ['eclipse', 'elegant'],
     },
-    'rst-with-addons': {
+    'with-addons': {
         'mode': 'rst',
-        'lineWrapping': True,
-        'lineNumbers': True,
         'addons': [
             "CodeMirror/lib/util/dialog.js",
-            "CodeMirror/lib/util/search.js",
-            "CodeMirror/lib/util/searchcursor.js",
         ],
     },
-    'rst-with-all': {
+    'with-all': {
         'mode': 'rst',
         'lineWrapping': True,
         'lineNumbers': True,
         'addons': [
             "CodeMirror/lib/util/dialog.js",
-            "CodeMirror/lib/util/search.js",
-            "CodeMirror/lib/util/searchcursor.js",
         ],
-        'modes': ['rst', 'python', 'css'],
+        'modes': ['rst', 'python'],
         'theme': 'neat',
         'themes': ['eclipse', 'neat'],
-    },
-    'rst-basic': {
-        'mode': 'rst',
-        'lineWrapping': True,
-        'lineNumbers': True,
     },
 
     #

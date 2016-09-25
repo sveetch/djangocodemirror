@@ -36,10 +36,10 @@ def test_resolve_theme_error(settings, manifesto):
 
 def test_css_registred_singles(settings, manifesto):
     """Explicitely registering some config"""
-    manifesto.register('rst-basic') # Registred but not used
-    manifesto.register('rst-with-themes')
+    manifesto.register('basic') # Registred but not used
+    manifesto.register('with-themes')
 
-    assert manifesto.css('rst-with-themes') == settings.CODEMIRROR_BASE_CSS+[
+    assert manifesto.css('with-themes') == settings.CODEMIRROR_BASE_CSS+[
         settings.CODEMIRROR_THEMES['eclipse'],
         settings.CODEMIRROR_THEMES['elegant'],
     ]
@@ -51,14 +51,14 @@ def test_css_registred_singles(settings, manifesto):
         [],
     ),
     (
-        'rst-with-themes',
+        'with-themes',
         [
             settings.CODEMIRROR_THEMES['eclipse'],
             settings.CODEMIRROR_THEMES['elegant'],
         ],
     ),
     (
-        'rst-with-all',
+        'with-all',
         [
             settings.CODEMIRROR_THEMES['eclipse'],
             settings.CODEMIRROR_THEMES['neat'],
@@ -82,11 +82,11 @@ def test_css_autoregister(settings, manifesto, name, assets):
 
 def test_css_bundle_names_single(settings, manifesto):
     """Checking CSS bundle names for a single config"""
-    manifesto.register('rst-basic') # Registred but not used
-    manifesto.register('rst-with-addons')
+    manifesto.register('basic') # Registred but not used
+    manifesto.register('with-addons')
 
-    assert manifesto.css_bundle_names('rst-with-addons') == [
-        'dcm-rst-with-addons_css',
+    assert manifesto.css_bundle_names('with-addons') == [
+        'dcm-with-addons_css',
     ]
 
 
@@ -95,11 +95,11 @@ def test_css_bundle_names_all(settings, manifesto):
     manifesto.autoregister()
 
     assert manifesto.css_bundle_names() == [
-        'dcm-rst-with-themes_css',
-        'dcm-rst-with-modes_css',
-        'dcm-mode-naive_css',
-        'dcm-rst-with-all_css',
-        'dcm-rst-with-addons_css',
+        'dcm-basic_css',
         'dcm-empty_css',
-        'dcm-rst-basic_css',
+        'dcm-with-addons_css',
+        'dcm-with-all_css',
+        'dcm-with-modes_css',
+        'dcm-with-options_css',
+        'dcm-with-themes_css'
     ]

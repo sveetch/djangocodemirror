@@ -49,4 +49,4 @@ def test_codemirror_field_css_bundle():
 
     name = codemirror_field_css_bundle(f.fields['foo'])
 
-    assert name == 'dcm-rst-basic_css'
+    assert name == 'dcm-basic_css'

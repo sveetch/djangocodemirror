@@ -40,14 +40,11 @@ def test_resolve_mode_error(settings, manifesto):
 
 def test_js_registred_singles(settings, manifesto):
     """Explicitely registering some config"""
-    manifesto.register('rst-basic') # Registred but not used
-    manifesto.register('rst-with-addons')
+    manifesto.register('basic') # Registred but not used
+    manifesto.register('with-addons')
 
-    assert manifesto.js('rst-with-addons') == settings.CODEMIRROR_BASE_JS+[
+    assert manifesto.js('with-addons') == settings.CODEMIRROR_BASE_JS+[
         ADDON_DIALOG,
-        ADDON_SEARCH,
-        ADDON_SEARCHCURSOR,
-        settings.CODEMIRROR_MODES['rst'],
     ]
 
 
@@ -57,49 +54,36 @@ def test_js_registred_singles(settings, manifesto):
         [],
     ),
     (
-        'rst-basic',
-        [
-            legacy_settings.CODEMIRROR_MODES['rst'],
-        ],
+        'basic',
+        [],
     ),
     (
-        'rst-with-addons',
+        'with-addons',
         [
             ADDON_DIALOG,
-            ADDON_SEARCH,
-            ADDON_SEARCHCURSOR,
-            legacy_settings.CODEMIRROR_MODES['rst'],
         ],
     ),
     (
-        'rst-with-modes',
+        'with-modes',
         [
             legacy_settings.CODEMIRROR_MODES['rst'],
             legacy_settings.CODEMIRROR_MODES['python'],
-            legacy_settings.CODEMIRROR_MODES['javascript'],
         ],
     ),
     (
-        'rst-with-all',
+        'with-all',
         [
             ADDON_DIALOG,
-            ADDON_SEARCH,
-            ADDON_SEARCHCURSOR,
             legacy_settings.CODEMIRROR_MODES['rst'],
             legacy_settings.CODEMIRROR_MODES['python'],
-            legacy_settings.CODEMIRROR_MODES['css'],
         ],
     ),
     (
         None, # Mean all configs
         [
             ADDON_DIALOG,
-            ADDON_SEARCH,
-            ADDON_SEARCHCURSOR,
             legacy_settings.CODEMIRROR_MODES['rst'],
             legacy_settings.CODEMIRROR_MODES['python'],
-            legacy_settings.CODEMIRROR_MODES['javascript'],
-            legacy_settings.CODEMIRROR_MODES['css'],
         ],
     ),
 ])
@@ -114,11 +98,11 @@ def test_js_autoregister(settings, manifesto, name, assets):
 
 def test_js_bundle_names_single(settings, manifesto):
     """Checking Javascript bundle names for a single config"""
-    manifesto.register('rst-basic') # Registred but not used
-    manifesto.register('rst-with-addons')
+    manifesto.register('basic') # Registred but not used
+    manifesto.register('with-addons')
 
-    assert manifesto.js_bundle_names('rst-with-addons') == [
-        'dcm-rst-with-addons_js',
+    assert manifesto.js_bundle_names('with-addons') == [
+        'dcm-with-addons_js',
     ]
 
 
@@ -127,11 +111,11 @@ def test_js_bundle_names_all(settings, manifesto):
     manifesto.autoregister()
 
     assert manifesto.js_bundle_names() == [
-        'dcm-rst-with-themes_js',
-        'dcm-rst-with-modes_js',
-        'dcm-mode-naive_js',
-        'dcm-rst-with-all_js',
-        'dcm-rst-with-addons_js',
+        'dcm-basic_js',
         'dcm-empty_js',
-        'dcm-rst-basic_js',
+        'dcm-with-addons_js',
+        'dcm-with-all_js',
+        'dcm-with-modes_js',
+        'dcm-with-options_js',
+        'dcm-with-themes_js',
     ]
