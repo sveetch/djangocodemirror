@@ -58,17 +58,3 @@ CODEMIRROR_THEMES = {
     "elegant": "CodeMirror/theme/elegant.css",
     "neat": "CodeMirror/theme/neat.css",
 }
-
-    #<script src="../vbscript/vbscript.js"></script>
-# Subset of some available modes
-CODEMIRROR_MODES = {
-    "css": "CodeMirror/mode/css/css.js",
-    "django": "CodeMirror/mode/django/django.js",
-    "htmlmixed": "CodeMirror/mode/htmlmixed/htmlmixed.js",
-    "javascript": "CodeMirror/mode/javascript/javascript.js",
-    "python": "CodeMirror/mode/python/python.js",
-    "rst": "CodeMirror/mode/rst/rst.js",
-    "stex": "CodeMirror/mode/stex/stex.js",
-    "vbscript": "CodeMirror/mode/vbscript/vbscript.js",
-    "xml": "CodeMirror/mode/xml/xml.js",
-}

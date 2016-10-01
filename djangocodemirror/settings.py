@@ -27,6 +27,90 @@ Contains two template variables:
 
 CODEMIRROR_SETTINGS = {
     'empty': {},
+
+    'javascript': {
+        'modes': ['javascript'],
+        'lineWrapping': True,
+        'lineNumbers': True,
+        'matchBrackets': True,
+        'continueComments': "Enter",
+        'extraKeys': {"Ctrl-Q": "toggleComment"},
+        'addons': [
+            "CodeMirror/addon/edit/matchbrackets.js",
+            "CodeMirror/addon/comment/continuecomment.js",
+            "CodeMirror/addon/comment/comment.js",
+        ],
+    },
+
+    'restructuredtext': {
+        'mode': 'rst',
+        'modes': ['python', 'stex', 'rst'],
+        'lineWrapping': True,
+        'lineNumbers': True,
+        'addons': [
+            "CodeMirror/addon/mode/overlay.js",
+        ],
+    },
+
+    'html': {
+        'mode': 'htmlmixed',
+        'modes': ['xml', 'javascript', 'css', 'vbscript', 'htmlmixed'],
+        'lineWrapping': True,
+        'lineNumbers': True,
+    },
+
+    'django': {
+        'mode': 'django',
+        'modes': ['xml', 'javascript', 'css', 'vbscript', 'htmlmixed',
+                  'django'],
+        'lineWrapping': True,
+        'lineNumbers': True,
+        'addons': [
+            "CodeMirror/addon/mode/overlay.js",
+        ],
+    },
+
+    'css': {
+        'modes': ['css'],
+        'lineWrapping': True,
+        'lineNumbers': True,
+        'matchBrackets': True,
+        'extraKeys': {"Ctrl-Space": "autocomplete"},
+        'addons': [
+            "CodeMirror/addon/edit/matchbrackets.js",
+            "CodeMirror/addon/hint/show-hint.js",
+            "CodeMirror/addon/hint/css-hint.js",
+        ],
+        'extra_css': [
+            "CodeMirror/addon/hint/show-hint.css",
+        ],
+    },
+
+    'scss': {
+        'mode': 'text/x-scss',
+        'modes': ['css'],
+        'lineWrapping': True,
+        'lineNumbers': True,
+        'matchBrackets': True,
+        'addons': [
+            "CodeMirror/addon/edit/matchbrackets.js",
+        ],
+    },
+
+    'python': {
+        'mode': {
+            'name': "python",
+            'version': 3,
+            'singleLineStringErrors': False,
+        },
+        'modes': ['python'],
+        'lineWrapping': True,
+        'lineNumbers': True,
+        'matchBrackets': True,
+        'addons': [
+            "CodeMirror/addon/edit/matchbrackets.js",
+        ],
+    },
 }
 """
 Available CodeMirror configurations.
@@ -41,16 +125,32 @@ configuration parameters, see the CodeMirror documentation.
 Every parameter in a configuration will be given to CodeMirror instance
 excepted some internal ones:
 
-* ``modes``: List of mode names to load in addition to the current ``mode``;
-* ``addons``: List of addons path to load in addition to the modes;
+* ``modes``: List of mode names to load. Note that CodeMirror will assume to
+  use the last loaded mode if you don't explicitely enable one using ``mode``
+  parameter;
+* ``addons``: List of addons paths to load before modes;
 * ``themes`` List of theme name to load;
 * ``css_bundle_name``: CSS bundle name that is automatically builded from the
   configuration name;
 * ``js_bundle_name``: Javascript bundle name that is automatically builded from
   the configuration name;
+* ``extra_css``: List of paths for extra CSS files to append after themes;
 
-There is only one default configuration named ``empty`` that is an empty
-configuration without any parameter.
+Default shipped configurations implement a little subset of available
+CodeMirror modes plus a ``empty`` configuration.
+
+Default configurations are:
+
+* ``css``;
+* ``django``;
+* ``empty``;
+* ``html``;
+* ``javascript``;
+* ``python``;
+* ``restructuredtext``;
+* ``scss``;
+
+Excepted ``empty``, these modes are built from CodeMirror mode demonstrations.
 """
 
 
@@ -73,12 +173,19 @@ yourself all your needed themes."""
 
 
 CODEMIRROR_MODES = {
+    "css": "CodeMirror/mode/css/css.js",
+    "django": "CodeMirror/mode/django/django.js",
+    "htmlmixed": "CodeMirror/mode/htmlmixed/htmlmixed.js",
+    "javascript": "CodeMirror/mode/javascript/javascript.js",
+    "python": "CodeMirror/mode/python/python.js",
     "rst": "CodeMirror/mode/rst/rst.js",
+    "stex": "CodeMirror/mode/stex/stex.js",
+    "vbscript": "CodeMirror/mode/vbscript/vbscript.js",
+    "xml": "CodeMirror/mode/xml/xml.js",
 }
 """Available CodeMirror Javascript mode files.
 
-Default value contains only the *reSructuredText* mode, so you may add yourself
-all your needed modes."""
+Default shipped modes are built from default configurations requirements."""
 
 
 CODEMIRROR_JS_ASSET_TAG = u'<script type="text/javascript" src="{url}"></script>'
