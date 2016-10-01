@@ -2,10 +2,6 @@
 """
 Sample views
 """
-import io, os
-
-from django.conf import settings
-
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse
 
@@ -36,16 +32,6 @@ class BasicSampleFormView(FormView):
 
     def get_initial(self):
         """
-        Try to find a demo source for given mode if any, if finded use it to
-        fill the demo textarea.
+        Returns the initial data to use for forms on this view.
         """
-        initial = {}
-
-        if self.kwargs.get('mode', None):
-            filename = "{}.txt".format(self.kwargs['mode'])
-            filepath = os.path.join(settings.PROJECT_PATH, 'demo_datas', filename)
-            if os.path.exists(filepath):
-                with io.open(filepath, 'r', encoding='utf-8') as fp:
-                    initial['foo'] = fp.read()
-
-        return initial
+        return self.initial.copy()

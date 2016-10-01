@@ -1,0 +1,56 @@
+{% load cms_tags menu_tags  %}{% load static from staticfiles %}<!DOCTYPE html>
+<!--[if IE 8]> <html class="{% block html_attr_alt %}{% endblock %}no-js lt-ie9" lang="{{ LANGUAGE_CODE }}"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="{% block html_attr %}{% endblock %}no-js" lang="{{ LANGUAGE_CODE }}"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>{% block head_title %}{{ SITE.name }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block header_content %}{% spaceless %}
+        {% block head_metas %}
+            <meta name="robots" content="index,follow,all">
+            {% include 'djangocms_page_meta/meta.html' with meta=meta %}
+        {% endblock %}
+        {% block head_more_links %}{% endblock %}
+
+    {% endspaceless %}{% endblock %}
+</head>
+
+<body{% block body_attr %}{% endblock %}>
+    {% block header_topbar %}{% spaceless %}
+    <div id="header-container"{% block header_topbar_attr %}{% endblock %}>
+        <nav class="top-bar" data-topbar>
+            <ul class="title-area">
+                {% block header_topbar_toggle %}<li class="toggle-topbar menu-icon">
+                    <a href="#"><span>Menu</span></a>
+                </li>{% endblock %}
+            </ul>
+            {% block menu_general %}<section class="top-bar-section">
+                {# Left Nav Section #}
+                <ul class="top">
+                    {% show_menu_below_id "homepage" 0 100 100 100 "menu/root_menu_recursive.html" %}
+                </ul>
+                <ul class="bottom">
+                    {% show_menu_below_id "annex" 0 100 100 100 "menu/root_menu.html" %}
+                </ul>
+            </section>{% endblock %}
+        </nav>
+    </div>
+    {% endspaceless %}{% endblock %}
+
+    {% block subheader_container %}{% endblock %}
+
+    {% block content_container %}<div id="body_content"{% block content_container_attrs %}{% endblock %}>
+        {% block base_content %}{% endblock %}
+    </div>{% endblock %}
+
+    {% block footer_container %}{% spaceless %}
+    <footer>
+        <div class="row fluid">
+            <div class="large-5 columns small-text-center large-text-left">
+                <p>ACME &copy; {% now "Y" %} {{ SITE.name }}</p>
+            </div>
+        </div>
+    </footer>
+    {% endspaceless %}{% endblock %}
+</body>
+</html>

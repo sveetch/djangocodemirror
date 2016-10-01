@@ -9,7 +9,6 @@ from settings_django16 import *
 
 # Some CodeMirror configurations for testing purposes
 CODEMIRROR_SETTINGS.update({
-    # Validated
     'javascript': {
         'modes': ['javascript'],
         'lineWrapping': True,
@@ -24,7 +23,6 @@ CODEMIRROR_SETTINGS.update({
         ],
     },
 
-    # Validated
     'restructuredtext': {
         'mode': 'rst',
         'modes': ['python', 'stex', 'rst'],
@@ -35,7 +33,6 @@ CODEMIRROR_SETTINGS.update({
         ],
     },
 
-    # Validated
     'html': {
         'mode': 'htmlmixed',
         'modes': ['xml', 'javascript', 'css', 'vbscript', 'htmlmixed'],
@@ -43,7 +40,6 @@ CODEMIRROR_SETTINGS.update({
         'lineNumbers': True,
     },
 
-    # Validated
     'django': {
         'mode': 'django',
         'modes': ['xml', 'javascript', 'css', 'vbscript', 'htmlmixed',
@@ -55,23 +51,23 @@ CODEMIRROR_SETTINGS.update({
         ],
     },
 
-    # To do: we need to add CSS assets that are not themes
-    #<link rel="stylesheet" href="../../addon/hint/show-hint.css">
     'css': {
         'modes': ['css'],
         'lineWrapping': True,
         'lineNumbers': True,
         'matchBrackets': True,
+        'extraKeys': {"Ctrl-Space": "autocomplete"},
         'addons': [
             "CodeMirror/addon/edit/matchbrackets.js",
             "CodeMirror/addon/hint/show-hint.js",
             "CodeMirror/addon/hint/css-hint.js",
         ],
+        'extra_css': [
+            "CodeMirror/addon/hint/show-hint.css",
+        ],
     },
 
-    # To valid
     'scss': {
-        #'mode': 'css',
         'mode': 'text/x-scss',
         'modes': ['css'],
         'lineWrapping': True,
@@ -82,7 +78,6 @@ CODEMIRROR_SETTINGS.update({
         ],
     },
 
-    # To valid
     'python': {
         'mode': {
             'name': "python",

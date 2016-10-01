@@ -29,6 +29,12 @@ CODEMIRROR_SETTINGS = {
             "CodeMirror/lib/util/dialog.js",
         ],
     },
+    'with-extra_css': {
+        'mode': 'rst',
+        'extra_css': [
+            "CodeMirror/theme/ambiance.css",
+        ],
+    },
     'with-all': {
         'mode': 'rst',
         'lineWrapping': True,
@@ -39,6 +45,9 @@ CODEMIRROR_SETTINGS = {
         'modes': ['rst', 'python'],
         'theme': 'neat',
         'themes': ['eclipse', 'neat'],
+        'extra_css': [
+            "CodeMirror/theme/ambiance.css",
+        ],
     },
 }
 

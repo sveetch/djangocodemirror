@@ -62,6 +62,7 @@ def test_css_registred_singles(settings, manifesto):
         [
             settings.CODEMIRROR_THEMES['eclipse'],
             settings.CODEMIRROR_THEMES['neat'],
+            settings.CODEMIRROR_THEMES['ambiance'],
         ],
     ),
     (
@@ -70,6 +71,7 @@ def test_css_registred_singles(settings, manifesto):
             settings.CODEMIRROR_THEMES['eclipse'],
             settings.CODEMIRROR_THEMES['elegant'],
             settings.CODEMIRROR_THEMES['neat'],
+            settings.CODEMIRROR_THEMES['ambiance'],
         ],
     ),
 ])
@@ -99,6 +101,7 @@ def test_css_bundle_names_all(settings, manifesto):
         'dcm-empty_css',
         'dcm-with-addons_css',
         'dcm-with-all_css',
+        'dcm-with-extra_css_css',
         'dcm-with-modes_css',
         'dcm-with-options_css',
         'dcm-with-themes_css'

@@ -59,7 +59,7 @@ class CodeMirrorManifest(object):
     }
 
     _internal_only = ['modes', 'addons', 'themes', 'css_bundle_name',
-                      'js_bundle_name']
+                      'js_bundle_name', 'extra_css']
 
     def __init__(self):
         self.registry = {}
@@ -304,6 +304,9 @@ class CodeMirrorManifest(object):
                 resolved = self.resolve_theme(item)
                 if resolved not in filepaths:
                     filepaths.append(resolved)
+            for item in opts.get('extra_css', []):
+                if item not in filepaths:
+                    filepaths.append(item)
 
         return filepaths
 

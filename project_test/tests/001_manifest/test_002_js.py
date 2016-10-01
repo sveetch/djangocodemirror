@@ -115,6 +115,7 @@ def test_js_bundle_names_all(settings, manifesto):
         'dcm-empty_js',
         'dcm-with-addons_js',
         'dcm-with-all_js',
+        'dcm-with-extra_css_js',
         'dcm-with-modes_js',
         'dcm-with-options_js',
         'dcm-with-themes_js',

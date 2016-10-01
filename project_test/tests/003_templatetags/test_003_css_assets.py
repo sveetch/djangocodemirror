@@ -38,7 +38,8 @@ def test_codemirror_multiple_field_js_assets():
 
     assert assets == ("""<link rel="stylesheet" href="/static/CodeMirror/lib/codemirror.css">"""
                       """<link rel="stylesheet" href="/static/CodeMirror/theme/eclipse.css">"""
-                      """<link rel="stylesheet" href="/static/CodeMirror/theme/neat.css">""")
+                      """<link rel="stylesheet" href="/static/CodeMirror/theme/neat.css">"""
+                      """<link rel="stylesheet" href="/static/CodeMirror/theme/ambiance.css">""")
 
 
 def test_codemirror_field_css_bundle():

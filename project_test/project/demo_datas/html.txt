@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Plonk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+    body,html{
+        margin:0;
+        padding:0;
+        width:100%;
+        height:100%;
+        font-size:16px;
+        font-family:serif
+    }
+    </style>
+</head>
+
+<body>
+
+<div class="base-container">
+    <div class="center-container">
+        <div class="cell">
+            <div class="center-block">
+                <h1>Plonk</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

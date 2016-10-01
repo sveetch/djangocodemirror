@@ -1,0 +1,71 @@
+/*
+ **
+ ** This is the main frontend Javascript where all components will be initialized
+ **
+ */
+$(window).load(function () {
+    /*
+    * Apply the trick to swap <img> elements into their container
+    * background and set a minimal height from image height
+    */
+    // Shortcuts using class
+    $('img.auto-background-cover').swapImageToBackground({
+        "position": '50% 50%',
+        "repeat": 'no-repeat',
+        "size": 'cover'
+    });
+    $('img.auto-background-contain').swapImageToBackground({
+        "position": '50% 50%',
+        "repeat": 'no-repeat',
+        "size": 'contain'
+    });
+
+    // Normal way using html attributes
+    $('img.background').swapImageToBackground();
+
+    /*
+    * Init Slick.js default slider
+    */
+    $('.slick-container').not('.inner-carousel').slick({
+        'adaptiveHeight': true,
+        'lazyLoad': 'ondemand'
+    });
+
+    /*
+    * Init Slick.js in some carousel mode (arrows are in special container
+    * '.carousel-arrows')
+    *
+    * There can't be more than one instance of this slider in the same page
+    */
+    $('.slick-container.inner-carousel').slick({
+        'adaptiveHeight': true,
+        'draggable': false,
+        'prevArrow': '<button type="button" data-role="none" class="slick-prev" aria-label="previous">Previous</button>',
+        'appendArrows': $('.carousel-navig .arrows'),
+        'lazyLoad': 'ondemand'
+    });
+});
+
+$(document).ready(function($) {
+    /*
+    * Button dropdown trick
+    */
+    $('a.button.dropdown.trick').each(function( index ) {
+        var dropdown_id = "dropdown-trick-"+index,
+            dropdown_menu,
+            container;
+        if( $( this ).parent().get(0).tagName == 'P' || $( this ).parent().get(0).tagName == 'LI' ) {
+            container = $(this).parent();
+        } else {
+            container = $(this);
+        }
+        dropdown_menu = container.next("ul.f-dropdown");
+        if(dropdown_menu){
+            $(this).attr('data-dropdown', dropdown_id);
+            dropdown_menu.attr('id', dropdown_id).attr('data-dropdown-content', '');
+        }
+    });
+
+    // Init MediaQuery watcher
+    $('#watch-for-current-mquery').initCurrentMediaQuery();
+});

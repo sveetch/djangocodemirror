@@ -1,0 +1,144 @@
+@charset "UTF-8";
+
+@import "settings";
+
+/*
+ * All foundation components, one by one
+*/
+/*
+@import
+  "foundation/components/accordion",
+  "foundation/components/alert-boxes",
+  "foundation/components/block-grid",
+  "foundation/components/breadcrumbs",
+  "foundation/components/button-groups",
+  "foundation/components/buttons",
+  "foundation/components/clearing",
+  "foundation/components/dropdown",
+  "foundation/components/dropdown-buttons",
+  "foundation/components/flex-video",
+  "foundation/components/forms",
+  "foundation/components/grid",
+  "foundation/components/inline-lists",
+  "foundation/components/joyride",
+  "foundation/components/keystrokes",
+  "foundation/components/labels",
+  "foundation/components/magellan",
+  "foundation/components/pagination",
+  "foundation/components/panels",
+  "foundation/components/pricing-tables",
+  "foundation/components/progress-bars",
+  "foundation/components/reveal",
+  "foundation/components/side-nav",
+  "foundation/components/split-buttons",
+  "foundation/components/sub-nav",
+  "foundation/components/switches",
+  "foundation/components/tables",
+  "foundation/components/tabs",
+  "foundation/components/thumbs",
+  "foundation/components/tooltips",
+  "foundation/components/top-bar",
+  "foundation/components/type",
+  "foundation/components/offcanvas",
+  "foundation/components/visibility";
+*/
+
+/*
+ * All foundation components, one by one
+*/
+@import
+  "foundation/components/alert-boxes",
+  "foundation/components/block-grid",
+  "foundation/components/breadcrumbs",
+  "foundation/components/button-groups",
+  "foundation/components/buttons",
+  "foundation/components/dropdown",
+  "foundation/components/dropdown-buttons",
+  "foundation/components/flex-video",
+  "foundation/components/forms",
+  "foundation/components/grid",
+  "foundation/components/inline-lists",
+  "foundation/components/keystrokes",
+  "foundation/components/labels",
+  "foundation/components/pagination",
+  "foundation/components/panels",
+  "foundation/components/side-nav",
+  "foundation/components/sub-nav",
+  "foundation/components/tables",
+  "foundation/components/tabs",
+  "foundation/components/top-bar",
+  "foundation/components/type",
+  "foundation/components/visibility";
+
+/*
+ * Bourbon library to have some useful mixins
+ */
+@import "bourbon";
+
+/*
+ * Used components
+ */
+
+@import "utils/mixins";
+@import "components/icomoon";
+
+@import "components/header";
+//@import "components/cms";
+//@import "components/porticus";
+@import "components/footer";
+
+
+/*
+ * // Useful grid size debugging
+@debug "@@@@@@@@@@@@@@@@@@@@@@";
+@debug "Default grid row max-width: #{$row-width} == #{topx($row-width, $base-font-size)}";
+@debug "Larger grid row max-width: #{$row-larger-width} == #{topx($row-larger-width, $base-font-size)}";
+@debug "Default grid row max-width: #{$row-width} == #{topx($row-width, $base-font-size)}";
+*/
+
+#body_content{
+    @import "components/contents";
+}
+
+#watch-for-current-mquery{
+    padding: 0.0rem 0.5rem;
+    position: absolute;
+    top: 10px;
+    right: 35px;
+    font-size: 14px;
+    font-weight:bold;
+    line-height:1.4;
+    text-align: center;
+    text-transform: uppercase;
+    border: 2px solid $alert-color;
+    background-color: $white;
+    z-index: 9000;
+
+    small{
+        display: block;
+    }
+}
+
+
+// Shortcut relative position
+.relative-position {
+    position: relative;
+}
+
+/*
+ * Image taking all width
+ */
+img.expand{
+    width: 100%;
+}
+
+/*
+ * Attempt to use columns-* properties
+ */
+.strip-container{
+    @include columns(auto 2);
+
+    .strip-cell{
+        @include break-inside(avoid);
+    }
+}
