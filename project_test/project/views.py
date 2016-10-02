@@ -19,20 +19,16 @@ class BasicSampleFormView(FormView):
     def get_success_url(self):
         return reverse('home')
 
+
+class ModesSampleFormView(BasicSampleFormView):
+    template_name = 'modes.html'
+
     def get_context_data(self, **kwargs):
-        context = super(BasicSampleFormView, self).get_context_data(**kwargs)
+        context = super(ModesSampleFormView, self).get_context_data(**kwargs)
         context.update({
             'codemirror_mode': self.codemirror_mode,
         })
         return context
-
-    def get(self, request, *args, **kwargs):
-        self.codemirror_mode = kwargs.get('mode', None)
-        return super(BasicSampleFormView, self).get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.codemirror_mode = kwargs.get('mode', None)
-        return super(BasicSampleFormView, self).post(request, *args, **kwargs)
 
     def get_initial(self):
         """
@@ -49,3 +45,11 @@ class BasicSampleFormView(FormView):
                     initial['foo'] = fp.read()
 
         return initial
+
+    def get(self, request, *args, **kwargs):
+        self.codemirror_mode = kwargs.get('mode', None)
+        return super(ModesSampleFormView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.codemirror_mode = kwargs.get('mode', None)
+        return super(ModesSampleFormView, self).post(request, *args, **kwargs)

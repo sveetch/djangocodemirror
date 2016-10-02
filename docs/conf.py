@@ -23,6 +23,33 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'django_settings'
 from django.conf import settings
 
+from sphinx.ext import autodoc
+
+
+class SimpleFunctionDocumenter(autodoc.FunctionDocumenter):
+    """
+    Simple function documenter to be able to extract object docstring without
+    signature.
+
+    Stealed from:
+
+        http://stackoverflow.com/a/7832437/4884485
+    """
+    objtype = "simplefunction"
+
+    # do not indent the content
+    content_indent = ""
+
+    # do not add a header to the docstring
+    def add_directive_header(self, sig):
+        pass
+
+
+# Register custom documenter
+def setup(app):
+    app.add_autodocumenter(SimpleFunctionDocumenter)
+
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.

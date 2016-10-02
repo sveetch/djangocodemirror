@@ -2,28 +2,24 @@
 {% load djangocodemirror_tags %}
 {% load static from staticfiles %}
 
-{% block base_content %}
-<h2>Testing modes configurations</h2>
+{% block head_title %}Basic form usage{% endblock %}
 
-{% if codemirror_mode %}
-<h3>{{ codemirror_mode }}</h3>
+{% block base_content %}
+<h2>Basic form usage</h2>
+
 <div class="row">
     <form action="." method="post">{% csrf_token %}
         {{ form.as_p }}
         <input type="submit">
     </form>
 </div>
-{% codemirror_instance codemirror_mode "foo_codemirror" form.foo.id_for_label %}
-{% else %}
-<h3>Available modes</h3>
-<ul>
-    <li><a href="javascript/">javascript</a></li>
-    <li><a href="restructuredtext/">restructuredtext</a></li>
-    <li><a href="html/">html</a></li>
-    <li><a href="django/">django</a></li>
-    <li><a href="css/">css</a></li>
-    <li><a href="scss/">scss</a></li>
-    <li><a href="python/">python</a></li>
-</ul>
-{% endif %}
+
+{% codemirror_field_css_assets form.foo %}
+{% codemirror_field_js_assets form.foo %}
+<script>
+    var foo_codemirror = CodeMirror.fromTextArea(
+        document.getElementById("id_foo"),
+        {{ form.foo|codemirror_parameters }}
+    );
+</script>
 {% endblock %}

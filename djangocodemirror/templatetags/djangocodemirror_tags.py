@@ -120,7 +120,7 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
 
         return content
 
-    def codemirror_html(self, config_name, varname, field_id):
+    def codemirror_html(self, config_name, varname, element_id):
         """
         Render HTML for a CodeMirror instance.
 
@@ -133,7 +133,8 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         Arguments:
             config_name (string): A registred config name.
             varname (string): A Javascript variable name.
-            field_id (string): Field input id.
+            element_id (string): An HTML element identifier (without
+                leading ``#``) to attach to a CodeMirror instance.
 
         Returns:
             string: HTML to instanciate CodeMirror for a field input.
@@ -141,7 +142,7 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         parameters = json.dumps(self.get_codemirror_parameters(config_name))
         return settings.CODEMIRROR_FIELD_INIT_JS.format(
             varname=varname,
-            inputid=field_id,
+            inputid=element_id,
             settings=parameters,
         )
 
@@ -306,7 +307,7 @@ codemirror_parameters.is_safe = True
 
 
 @register.simple_tag
-def codemirror_instance(config_name, varname, input_id, assets=True):
+def codemirror_instance(config_name, varname, element_id, assets=True):
     """
     Return HTML to init a CodeMirror instance for an element.
 
@@ -323,7 +324,8 @@ def codemirror_instance(config_name, varname, input_id, assets=True):
     Arguments:
         config_name (string): A registred config name.
         varname (string): A Javascript variable name.
-        field_id (string): Field input id.
+        element_id (string): An HTML element identifier (without
+            leading ``#``) to attach to a CodeMirror instance.
 
     Keyword Arguments:
         assets (Bool): Adds needed assets before the HTML if ``True``, else
@@ -342,7 +344,7 @@ def codemirror_instance(config_name, varname, input_id, assets=True):
         output.write(manifesto.css_html())
         output.write(manifesto.js_html())
 
-    html = manifesto.codemirror_html(config_name, varname, input_id)
+    html = manifesto.codemirror_html(config_name, varname, element_id)
     output.write(html)
 
     content = output.getvalue()

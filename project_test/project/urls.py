@@ -19,7 +19,7 @@ from django.conf.urls import include, url
 
 from django.views.generic.base import TemplateView
 
-from views import BasicSampleFormView
+from views import BasicSampleFormView, ModesSampleFormView
 
 urlpatterns = [
     #url(r'^admin/', include(admin.site.urls)),
@@ -37,10 +37,15 @@ urlpatterns = [
     # Mode index
     url(r'^form/$', BasicSampleFormView.as_view(
         template_name="form.html"
+    ), name='form'),
+
+    # Mode index
+    url(r'^modes/$', ModesSampleFormView.as_view(
+        template_name="modes.html"
     ), name='mode-index'),
 
     # Basic usage with a mode from a form
-    url(r'^form/(?P<mode>[-\w]+)/$', BasicSampleFormView.as_view(
-        template_name="form.html"
+    url(r'^modes/(?P<mode>[-\w]+)/$', ModesSampleFormView.as_view(
+        template_name="modes.html"
     ), name='basic'),
 ]
