@@ -20,8 +20,8 @@ This is a major refactoring to adopt Test Driven Development, cleaner behaviors 
 
 Todo:
 
-* Finish documentation
-
-  * Ensure everything is documented about config;
-
-* Added tox configuration;
+* Flake8 coverage;
+* Add tox configuration;
+* Usage of None on bundle name internal parameters to disable bundle;
+* Have some sample helper to add some parameters (lineNumber, indent, etc..) on available configs;
+* Rename exceptions to contain 'Exception' or 'Error' to be explicit (to not confuse with other objects);

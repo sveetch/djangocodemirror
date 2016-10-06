@@ -30,34 +30,7 @@ CODEMIRROR_SETTINGS
 
 Available CodeMirror configurations.
 
-A CodeMirror configuration is a set of parameter for a CodeMirror instance plus
-some internal ones reserved to the manifest to control some behaviors.
-
-Usually, you should have at least the ``modes`` list parameter with a
-valid mode name from ``settings.CODEMIRROR_MODES``. For other available
-configuration parameters, see the CodeMirror documentation.
-
-Every parameter in a configuration will be given to CodeMirror instance
-excepted some internal ones:
-
-modes
-    List of mode names to load. Note that CodeMirror will assume to
-    use the last loaded mode if you don't explicitely enable one using ``mode``
-    parameter.
-addons
-    List of addons paths to load before modes.
-themes
-    List of theme name to load.
-css_bundle_name
-    CSS bundle name that is automatically builded from the
-    configuration name.
-js_bundle_name
-    Javascript bundle name that is automatically builded from
-    the configuration name.
-extra_css
-    List of paths for extra CSS files to append after themes.
-
-Default shipped configurations implement a little subset of available
+Included configurations implement a little subset of available
 CodeMirror modes plus a ``empty`` configuration.
 
 Default available configurations are:
@@ -75,6 +48,7 @@ These modes are built from
 `CodeMirror mode demonstrations <http://codemirror.net/mode/index.html>`_ to
 reproduce the same behaviors.
 
+See :ref:`configurations-intro` to create new configurations.
 
 CODEMIRROR_BASE_JS
 ------------------
@@ -82,7 +56,9 @@ CODEMIRROR_BASE_JS
 List of CodeMirror Javascript base files that will be loaded before every
 other CodeMirror Javascript components.
 
-Default value: ::
+Default value:
+
+.. sourcecode:: python
 
     ["CodeMirror/lib/codemirror.js"]
 
@@ -92,7 +68,9 @@ CODEMIRROR_BASE_CSS
 
 List of CodeMirror CSS base files that will be loaded before themes.
 
-Default value: ::
+Default value:
+
+.. sourcecode:: python
 
     ["CodeMirror/lib/codemirror.css"]
 
@@ -105,7 +83,9 @@ Available CodeMirror CSS Theme files.
 Default value contains only the *Ambiance* theme (a dark one), so you may add
 yourself all your needed themes.
 
-Default value: ::
+Default value:
+
+.. sourcecode:: python
 
     {
         "ambiance": "CodeMirror/theme/ambiance.css",
@@ -126,7 +106,9 @@ CODEMIRROR_JS_ASSET_TAG
 HTML element to load a Javascript asset. Used by template tags and widget to
 build assets HTML loaders.
 
-Default value: ::
+Default value:
+
+.. sourcecode:: python
 
     u'<script type="text/javascript" src="{url}"></script>'
 
@@ -136,7 +118,9 @@ CODEMIRROR_CSS_ASSET_TAG
 HTML element to load a CSS asset. Used by template tags and widget to
 build assets HTML loaders.
 
-Default value: ::
+Default value:
+
+.. sourcecode:: python
 
     u'<link rel="stylesheet" href="{url}">'
 
@@ -171,7 +155,9 @@ Option arguments used to build CSS bundles with ``django-assets``.
 Every CSS bundles will share the same arguments (excepted for the ``output``
 one).
 
-Default value: ::
+Default value:
+
+.. sourcecode:: python
 
     {
         'filters':'yui_css',
@@ -187,7 +173,9 @@ Option arguments used to build Javascript bundles with ``django-assets``.
 Every Javascript bundles will share the same arguments (excepted for the
 ``output`` one).
 
-Default value: ::
+Default value:
+
+.. sourcecode:: python
 
     {
         'filters':'yui_js',

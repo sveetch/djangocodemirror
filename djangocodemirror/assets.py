@@ -10,6 +10,9 @@ automatically loaded to enable asset bundles for available configurations
 
 A variable ``djangocodemirror.assets.DJANGO_ASSETS_INSTALLED`` will be set to
 ``True`` if `django-assets`_ is installed, else ``False``.
+
+Be aware that every configurations will be bundled, you may disable
+configurations you don't use to avoid too much time on bundle compress.
 """
 try:
     from django_assets import Bundle

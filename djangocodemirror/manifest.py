@@ -3,11 +3,12 @@
 CodeMirror manifest
 ===================
 
-From its registred Codemirror configs, manifest is able to:
+From its registred Codemirror configurations, a manifest instance is able
+to:
 
 * Return needed js files, either for all registred configs or a single one;
 * Return needed css files, either for all registred configs or a single one;
-* Return Codemirror configuration options as a dict for a registred config;
+* Return Codemirror configuration parameters as a dict for a registred config.
 
 A Codemirror config is selected from its name in
 ``settings.CODEMIRROR_SETTINGS``.
@@ -39,7 +40,7 @@ class CodeMirrorFieldBundle(KeyError):
 
 class CodeMirrorManifest(object):
     """
-    CodeMirror configurations and assets manifest.
+    CodeMirror configurations manifest.
 
     A configuration contains every parameters and assets to use with a
     CodeMirror instance.
@@ -51,11 +52,11 @@ class CodeMirrorManifest(object):
             exluded from CodeMirror parameters.
     """
     default_internal_config = {
-        'modes': [], # Enabled modes
-        'addons': [], # Addons filepaths to load
-        'themes': [], # Themes filepaths to load
-        'css_bundle_name': None, # CSS bundle name to fill
-        'js_bundle_name': None, # Javascript bundle name to fill
+        'modes': [],  # Enabled modes
+        'addons': [],  # Addons filepaths to load
+        'themes': [],  # Themes filepaths to load
+        'css_bundle_name': None,  # CSS bundle name to fill
+        'js_bundle_name': None,  # Javascript bundle name to fill
     }
 
     _internal_only = ['modes', 'addons', 'themes', 'css_bundle_name',
@@ -81,8 +82,8 @@ class CodeMirrorManifest(object):
         """
         if name not in settings.CODEMIRROR_SETTINGS:
             raise UnknowConfig(("Given config name '{}' does not exists in "
-                                 "'settings.CODEMIRROR_SETTINGS'.").format(
-                                     name
+                                "'settings.CODEMIRROR_SETTINGS'.").format(
+                                    name
                                 ))
 
         parameters = copy.deepcopy(self.default_internal_config)
@@ -96,7 +97,7 @@ class CodeMirrorManifest(object):
             settings_name=name
         )
         js_template_name = settings.CODEMIRROR_BUNDLE_JS_NAME
-        parameters['js_bundle_name']= js_template_name.format(
+        parameters['js_bundle_name'] = js_template_name.format(
             settings_name=name
         )
 
@@ -230,7 +231,7 @@ class CodeMirrorManifest(object):
         """
         config = self.get_config(name)
 
-        for k,v in config.items():
+        for k, v in config.items():
             if k in self._internal_only:
                 del config[k]
 
@@ -252,13 +253,13 @@ class CodeMirrorManifest(object):
         configs = self.get_configs(name)
 
         # Addons first
-        for name,opts in configs.items():
+        for name, opts in configs.items():
             for item in opts.get('addons', []):
                 if item not in filepaths:
                     filepaths.append(item)
 
         # Process modes
-        for name,opts in configs.items():
+        for name, opts in configs.items():
             for item in opts['modes']:
                 resolved = self.resolve_mode(item)
                 if resolved not in filepaths:
@@ -280,8 +281,8 @@ class CodeMirrorManifest(object):
         configs = self.get_configs(name)
 
         # Addons first
-        return sorted([opts['js_bundle_name'] for name, opts in configs.items()
-                if 'js_bundle_name' in opts])
+        return sorted([v['js_bundle_name'] for k, v in configs.items()
+                       if 'js_bundle_name' in v])
 
     def css(self, name=None):
         """
@@ -299,7 +300,7 @@ class CodeMirrorManifest(object):
         configs = self.get_configs(name)
 
         # Process theme names
-        for name,opts in configs.items():
+        for name, opts in configs.items():
             for item in opts.get('themes', []):
                 resolved = self.resolve_theme(item)
                 if resolved not in filepaths:
@@ -324,5 +325,5 @@ class CodeMirrorManifest(object):
         configs = self.get_configs(name)
 
         # Addons first
-        return sorted([opts['css_bundle_name'] for name, opts in configs.items()
-                if 'css_bundle_name' in opts])
+        return sorted([v['css_bundle_name'] for k, v in configs.items()
+                       if 'css_bundle_name' in v])

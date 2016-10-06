@@ -10,9 +10,13 @@ Welcome to Django CodeMirror's documentation!
 
 **Django CodeMirror** is a `Django`_ application to embed `CodeMirror`_.
 
-Principle is to load CodeMirror instance using a registered configuration
-through a manifest that will be aware of CodeMirror parameters, CSS assets and
-Javascripts assets.
+It works exclusively from configuration sets to manage CodeMirror options and
+assets. A dedicated field, widget and some template tags are available to make
+CodeMirror instances using these configurations on any element.
+
+Working with configurations that are aware of every assets to load enable to
+use CodeMirror without a Javascript module loader (like ``Browserify`` or
+``RequireJS``).
 
 .. Note::
     Version 1.0.0 is a major refactoring, API has changed and editor
@@ -41,12 +45,10 @@ User’s Guide
    install.rst
    examples.rst
    settings.rst
+   configurations.rst
    library_references/templatetags.rst
    library_references/widgets.rst
    library_references/fields.rst
-   library_references/manifest.rst
-   library_references/assets.rst
-   library_references/assetrender.rst
 
 Developer’s Guide
 *****************
@@ -54,5 +56,8 @@ Developer’s Guide
 .. toctree::
    :maxdepth: 1
 
+   library_references/manifest.rst
+   library_references/assets.rst
+   library_references/assetrender.rst
    development.rst
    changelog.rst

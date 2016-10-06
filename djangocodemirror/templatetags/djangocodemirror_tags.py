@@ -4,7 +4,6 @@ Template tags
 =============
 
 """
-import copy
 import io
 import json
 import os
@@ -37,8 +36,8 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         Returns:
             django.forms.widgets.Widget: Retrieved widget from given field.
         """
-        # When filter is used within template we have to reach the field instance
-        # through the BoundField.
+        # When filter is used within template we have to reach the field
+        # instance through the BoundField.
         if hasattr(field, 'field'):
             widget = field.field.widget
         # When used out of template, we have a direct field instance
@@ -146,31 +145,6 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
             settings=parameters,
         )
 
-    def codemirror_field_html(self, field):
-        """
-        Render HTML for a CodeMirror instance.
-
-        Since a CodeMirror instance have to be attached to a HTML element, this
-        method requires a HTML element identifier with or without the ``#``
-        prefix, it depends from template in
-        ``settings.CODEMIRROR_FIELD_INIT_JS`` (default one require to not
-        prefix with ``#``).
-
-        Arguments:
-            config_name (string): A registred config name.
-            varname (string): A Javascript variable name.
-            field_id (string): Field input id.
-
-        Returns:
-            string: HTML to instanciate CodeMirror for a field input.
-        """
-        parameters = json.dumps(self.get_codemirror_parameters(config_name))
-        return settings.CODEMIRROR_FIELD_INIT_JS.format(
-            varname=varname,
-            inputid=field_id,
-            settings=parameters,
-        )
-
 
 @register.simple_tag
 def codemirror_field_js_assets(*args):
@@ -187,6 +161,7 @@ def codemirror_field_js_assets(*args):
     manifesto.register_from_fields(*args)
 
     return manifesto.js_html()
+
 
 @register.simple_tag
 def codemirror_field_css_assets(*args):
@@ -221,7 +196,7 @@ def codemirror_field_js_bundle(field):
             :class:`djangocodemirror.widget.CodeMirrorWidget`.
 
     Raises:
-        CodeMirrorFieldBundle: If Codemirror configuration from field does not
+        CodeMirrorFieldBundle: If Codemirror configuration form field does not
             have a bundle name.
 
     Returns:
@@ -233,8 +208,9 @@ def codemirror_field_js_bundle(field):
     try:
         bundle_name = manifesto.js_bundle_names()[0]
     except IndexError:
-        raise CodeMirrorFieldBundle(("Given field with configuration name '{}' "
-                                     "does not have a Javascript bundle "
+        # TODO: broken
+        raise CodeMirrorFieldBundle(("Given field with configuration name "
+                                     "'{}' does not have a Javascript bundle "
                                      "name").format(name))
 
     return bundle_name
@@ -267,8 +243,9 @@ def codemirror_field_css_bundle(field):
     try:
         bundle_name = manifesto.css_bundle_names()[0]
     except IndexError:
-        raise CodeMirrorFieldBundle(("Given field with configuration name '{}' "
-                                     "does not have a CSS bundle "
+        # TODO: broken
+        raise CodeMirrorFieldBundle(("Given field with configuration name "
+                                     "'{}' does not have a CSS bundle "
                                      "name").format(name))
 
     return bundle_name

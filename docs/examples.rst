@@ -2,7 +2,7 @@
 Examples
 ========
 
-This will assume you have followed **Install** document.
+This will assume you have followed :ref:`install-intro` document.
 
 For a HTML element
 ------------------
@@ -38,8 +38,8 @@ mode directly to a HTML element through its HTML identifier (``id``).
 
         ]
 
-With a form field
------------------
+For a form field
+----------------
 
 For this example we will attach a CodeMirror instance with
 ``restructuredtext`` to a form field.

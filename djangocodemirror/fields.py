@@ -8,6 +8,7 @@ from django import forms
 
 from djangocodemirror.widgets import CodeMirrorWidget
 
+
 class CodeMirrorField(forms.CharField):
     """
     A CharField that comes with CodeMirrorWidget.
@@ -28,4 +29,3 @@ class CodeMirrorField(forms.CharField):
             kwargs['widget'] = widget(config_name=self.config_name)
 
         super(CodeMirrorField, self).__init__(*args, **kwargs)
-

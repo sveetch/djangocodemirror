@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Rich Textarea for Django with CodeMirror and some enhancement
+Django CodeMirror is a Django application to embed CodeMirror
 """
 __version__ = '0.9.8'

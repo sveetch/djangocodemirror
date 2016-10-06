@@ -4,7 +4,7 @@ Form field widget
 =================
 
 """
-import json, copy
+import json
 
 from django import forms
 
@@ -17,8 +17,8 @@ from djangocodemirror.manifest import CodeMirrorManifest
 class CodeMirrorWidget(forms.Textarea):
     """
     Widget to add a CodeMirror or DjangoCodeMirror instance on a textarea
-    Take the same arguments than ``forms.Textarea`` and accepts one suplementary
-    optionnal arguments :
+    Take the same arguments than ``forms.Textarea`` and accepts one
+    suplementary optionnal arguments :
 
     Arguments:
         config_name (string): A Codemirror config name available in
@@ -87,7 +87,8 @@ class CodeMirrorWidget(forms.Textarea):
         html = self.get_codemirror_field_js()
         opts = self.codemirror_config()
 
-        return html.format(varname=varname, inputid=inputid, settings=json.dumps(opts))
+        return html.format(varname=varname, inputid=inputid,
+                           settings=json.dumps(opts))
 
     def render(self, name, value, attrs=None):
         """
