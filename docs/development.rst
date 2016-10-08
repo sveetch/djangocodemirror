@@ -61,3 +61,7 @@ Documentation
 -------------
 
 You should see about `sphinx-autobuild`_ for a watcher which automatically rebuild HTML documentation when you change sources.
+
+When installed you can use following command from ``docs/`` directory: ::
+
+    make livehtml

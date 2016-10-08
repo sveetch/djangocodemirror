@@ -53,13 +53,13 @@ for sample*.
 
 * This reproduces CodeMirror demo for ``css`` mode;
 * You can see ``matchBrackets`` and ``extraKeys`` that are CodeMirror
-  parameters, the other one are internal parameter to define every required
+  parameters, the other ones are internal parameters to define every required
   assets.
 * ``modes`` define modes to load, here just ``css``;
-* ``addons`` define useful CodeMirror addons to load, addons may be required
+* ``addons`` define useful CodeMirror addons to load. Addons may be required
   from some modes, some other ones are just for optional features;
 * ``extra_css`` define some additional CSS stylesheets to load that are not
-  themes. Here it is the ``show-hint`` addon CSS;
+  themes. Here it's the ``show-hint`` addon CSS;
 
 See ``djangocodemirror.settings`` file for more examples of configurations in
 ``CODEMIRROR_SETTINGS``.

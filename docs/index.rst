@@ -14,7 +14,7 @@ It works exclusively from configuration sets to manage CodeMirror options and
 assets. A dedicated field, widget and some template tags are available to make
 CodeMirror instances using these configurations on any element.
 
-Working with configurations that are aware of every assets to load enable to
+Since configurations are aware of every assets to load this enable to
 use CodeMirror without a Javascript module loader (like ``Browserify`` or
 ``RequireJS``).
 
