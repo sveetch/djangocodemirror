@@ -4,13 +4,14 @@ Tests against template tags for Codemirror config
 import json
 import pytest
 
+from djangocodemirror.manifest import CodeMirrorFieldBundle
 from djangocodemirror.widgets import CodeMirrorWidget
 from djangocodemirror.templatetags.djangocodemirror_tags import (
     codemirror_field_js_assets,
     codemirror_field_js_bundle,
 )
 
-from project.forms import SampleForm, ManyFieldsSampleForm
+from project.forms import SampleForm, ManyFieldsSampleForm, WrongForm
 
 
 def test_codemirror_single_field_js_assets():

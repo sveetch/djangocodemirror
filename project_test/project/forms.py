@@ -32,3 +32,13 @@ class ManyFieldsSampleForm(forms.Form):
                           required=True,
                           config_name="with-all",
                           initial='Zouip')
+
+
+class WrongForm(forms.Form):
+    """
+    Form with a field using an unknow config name
+    """
+    foo = CodeMirrorField(label="Foo",
+                          required=True,
+                          config_name="nope",
+                          initial='Hello World!')

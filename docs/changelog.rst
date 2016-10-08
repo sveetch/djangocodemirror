@@ -10,6 +10,7 @@ This is a major refactoring to adopt Test Driven Development, cleaner behaviors 
 
 * Added Unittests with Py.test;
 * Added documentation;
+* Flake8 coverage;
 * Rewrited every template tags and filters;
 * Better docstring for code;
 * Removed all stuff about reStructuredText editor addons;
@@ -20,7 +21,6 @@ This is a major refactoring to adopt Test Driven Development, cleaner behaviors 
 
 Todo:
 
-* Flake8 coverage;
 * Add tox configuration;
 * Usage of None on bundle name internal parameters to disable bundle;
 * Have some sample helper to add some parameters (lineNumber, indent, etc..) on available configs;

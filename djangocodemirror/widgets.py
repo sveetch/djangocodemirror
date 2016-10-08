@@ -88,7 +88,7 @@ class CodeMirrorWidget(forms.Textarea):
         opts = self.codemirror_config()
 
         return html.format(varname=varname, inputid=inputid,
-                           settings=json.dumps(opts))
+                           settings=json.dumps(opts, sort_keys=True))
 
     def render(self, name, value, attrs=None):
         """

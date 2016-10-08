@@ -138,7 +138,8 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         Returns:
             string: HTML to instanciate CodeMirror for a field input.
         """
-        parameters = json.dumps(self.get_codemirror_parameters(config_name))
+        parameters = json.dumps(self.get_codemirror_parameters(config_name),
+                                sort_keys=True)
         return settings.CODEMIRROR_FIELD_INIT_JS.format(
             varname=varname,
             inputid=element_id,
@@ -208,10 +209,10 @@ def codemirror_field_js_bundle(field):
     try:
         bundle_name = manifesto.js_bundle_names()[0]
     except IndexError:
-        # TODO: broken
+        # NOTE: Wont never be raised until Empty bundle name are implemented
         raise CodeMirrorFieldBundle(("Given field with configuration name "
                                      "'{}' does not have a Javascript bundle "
-                                     "name").format(name))
+                                     "name").format(field.config_name))
 
     return bundle_name
 
@@ -243,10 +244,10 @@ def codemirror_field_css_bundle(field):
     try:
         bundle_name = manifesto.css_bundle_names()[0]
     except IndexError:
-        # TODO: broken
+        # NOTE: Wont never be raised until Empty bundle name are implemented
         raise CodeMirrorFieldBundle(("Given field with configuration name "
                                      "'{}' does not have a CSS bundle "
-                                     "name").format(name))
+                                     "name").format(field.config_name))
 
     return bundle_name
 

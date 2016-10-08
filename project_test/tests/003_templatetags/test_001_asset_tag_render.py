@@ -109,8 +109,8 @@ def test_js_html(settings, name, attempted):
         'ping',
         ("""<script>var plop_codemirror = CodeMirror.fromTextArea("""
          """document.getElementById("plop"),"""
-         """{"lineNumbers": true, "theme": "neat", "lineWrapping": true"""
-         """, "mode": "rst"});</script>""")
+         """{"lineNumbers": true, "lineWrapping": true, "mode": "rst", """
+         """"theme": "neat"});</script>""")
     ),
 ], ids=["foo-basic", "ping-with-all"])
 def test_instance_html(settings, name, attempted):

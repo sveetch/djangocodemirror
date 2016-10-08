@@ -251,15 +251,18 @@ class CodeMirrorManifest(object):
         filepaths = copy.copy(settings.CODEMIRROR_BASE_JS)
 
         configs = self.get_configs(name)
+        names = sorted(configs)
 
         # Addons first
-        for name, opts in configs.items():
+        for name in names:
+            opts = configs[name]
             for item in opts.get('addons', []):
                 if item not in filepaths:
                     filepaths.append(item)
 
         # Process modes
-        for name, opts in configs.items():
+        for name in names:
+            opts = configs[name]
             for item in opts['modes']:
                 resolved = self.resolve_mode(item)
                 if resolved not in filepaths:
@@ -298,13 +301,19 @@ class CodeMirrorManifest(object):
         filepaths = copy.copy(settings.CODEMIRROR_BASE_CSS)
 
         configs = self.get_configs(name)
+        names = sorted(configs)
 
-        # Process theme names
-        for name, opts in configs.items():
+        # Process themes
+        for name in names:
+            opts = configs[name]
             for item in opts.get('themes', []):
                 resolved = self.resolve_theme(item)
                 if resolved not in filepaths:
                     filepaths.append(resolved)
+
+        # Then process extra CSS files
+        for name in names:
+            opts = configs[name]
             for item in opts.get('extra_css', []):
                 if item not in filepaths:
                     filepaths.append(item)

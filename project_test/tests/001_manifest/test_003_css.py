@@ -69,8 +69,8 @@ def test_css_registred_singles(settings, manifesto):
         None, # Mean all configs
         [
             settings.CODEMIRROR_THEMES['eclipse'],
-            settings.CODEMIRROR_THEMES['elegant'],
             settings.CODEMIRROR_THEMES['neat'],
+            settings.CODEMIRROR_THEMES['elegant'],
             settings.CODEMIRROR_THEMES['ambiance'],
         ],
     ),
