@@ -3,6 +3,12 @@
 Changelog
 =========
 
+Version 1.0.1 - 2016/10/09
+--------------------------
+
+* Fixed some minor packages flaws (MANIFEST, classifiers, etc..);
+
+
 Version 1.0.0 - 2016/10/09
 --------------------------
 
