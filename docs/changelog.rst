@@ -3,7 +3,7 @@
 Changelog
 =========
 
-Version 1.0.3 - Unreleased
+Version 1.0.3 - 2016/10/10
 --------------------------
 
 * Validated support for Django 1.8 from tox tests;

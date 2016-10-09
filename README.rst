@@ -1,12 +1,6 @@
 .. _CodeMirror: http://codemirror.net/
-.. _CodeMirror Documentation: http://codemirror.net/doc/manual.html
-.. _jQuery: http://jquery.com/
-.. _jQuery.ajax(): http://api.jquery.com/jQuery.ajax/
-.. _Django CSRF: https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
-.. _Django staticfiles: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/
-.. _Django internationalization system: https://docs.djangoproject.com/en/dev/topics/i18n/
+.. _Django: https://www.djangoproject.com/
 .. _django-assets: http://pypi.python.org/pypi/django-assets
-.. _ReStructuredText: http://docutils.sourceforge.net/rst.html
 
 Django CodeMirror
 =================
