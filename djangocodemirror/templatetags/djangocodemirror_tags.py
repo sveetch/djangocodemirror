@@ -209,7 +209,6 @@ def codemirror_field_js_bundle(field):
     try:
         bundle_name = manifesto.js_bundle_names()[0]
     except IndexError:
-        # NOTE: Wont never be raised until Empty bundle name are implemented
         raise CodeMirrorFieldBundle(("Given field with configuration name "
                                      "'{}' does not have a Javascript bundle "
                                      "name").format(field.config_name))
@@ -244,7 +243,6 @@ def codemirror_field_css_bundle(field):
     try:
         bundle_name = manifesto.css_bundle_names()[0]
     except IndexError:
-        # NOTE: Wont never be raised until Empty bundle name are implemented
         raise CodeMirrorFieldBundle(("Given field with configuration name "
                                      "'{}' does not have a CSS bundle "
                                      "name").format(field.config_name))

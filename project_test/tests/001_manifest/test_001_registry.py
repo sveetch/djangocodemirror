@@ -35,6 +35,16 @@ def test_registry_empty(settings, manifesto):
             'js_bundle_name': 'dcm-basic_js',
         },
     ),
+    (
+        'without-bundle',
+        {
+            'modes': ['rst', 'python'],
+            'addons': [],
+            'themes': ['eclipse', 'elegant'],
+            'css_bundle_name': None,
+            'js_bundle_name': None,
+        },
+    ),
 ])
 def test_register(settings, manifesto, name, options):
     """Register a config"""

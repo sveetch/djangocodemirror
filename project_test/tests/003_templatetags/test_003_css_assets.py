@@ -11,7 +11,7 @@ from djangocodemirror.templatetags.djangocodemirror_tags import (
     codemirror_field_css_bundle,
 )
 
-from project.forms import SampleForm, ManyFieldsSampleForm, WrongForm
+from project.forms import SampleForm, ManyFieldsSampleForm, NoBundleForm
 
 
 def test_codemirror_single_field_js_assets():
@@ -54,12 +54,12 @@ def test_codemirror_field_css_bundle():
     assert name == 'dcm-basic_css'
 
 
-#def test_codemirror_field_css_bundle_error():
-    #"""Test exception from codemirror_field_css_bundle filter for a single
-       #field"""
-    #f = ManyFieldsSampleForm({'foo': 'bar'})
+def test_codemirror_field_css_bundle_error():
+    """Test bundle exception from codemirror_field_css_bundle filter for a
+       single field"""
+    f = NoBundleForm()
 
-    #f.as_p()
+    f.as_p()
 
-    #with pytest.raises(CodeMirrorFieldBundle):
-        #name = codemirror_field_css_bundle(f.fields['foo'])
+    with pytest.raises(CodeMirrorFieldBundle) as e:
+        name = codemirror_field_css_bundle(f.fields['foo'])

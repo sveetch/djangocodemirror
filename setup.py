@@ -22,6 +22,7 @@ setup(
         'Framework :: Django',
         'Framework :: Django :: 1.6',
         'Framework :: Django :: 1.7',
+        'Framework :: Django :: 1.8',
         'Intended Audience :: Developers',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
@@ -29,7 +30,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     install_requires=[
-        'Django>=1.6,<1.8',
+        'Django>=1.6,<1.9',
     ],
     include_package_data=True,
     zip_safe=False

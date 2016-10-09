@@ -55,8 +55,6 @@ class CodeMirrorManifest(object):
         'modes': [],  # Enabled modes
         'addons': [],  # Addons filepaths to load
         'themes': [],  # Themes filepaths to load
-        'css_bundle_name': None,  # CSS bundle name to fill
-        'js_bundle_name': None,  # Javascript bundle name to fill
     }
 
     _internal_only = ['modes', 'addons', 'themes', 'css_bundle_name',
@@ -92,14 +90,16 @@ class CodeMirrorManifest(object):
         ))
 
         # Add asset bundles name
-        css_template_name = settings.CODEMIRROR_BUNDLE_CSS_NAME
-        parameters['css_bundle_name'] = css_template_name.format(
-            settings_name=name
-        )
-        js_template_name = settings.CODEMIRROR_BUNDLE_JS_NAME
-        parameters['js_bundle_name'] = js_template_name.format(
-            settings_name=name
-        )
+        if 'css_bundle_name' not in parameters:
+            css_template_name = settings.CODEMIRROR_BUNDLE_CSS_NAME
+            parameters['css_bundle_name'] = css_template_name.format(
+                settings_name=name
+            )
+        if 'js_bundle_name' not in parameters:
+            js_template_name = settings.CODEMIRROR_BUNDLE_JS_NAME
+            parameters['js_bundle_name'] = js_template_name.format(
+                settings_name=name
+            )
 
         self.registry[name] = parameters
 
@@ -283,9 +283,12 @@ class CodeMirrorManifest(object):
         """
         configs = self.get_configs(name)
 
-        # Addons first
-        return sorted([v['js_bundle_name'] for k, v in configs.items()
-                       if 'js_bundle_name' in v])
+        names = []
+        for k, v in configs.items():
+            if v.get('js_bundle_name'):
+                names.append(v['js_bundle_name'])
+
+        return sorted(names)
 
     def css(self, name=None):
         """
@@ -333,6 +336,9 @@ class CodeMirrorManifest(object):
         """
         configs = self.get_configs(name)
 
-        # Addons first
-        return sorted([v['css_bundle_name'] for k, v in configs.items()
-                       if 'css_bundle_name' in v])
+        names = []
+        for k, v in configs.items():
+            if v.get('css_bundle_name'):
+                names.append(v['css_bundle_name'])
+
+        return sorted(names)

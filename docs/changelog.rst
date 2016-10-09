@@ -7,6 +7,7 @@ Version 1.0.3 - Unreleased
 --------------------------
 
 * Validated support for Django 1.8 from tox tests;
+* Allow to disable asset bundle on a configuration using None value on bundle names, close #15;
 
 Version 1.0.2 - 2016/10/09
 --------------------------

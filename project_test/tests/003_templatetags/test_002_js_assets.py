@@ -11,7 +11,7 @@ from djangocodemirror.templatetags.djangocodemirror_tags import (
     codemirror_field_js_bundle,
 )
 
-from project.forms import SampleForm, ManyFieldsSampleForm, WrongForm
+from project.forms import SampleForm, ManyFieldsSampleForm, NoBundleForm
 
 
 def test_codemirror_single_field_js_assets():
@@ -52,3 +52,14 @@ def test_codemirror_field_js_bundle():
     name = codemirror_field_js_bundle(f.fields['foo'])
 
     assert name == 'dcm-basic_js'
+
+
+def test_codemirror_field_js_bundle_error():
+    """Test bundle exception from codemirror_field_js_bundle filter for a single
+       field"""
+    f = NoBundleForm()
+
+    f.as_p()
+
+    with pytest.raises(CodeMirrorFieldBundle) as e:
+        name = codemirror_field_js_bundle(f.fields['foo'])

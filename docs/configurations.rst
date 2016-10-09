@@ -20,6 +20,14 @@ modes
     List of mode names (from ``settings.CODEMIRROR_MODES``) to load.
     CodeMirror will assume to use the last loaded mode if you don't explicitely
     enable one using ``mode`` parameter.
+css_bundle_name
+    Bundle name for this configuration CSS assets, it will be used from
+    :ref:`lib-assets-intro`. Automatically filled from configuration name if
+    not defined.
+js_bundle_name
+    Bundle name for this configuration Javascript assets, it will be used from
+    :ref:`lib-assets-intro`. Automatically filled from configuration name if
+    not defined.
 
 For available configuration parameters, see the
 `CodeMirror documentation <http://codemirror.net/doc/manual.html#config>`_.

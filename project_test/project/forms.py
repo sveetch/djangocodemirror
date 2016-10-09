@@ -34,11 +34,11 @@ class ManyFieldsSampleForm(forms.Form):
                           initial='Zouip')
 
 
-class WrongForm(forms.Form):
+class NoBundleForm(forms.Form):
     """
-    Form with a field using an unknow config name
+    Form for a field with a config without bundle
     """
     foo = CodeMirrorField(label="Foo",
                           required=True,
-                          config_name="nope",
+                          config_name="without-bundle",
                           initial='Hello World!')

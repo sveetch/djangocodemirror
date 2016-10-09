@@ -35,6 +35,12 @@ CODEMIRROR_SETTINGS = {
             "CodeMirror/theme/ambiance.css",
         ],
     },
+    'without-bundle': {
+        'modes': ['rst', 'python'],
+        'css_bundle_name': None,
+        'js_bundle_name': None,
+        'themes': ['eclipse', 'elegant'],
+    },
     'with-all': {
         'mode': 'rst',
         'lineWrapping': True,
