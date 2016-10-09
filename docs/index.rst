@@ -8,7 +8,7 @@
 Welcome to Django CodeMirror's documentation!
 =============================================
 
-**Django CodeMirror** is a `Django`_ application to embed `CodeMirror`_.
+This is a `Django`_ application to embed `CodeMirror`_.
 
 It works exclusively from configuration sets to manage CodeMirror options and
 assets. A dedicated field, widget and some template tags are available to make
