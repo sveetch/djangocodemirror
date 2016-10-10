@@ -17,25 +17,8 @@ import copy
 
 from django.conf import settings
 
-
-class NotRegistered(KeyError):
-    pass
-
-
-class UnknowConfig(KeyError):
-    pass
-
-
-class UnknowMode(KeyError):
-    pass
-
-
-class UnknowTheme(KeyError):
-    pass
-
-
-class CodeMirrorFieldBundle(KeyError):
-    pass
+from .exceptions import (NotRegisteredError, UnknowConfigError,
+                         UnknowModeError, UnknowThemeError)
 
 
 class CodeMirrorManifest(object):
@@ -72,17 +55,16 @@ class CodeMirrorManifest(object):
                 ``settings.CODEMIRROR_SETTINGS``.
 
         Raises:
-            UnknowConfig: If given config name does not exist in
+            UnknowConfigError: If given config name does not exist in
                 ``settings.CODEMIRROR_SETTINGS``.
 
         Returns:
             dict: Registred config dict.
         """
         if name not in settings.CODEMIRROR_SETTINGS:
-            raise UnknowConfig(("Given config name '{}' does not exists in "
-                                "'settings.CODEMIRROR_SETTINGS'.").format(
-                                    name
-                                ))
+            msg = ("Given config name '{}' does not exists in "
+                   "'settings.CODEMIRROR_SETTINGS'.")
+            raise UnknowConfigError(msg.format(name))
 
         parameters = copy.deepcopy(self.default_internal_config)
         parameters.update(copy.deepcopy(
@@ -145,8 +127,9 @@ class CodeMirrorManifest(object):
             string: Mode file path.
         """
         if name not in settings.CODEMIRROR_MODES:
-            raise UnknowMode(("Given config name '{}' does not exists in "
-                              "'settings.CODEMIRROR_MODES'.").format(name))
+            msg = ("Given config name '{}' does not exists in "
+                   "'settings.CODEMIRROR_MODES'.")
+            raise UnknowModeError(msg.format(name))
 
         return settings.CODEMIRROR_MODES.get(name)
 
@@ -166,8 +149,9 @@ class CodeMirrorManifest(object):
             string: Theme file path.
         """
         if name not in settings.CODEMIRROR_THEMES:
-            raise UnknowTheme(("Given theme name '{}' does not exists in "
-                               "'settings.CODEMIRROR_THEMES'.").format(name))
+            msg = ("Given theme name '{}' does not exists in "
+                   "'settings.CODEMIRROR_THEMES'.")
+            raise UnknowThemeError(msg.format(name))
 
         return settings.CODEMIRROR_THEMES.get(name)
 
@@ -184,15 +168,16 @@ class CodeMirrorManifest(object):
             name (string): Specific configuration name to return.
 
         Raises:
-            NotRegistered: If given config name does not exist in registry.
+            NotRegisteredError: If given config name does not exist in
+            registry.
 
         Returns:
             dict: Configurations.
         """
         if name:
             if name not in self.registry:
-                raise NotRegistered(("Given config name '{}' "
-                                    "is not registered.").format(name))
+                msg = "Given config name '{}' is not registered."
+                raise NotRegisteredError(msg.format(name))
 
             return {name: self.registry[name]}
         return self.registry
@@ -205,14 +190,15 @@ class CodeMirrorManifest(object):
             name (string): A registred config name.
 
         Raises:
-            NotRegistered: If given config name does not exist in registry.
+            NotRegisteredError: If given config name does not exist in
+            registry.
 
         Returns:
             dict: Configuration.
         """
         if name not in self.registry:
-            raise NotRegistered(("Given config name '{}' "
-                                 "is not registered.").format(name))
+            msg = "Given config name '{}' is not registered."
+            raise NotRegisteredError(msg.format(name))
 
         return copy.deepcopy(self.registry[name])
 

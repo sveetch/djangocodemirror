@@ -3,7 +3,7 @@ Tests against manifest for CodeMirror configurations
 """
 import pytest
 
-from djangocodemirror.manifest import NotRegistered
+from djangocodemirror.exceptions import NotRegisteredError
 
 
 def test_raw_config_empty(manifesto):
@@ -30,7 +30,7 @@ def test_get_config_success(settings, manifesto):
 def test_get_config_error(settings, manifesto):
     """Use get_config on non registered name"""
     manifesto.autoregister()
-    with pytest.raises(NotRegistered):
+    with pytest.raises(NotRegisteredError):
         registred = manifesto.get_config('nope')
 
 
@@ -81,7 +81,7 @@ def test_get_configs_multiple_success(settings, manifesto):
 def test_get_configs_single_error(settings, manifesto):
     """Use get_configs on single non registered name"""
     manifesto.autoregister()
-    with pytest.raises(NotRegistered):
+    with pytest.raises(NotRegisteredError):
         registred = manifesto.get_configs('nope')
 
 

@@ -12,7 +12,8 @@ from django import template
 from django.utils.safestring import mark_safe
 from django.conf import settings
 
-from djangocodemirror.manifest import CodeMirrorFieldBundle, CodeMirrorManifest
+from djangocodemirror.manifest import CodeMirrorManifest
+from djangocodemirror.exceptions import CodeMirrorFieldBundleError
 
 
 register = template.Library()
@@ -197,8 +198,8 @@ def codemirror_field_js_bundle(field):
             :class:`djangocodemirror.widget.CodeMirrorWidget`.
 
     Raises:
-        CodeMirrorFieldBundle: If Codemirror configuration form field does not
-            have a bundle name.
+        CodeMirrorFieldBundleError: If Codemirror configuration form field
+        does not have a bundle name.
 
     Returns:
         string: Bundle name to load with webassets.
@@ -209,9 +210,9 @@ def codemirror_field_js_bundle(field):
     try:
         bundle_name = manifesto.js_bundle_names()[0]
     except IndexError:
-        raise CodeMirrorFieldBundle(("Given field with configuration name "
-                                     "'{}' does not have a Javascript bundle "
-                                     "name").format(field.config_name))
+        msg = ("Given field with configuration name '{}' does not have a "
+               "Javascript bundle name")
+        raise CodeMirrorFieldBundleError(msg.format(field.config_name))
 
     return bundle_name
 
@@ -231,8 +232,8 @@ def codemirror_field_css_bundle(field):
         field (djangocodemirror.fields.CodeMirrorField): A form field.
 
     Raises:
-        CodeMirrorFieldBundle: Raised if Codemirror configuration from field
-        does not have a bundle name.
+        CodeMirrorFieldBundleError: Raised if Codemirror configuration from
+        field does not have a bundle name.
 
     Returns:
         string: Bundle name to load with webassets.
@@ -243,9 +244,9 @@ def codemirror_field_css_bundle(field):
     try:
         bundle_name = manifesto.css_bundle_names()[0]
     except IndexError:
-        raise CodeMirrorFieldBundle(("Given field with configuration name "
-                                     "'{}' does not have a CSS bundle "
-                                     "name").format(field.config_name))
+        msg = ("Given field with configuration name '{}' does not have a "
+               "Javascript bundle name")
+        raise CodeMirrorFieldBundleError(msg.format(field.config_name))
 
     return bundle_name
 

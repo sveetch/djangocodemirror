@@ -3,16 +3,24 @@
 Changelog
 =========
 
+Version 1.0.4 - 2016/10/11
+--------------------------
+
+* Better explicit name for internal exceptions, close #16;
+
+
 Version 1.0.3 - 2016/10/10
 --------------------------
 
 * Validated support for Django 1.8 from tox tests;
 * Allow to disable asset bundle on a configuration using None value on bundle names, close #15;
 
+
 Version 1.0.2 - 2016/10/09
 --------------------------
 
 * A dummy bump because previous version lacked of bumping to 1.0.1;
+
 
 Version 1.0.1 - 2016/10/09
 --------------------------
@@ -36,6 +44,7 @@ This is a major refactoring to adopt Test Driven Development, cleaner behaviors 
 * Removed deprecated templates;
 * Replaced old Codemirror git submodule with a static copy from ``5.18.2`` version, close #9;
 * Dropped ``mode`` as an internal parameter since CodeMirror can use it in many different ways (as a string for a name, as a string for a mime-type, as a dict of mode options);
+
 
 Version 0.9.8 - 2016/08/24
 --------------------------

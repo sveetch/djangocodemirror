@@ -4,7 +4,7 @@ Tests against template tags for CSS assets
 import json
 import pytest
 
-from djangocodemirror.manifest import CodeMirrorFieldBundle
+from djangocodemirror.exceptions import CodeMirrorFieldBundleError
 from djangocodemirror.widgets import CodeMirrorWidget
 from djangocodemirror.templatetags.djangocodemirror_tags import (
     codemirror_field_css_assets,
@@ -61,5 +61,5 @@ def test_codemirror_field_css_bundle_error():
 
     f.as_p()
 
-    with pytest.raises(CodeMirrorFieldBundle) as e:
+    with pytest.raises(CodeMirrorFieldBundleError) as e:
         name = codemirror_field_css_bundle(f.fields['foo'])

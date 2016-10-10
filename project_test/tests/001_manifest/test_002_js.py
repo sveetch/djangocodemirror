@@ -5,7 +5,7 @@ import pytest
 
 from django.conf import settings as legacy_settings
 
-from djangocodemirror.manifest import UnknowMode
+from djangocodemirror.exceptions import UnknowModeError
 
 
 # Since we dont have names for addons, name it here to avoid retyping them for
@@ -34,7 +34,7 @@ def test_resolve_mode_success(settings, manifesto):
 
 def test_resolve_mode_error(settings, manifesto):
     """Try to resolve a mode name that does not exist"""
-    with pytest.raises(UnknowMode):
+    with pytest.raises(UnknowModeError):
         manifesto.resolve_mode('mode-nope')
 
 

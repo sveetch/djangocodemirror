@@ -5,7 +5,7 @@ import pytest
 
 from django.conf import settings
 
-from djangocodemirror.manifest import UnknowConfig
+from djangocodemirror.exceptions import UnknowConfigError
 
 
 def test_registry_empty(settings, manifesto):
@@ -87,5 +87,5 @@ def test_autoregister(manifesto):
 
 def test_register_nonexistent(settings, manifesto):
     """Try to register a config name that does not exist"""
-    with pytest.raises(UnknowConfig):
+    with pytest.raises(UnknowConfigError):
         registred = manifesto.register('nope')

@@ -5,7 +5,7 @@ import pytest
 
 from django.conf import settings
 
-from djangocodemirror.manifest import UnknowTheme
+from djangocodemirror.exceptions import UnknowThemeError
 
 
 def test_css_empty_registry(settings, manifesto):
@@ -30,7 +30,7 @@ def test_resolve_theme_success(settings, manifesto):
 
 def test_resolve_theme_error(settings, manifesto):
     """Try to resolve a theme name that does not exist"""
-    with pytest.raises(UnknowTheme):
+    with pytest.raises(UnknowThemeError):
         manifesto.resolve_theme('theme-nope')
 
 
