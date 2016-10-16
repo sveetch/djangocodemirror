@@ -31,11 +31,17 @@ class SimpleFunctionDocumenter(autodoc.FunctionDocumenter):
     Simple function documenter to be able to extract object docstring without
     signature.
 
+    It has the lowest priority compared to original ``FunctionDocumenter`` so
+    "simplefunction" should be only used manually and not overriding
+    original "autofunction" (used from ``automodule``).
+
     Stealed from:
 
         http://stackoverflow.com/a/7832437/4884485
     """
     objtype = "simplefunction"
+
+    priority = -10
 
     # do not indent the content
     content_indent = ""

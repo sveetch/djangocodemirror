@@ -29,5 +29,8 @@ Install
 
 #. Optionally install `django-assets`_ to use asset bundles;
 
-#. You may eventually add some CodeMirror configurations in ``settings.CODEMIRROR_SETTINGS``, see **TODO** for more details.
+Finally you may want to change available CodeMirror configurations from ``settings.CODEMIRROR_SETTINGS``:
+
+* If you need to add your own new configuration see :ref:`configurations-intro`;
+* If you just need to  add/change some parameters from configurations see :ref:`helper-intro`.
 

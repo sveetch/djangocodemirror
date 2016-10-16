@@ -164,7 +164,7 @@ class CodeMirrorManifest(object):
         * If ``name`` argument is given, just return its config and nothing
           else;
 
-        Arguments:
+        Keyword Arguments:
             name (string): Specific configuration name to return.
 
         Raises:
@@ -228,7 +228,7 @@ class CodeMirrorManifest(object):
         Returns all needed Javascript filepaths for given config name (if
         given) or every registred config instead (if no name is given).
 
-        Arguments:
+        Keyword Arguments:
             name (string): Specific config name to use instead of all.
 
         Returns:
@@ -261,7 +261,7 @@ class CodeMirrorManifest(object):
         Returns all needed Javascript Bundle names for given config name (if
         given) or every registred config instead (if no name is given).
 
-        Arguments:
+        Keyword Arguments:
             name (string): Specific config name to use instead of all.
 
         Returns:
@@ -281,7 +281,7 @@ class CodeMirrorManifest(object):
         Returns all needed CSS filepaths for given config name (if
         given) or every registred config instead (if no name is given).
 
-        Arguments:
+        Keyword Arguments:
             name (string): Specific config name to use instead of all.
 
         Returns:
@@ -314,7 +314,7 @@ class CodeMirrorManifest(object):
         Returns all needed CSS Bundle names for given config name (if
         given) or every registred config instead (if no name is given).
 
-        Arguments:
+        Keyword Arguments:
             name (string): Specific config name to use instead of all.
 
         Returns:

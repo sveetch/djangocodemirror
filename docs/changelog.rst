@@ -3,6 +3,12 @@
 Changelog
 =========
 
+Version 1.0.5 - Unreleased
+--------------------------
+
+* Added helper to change parameters on many configs, close #14;
+
+
 Version 1.0.4 - 2016/10/11
 --------------------------
 

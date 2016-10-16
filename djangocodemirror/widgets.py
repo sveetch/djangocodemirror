@@ -97,6 +97,8 @@ class CodeMirrorWidget(forms.Textarea):
         Arguments:
             name (string): Field input name.
             value (string): Field input value.
+
+        Keyword Arguments:
             attrs (dict): Optional field widget attributes. Default to
                 ``None``.
 

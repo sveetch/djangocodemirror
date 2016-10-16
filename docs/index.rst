@@ -14,7 +14,7 @@ It works exclusively from configuration sets to manage CodeMirror options and
 assets. A dedicated field, widget and some template tags are available to make
 CodeMirror instances using these configurations on any element.
 
-Since configurations are aware of every assets to load this enable to
+Since configurations are aware of every assets to load this enable you to
 use CodeMirror without a Javascript module loader (like ``Browserify`` or
 ``RequireJS``).
 
@@ -46,6 +46,7 @@ User’s Guide
    examples.rst
    settings.rst
    configurations.rst
+   library_references/helper.rst
    library_references/templatetags.rst
    library_references/widgets.rst
    library_references/fields.rst
