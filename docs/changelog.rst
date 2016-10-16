@@ -3,7 +3,7 @@
 Changelog
 =========
 
-Version 1.0.5 - Unreleased
+Version 1.0.5 - 2016/10/16
 --------------------------
 
 * Added helper to change parameters on many configs, close #14;
