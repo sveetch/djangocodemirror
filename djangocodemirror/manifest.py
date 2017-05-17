@@ -217,11 +217,7 @@ class CodeMirrorManifest(object):
         """
         config = self.get_config(name)
 
-        for k, v in config.items():
-            if k in self._internal_only:
-                del config[k]
-
-        return config
+        return {k: config[k] for k in config if k not in self._internal_only}
 
     def js(self, name=None):
         """
