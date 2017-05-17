@@ -19,7 +19,7 @@ from django.conf.urls import include, url
 
 from django.views.generic.base import TemplateView
 
-from views import BasicSampleFormView, ModesSampleFormView
+from .views import BasicSampleFormView, ModesSampleFormView
 
 urlpatterns = [
     #url(r'^admin/', include(admin.site.urls)),

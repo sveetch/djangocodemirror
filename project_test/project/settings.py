@@ -142,4 +142,4 @@ TEMPLATES[0]['DIRS'] = (os.path.join(PROJECT_PATH, "templates"),)
 #
 from djangocodemirror.settings import *
 
-from djangocodemirror_app_settings import *
+from .djangocodemirror_app_settings import *
