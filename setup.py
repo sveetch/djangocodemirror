@@ -22,19 +22,18 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Framework :: Django',
-        'Framework :: Django :: 1.6',
-        'Framework :: Django :: 1.7',
         'Framework :: Django :: 1.8',
         'Framework :: Django :: 1.9',
         'Framework :: Django :: 1.10',
-        'Framework :: Django :: 1.11',
         'Intended Audience :: Developers',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Text Editors :: Text Processing',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    install_requires=['Django>=1.8'],
+    install_requires=[
+        'Django>=1.8,<1.11',
+    ],
     include_package_data=True,
     zip_safe=False
 )

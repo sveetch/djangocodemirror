@@ -33,7 +33,7 @@ Links
 Dependancies
 ************
 
-* `Django`_ >= 1.6, < 1.9;
+* `Django`_>= 1.8, < 1.11;
 * Optionally `django-assets`_ == 0.8;
 
 User’s Guide

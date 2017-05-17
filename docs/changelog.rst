@@ -3,12 +3,12 @@
 Changelog
 =========
 
-Version 1.1.0 - 2017/05/17
+Version 1.1.0 - 2017/05/18
 --------------------------
 
-* Added support for Django 1.10 and 1.11, close #18;
+* Added support from Django 1.9 to 1.10, close #18;
 * Added support for Python 3.5, close #19;
-* Drop support for Django 1.6 and 1.7;
+* Dropped support for Django 1.6 and 1.7;
 
 
 Version 1.0.5 - 2016/10/16
