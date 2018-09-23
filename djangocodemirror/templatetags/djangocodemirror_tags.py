@@ -162,7 +162,7 @@ def codemirror_field_js_assets(*args):
     manifesto = CodemirrorAssetTagRender()
     manifesto.register_from_fields(*args)
 
-    return manifesto.js_html()
+    return mark_safe(manifesto.js_html())
 
 
 @register.simple_tag
@@ -179,7 +179,7 @@ def codemirror_field_css_assets(*args):
     manifesto = CodemirrorAssetTagRender()
     manifesto.register_from_fields(*args)
 
-    return manifesto.css_html()
+    return mark_safe(manifesto.css_html())
 
 
 @register.filter
@@ -251,7 +251,7 @@ def codemirror_field_css_bundle(field):
     return bundle_name
 
 
-@register.filter
+@register.filter(is_safe=True)
 def codemirror_parameters(field):
     """
     Filter to include CodeMirror parameters as a JSON string for a single
@@ -279,8 +279,6 @@ def codemirror_parameters(field):
     config = manifesto.get_codemirror_parameters(names[0])
 
     return mark_safe(json.dumps(config))
-
-codemirror_parameters.is_safe = True
 
 
 @register.simple_tag
