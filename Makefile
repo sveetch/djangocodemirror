@@ -1,62 +1,84 @@
-FOUNDATION_VERSION=5.5.3
-
-.PHONY: help clean delpyc tests flake quality
+PYTHON_INTERPRETER=python3
+VENV_PATH=.venv
+PIP=$(VENV_PATH)/bin/pip
+DJANGO_MANAGE=$(VENV_PATH)/bin/python sandbox/manage.py
+FLAKE=$(VENV_PATH)/bin/flake8
+PYTEST=$(VENV_PATH)/bin/pytest
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo
-	@echo "  delpyc              -- to remove all *.pyc files, this is recursive from the current directory"
-	@echo "  clean               -- to clean local repository from all stuff created during development"
-	@echo
-	@echo "  flake               -- to launch Flake8 checking on boussole code (not the tests)"
-	@echo "  tests               -- to launch tests using py.test"
-	@echo "  quality             -- to launch Flake8 checking and tests with py.test"
-	@echo "  release             -- to release new package on Pypi (WARNING)"
-	@echo
-	@echo "  server              -- to launch a Django instance on 0.0.0.0:8001"
+	@echo "  install             -- to install this project with virtualenv and Pip"
+	@echo ""
+	@echo "  clean               -- to clean EVERYTHING"
+	@echo "  clean-data          -- to clean data (uploaded medias, database, etc..)"
+	@echo "  clean-install       -- to clean installation"
+	@echo "  clean-pycache       -- to remove all __pycache__, this is recursive from current directory"
+	@echo ""
+	@echo "  migrate             -- to apply demo database migrations"
+	@echo "  run                 -- to run Django development server"
+	@echo "  shell               -- to run Django shell"
+	@echo "  superuser           -- to create a superuser for Django admin"
+	@echo ""
+	@echo "  flake               -- to launch Flake8 checking"
+	@echo "  tests               -- to launch tests using Pytest"
+	@echo "  quality             -- to launch Flake8 checking and Pytest"
 	@echo
 
-delpyc:
-	find . -name "*\.pyc"|xargs rm -f
+clean-pycache:
+	find . -type d -name "__pycache__"|xargs rm -Rf
+.PHONY: clean-pycache
 
-clean: delpyc
-	rm -Rf dist .tox djangocodemirror.egg-info .cache project_test/.cache/ project_test/tests/__pycache__/
+clean-install:
+	rm -Rf $(VENV_PATH)
+	rm -Rf .tox
+	rm -Rf djangocodemirror.egg-info
+.PHONY: clean-install
+
+clean-data:
+	rm -Rf data
+.PHONY: clean-data
+
+clean: clean-install clean-pycache clean-data
+.PHONY: clean
+
+venv:
+	virtualenv -p $(PYTHON_INTERPRETER) $(VENV_PATH)
+	# This is required for those ones using ubuntu<16.04
+	$(PIP) install --upgrade pip
+	$(PIP) install --upgrade setuptools
+.PHONY: venv
+
+migrate:
+	mkdir -p data/db
+	$(DJANGO_MANAGE) migrate
+.PHONY: migrate
+
+shell:
+	$(DJANGO_MANAGE) shell
+.PHONY: shell
+
+superuser:
+	$(DJANGO_MANAGE) createsuperuser
+.PHONY: superuser
+
+install: venv
+	mkdir -p data
+	$(PIP) install -e .[dev]
+	${MAKE} migrate
+.PHONY: install
+
+run:
+	$(DJANGO_MANAGE) runserver 0.0.0.0:8001
+.PHONY: run
 
 flake:
-	flake8 --show-source djangocodemirror
+	$(FLAKE) --show-source djangocodemirror
+.PHONY: flake
 
 tests:
-	py.test -vv --exitfirst project_test/
+	$(PYTEST) -vv --exitfirst tests/
+.PHONY: tests
 
 quality: tests flake
-
-server:
-	cd project_test && ./manage.py runserver 0.0.0.0:8001 --settings=project.settings_demo
-
-release:
-	python setup.py sdist
-	python setup.py sdist upload
-
-install-foundation:
-	rm -Rf foundation5
-	foundation new foundation5 --version=$(FOUNDATION_VERSION)
-	@echo "Foundation v$(FOUNDATION_VERSION) sources has been installed, now you should synchronize assets using 'syncf5' action"
-
-syncf5:
-	@echo "* Updating jQuery sources"
-	cp foundation5/bower_components/jquery/dist/jquery.js foundation5/bower_components/foundation/js/vendor/jquery.js
-	@echo "* Updating Foundation static files"
-	rm -Rf project_test/project/static/js/foundation5
-	cp -r foundation5/bower_components/foundation/js project_test/project/static/js/foundation5
-	@echo "* Cleaning vendor libs"
-	rm -Rf project_test/project/static/js/foundation5/vendor
-	mkdir -p project_test/project/static/js/foundation5/vendor
-	@echo "* Getting the real sources for updated vendor libs"
-	cp foundation5/bower_components/fastclick/lib/fastclick.js project_test/project/static/js/foundation5/vendor/
-	cp foundation5/bower_components/foundation/js/vendor/jquery.js project_test/project/static/js/foundation5/vendor/
-	cp foundation5/bower_components/jquery-placeholder/jquery.placeholder.js project_test/project/static/js/foundation5/vendor/
-	cp foundation5/bower_components/jquery.cookie/jquery.cookie.js project_test/project/static/js/foundation5/vendor/
-	cp foundation5/bower_components/modernizr/modernizr.js project_test/project/static/js/foundation5/vendor/
-	@echo "* Updating Foundation SASS sources"
-	rm -Rf sass/foundation5
-	cp -r foundation5/bower_components/foundation/scss sass/foundation5
+.PHONY: quality

@@ -9,7 +9,6 @@ import json
 from django import forms
 
 from django.conf import settings
-from django.utils.safestring import mark_safe
 
 from djangocodemirror.manifest import CodeMirrorManifest
 
@@ -28,12 +27,14 @@ class CodeMirrorWidget(forms.Textarea):
 
     Attributes:
         config_name (string): For given config name.
+        template_name (string): Template path for widget rendering.
     """
     codemirror_field_js = settings.CODEMIRROR_FIELD_INIT_JS
+    template_name = "djangocodemirror/widget.html"
 
     def __init__(self, *args, **kwargs):
-        self.config_name = kwargs.pop('config_name', 'empty')
-        self.embed_config = kwargs.pop('embed_config', False)
+        self.config_name = kwargs.pop("config_name", "empty")
+        self.embed_config = kwargs.pop("embed_config", False)
 
         super(CodeMirrorWidget, self).__init__(*args, **kwargs)
 
@@ -71,18 +72,16 @@ class CodeMirrorWidget(forms.Textarea):
         """
         return self.editor_manifest.get_codemirror_parameters(self.config_name)
 
-    def codemirror_script(self, final_attrs):
+    def codemirror_script(self, inputid):
         """
         Build CodeMirror HTML script tag which contains CodeMirror init.
 
         Arguments:
-            final_attrs (dict): Widget attributes that must contains the ``id``
-                attribute.
+            inputid (string): Input id.
 
         Returns:
             string: HTML for field CodeMirror instance.
         """
-        inputid = final_attrs['id']
         varname = "{}_codemirror".format(inputid)
         html = self.get_codemirror_field_js()
         opts = self.codemirror_config()
@@ -90,40 +89,36 @@ class CodeMirrorWidget(forms.Textarea):
         return html.format(varname=varname, inputid=inputid,
                            settings=json.dumps(opts, sort_keys=True))
 
-    def render(self, name, value, attrs=None):
+    def get_context(self, name, value, attrs):
+        context = super(CodeMirrorWidget, self).get_context(name, value, attrs)
+
+        # Widget allways need an id to be able to set CodeMirror Javascript
+        # config
+        if 'id' not in context['widget']['attrs']:
+            context['widget']['attrs']['id'] = 'id_{}'.format(name)
+
+        # Append HTML for CodeMirror Javascript config just below the textarea
+        if self.embed_config:
+            context['widget'].update({
+                'script': self.codemirror_script(context['widget']['attrs']['id']),  # noqa: E501
+            })
+
+        return context
+
+    def render(self, name, value, attrs=None, renderer=None):
         """
-        Render widget HTML
-
-        Arguments:
-            name (string): Field input name.
-            value (string): Field input value.
-
-        Keyword Arguments:
-            attrs (dict): Optional field widget attributes. Default to
-                ``None``.
-
-        Returns:
-            string: Widget HTML representation.
+        Returns this Widget rendered as HTML, as a Unicode string.
         """
         if not hasattr(self, "editor_manifest"):
             self.editor_manifest = self.init_manifest(self.config_name)
 
         config = self.editor_manifest.get_config(self.config_name)
+        if config.get('embed_config'):
+            self.embed_config = True
 
-        final_attrs = self.build_attrs(attrs, name=name)
+        context = self.get_context(name, value, attrs)
 
-        # Widget allways need an id to be able to set CodeMirror Javascript
-        # config
-        if 'id' not in final_attrs:
-            final_attrs['id'] = 'id_{}'.format(name)
-
-        html = [super(CodeMirrorWidget, self).render(name, value, attrs)]
-
-        # Append HTML for CodeMirror Javascript config just below the textarea
-        if self.embed_config or config.get('embed_config'):
-            html.append(self.codemirror_script(final_attrs))
-
-        return mark_safe(u'\n'.join(html))
+        return self._render(self.template_name, context, renderer)
 
     @property
     def media(self):

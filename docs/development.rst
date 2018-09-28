@@ -27,15 +27,15 @@ Every requirement is available in file ``dev_requirements.txt`` (except for tox)
 Install for development
 ***********************
 
-First ensure you have `pip`_ and `virtualenv`_ installed, then in your console terminal type this: ::
+First ensure you have Python3.5, `pip`_ and `virtualenv`_ installed, then in your console terminal type this: ::
 
     mkdir djangocodemirror-dev
     cd djangocodemirror-dev
-    virtualenv .
-    source bin/activate
-    pip install -r https://raw.githubusercontent.com/sveetch/djangocodemirror/master/requirements/dev.txt
+    make install
 
 djangocodemirror will be installed in editable mode from the last commit on master branch.
+
+You will need an additional Python2.7 to be able to launch tests with every `tox`_ environments.
 
 Unittests
 ---------

@@ -3,6 +3,19 @@
 Changelog
 =========
 
+Version 2.0.0 - 2018/09/28
+--------------------------
+
+**Add support for Django 1.11, 2.0, 2.1 and CodeMirror 5.40.2**
+
+* Rewrite package to use ``setup.cfg``;
+* Add support for Django 1.11, Django 2.0 and Django 2.1, close #22;
+* Drop support for Django 1.8 and 1.9;
+* Django 1.11 support is the last one for Python2;
+* Change old demo project to more cleaner sandbox;
+* Change widget to use new Django widget API;
+* Upgraded included copy of CodeMirror to 5.40.2;
+
 Version 1.1.0 - 2017/05/18
 --------------------------
 
