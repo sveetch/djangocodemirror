@@ -7,8 +7,8 @@ Form field widget
 import json
 
 from django import forms
-
 from django.conf import settings
+from django.utils.text import slugify
 
 from djangocodemirror.manifest import CodeMirrorManifest
 
@@ -82,7 +82,7 @@ class CodeMirrorWidget(forms.Textarea):
         Returns:
             string: HTML for field CodeMirror instance.
         """
-        varname = "{}_codemirror".format(inputid)
+        varname = slugify("{}_codemirror".format(inputid)).replace("-", "_")
         html = self.get_codemirror_field_js()
         opts = self.codemirror_config()
 

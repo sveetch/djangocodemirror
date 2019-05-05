@@ -10,6 +10,7 @@ import os
 
 from django import template
 from django.utils.safestring import mark_safe
+from django.utils.text import slugify
 from django.conf import settings
 
 from djangocodemirror.manifest import CodeMirrorManifest
@@ -142,7 +143,7 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         parameters = json.dumps(self.get_codemirror_parameters(config_name),
                                 sort_keys=True)
         return settings.CODEMIRROR_FIELD_INIT_JS.format(
-            varname=varname,
+            varname=slugify(varname).replace("-", "_"),
             inputid=element_id,
             settings=parameters,
         )

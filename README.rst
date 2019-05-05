@@ -15,10 +15,6 @@ Since configurations are aware of every assets to load this enable you to
 use CodeMirror without a Javascript module loader (like ``Browserify`` or
 ``RequireJS``).
 
-.. Note::
-    Version 1.0.0 is a major refactoring, API has changed and editor
-    enhancement stuff has been dropped.
-
 Links
 *****
 

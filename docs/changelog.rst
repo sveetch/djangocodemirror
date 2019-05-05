@@ -3,6 +3,21 @@
 Changelog
 =========
 
+Version 2.1.0 - 2019/05/05
+--------------------------
+
+Enforce ``varname`` formatting for ``CODEMIRROR_FIELD_INIT_JS`` setting so it
+should always be a valid Javascript variable name.
+
+Concretely ``varname`` is slugified and dashes are replaced by underscores so
+a given varname like ``foo codemérror-0`` is turned to ``foo_codemerror_0``.
+
+This should be a safe change and resolve issues with usages inside a formset.
+Thanks to @abumalick for report.
+
+Also added support with Django 2.2 and removed notices about major changes
+from 2.0.0 version.
+
 Version 2.0.0 - 2018/09/28
 --------------------------
 
