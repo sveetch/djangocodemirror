@@ -1,0 +1,18 @@
+{% extends "skeleton.html" %}
+{% load djangocodemirror_tags %}
+
+{% block head_title %}Usage on a HTML element{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h1>Usage on a HTML element</h1>
+
+            <form>
+                <textarea id="code" name="code">Lorem ipsum dolor sit amet.</textarea>
+            </form>
+        </div>
+    </div>
+
+    {% codemirror_instance 'restructuredtext' 'code_codemirror' 'code' %}
+{% endblock content %}

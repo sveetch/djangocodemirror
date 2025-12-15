@@ -1,0 +1,4 @@
+# NOTE: Stylelint is currently disabled for styleguide manifest since there is some
+# involved tricks to produce valid JSON.
+scss/tools/_styleguide_helpers.scss
+scss/styleguide/manifest.scss

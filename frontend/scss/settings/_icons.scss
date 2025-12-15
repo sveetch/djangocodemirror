@@ -1,0 +1,13 @@
+///
+/// Icon ang glyphs setting variables
+///
+/// This default settings implement Bootstrap Icons
+///
+
+// Define the right relative path to the icon font
+$bootstrap-icons-font-dir: "../fonts/icons";
+
+// Temporary workaround for a bug with node-sass and quoted strings
+// See: https://github.com/twbs/icons/issues/1378
+$bootstrap-icons-font: "bootstrap-icons";
+$bootstrap-icons-font-file: "#{$bootstrap-icons-font-dir}/#{$bootstrap-icons-font}";

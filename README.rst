@@ -1,34 +1,23 @@
-.. _CodeMirror: http://codemirror.net/
+.. _Python: https://www.python.org/
 .. _Django: https://www.djangoproject.com/
-.. _django-assets: http://pypi.python.org/pypi/django-assets
 
+=================
 Django CodeMirror
 =================
 
-This is a `Django`_ application to embed `CodeMirror`_.
+A Django application to embed CodeMirror
 
-It works exclusively from configuration sets to manage CodeMirror options and
-assets. A dedicated field, widget and some template tags are available to make
-CodeMirror instances using these configurations on any element.
 
-Since configurations are aware of every assets to load this enable you to
-use CodeMirror without a Javascript module loader (like ``Browserify`` or
-``RequireJS``).
+Dependencies
+************
+
+* `Python`_>=3.10;
+* `Django`_>=4.2;
+
 
 Links
 *****
 
-* Read the documentation on `Read the docs <http://djangocodemirror.readthedocs.io/>`_;
+* Read the documentation on `Read the docs <https://djangocodemirror.readthedocs.io/>`_;
 * Download its `PyPi package <https://pypi.python.org/pypi/djangocodemirror>`_;
 * Clone it on its `Github repository <https://github.com/sveetch/djangocodemirror>`_;
-
-Dependancies
-************
-
-* `Django`_ >= 1.10;
-* Optionally `django-assets`_;
-
-Credits
-*******
-
-CodeMirror is a software from Marijn Haverbeke <marijnh@gmail.com> under MIT license.

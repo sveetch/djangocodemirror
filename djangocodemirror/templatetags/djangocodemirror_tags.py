@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Template tags
-=============
-
-"""
 import io
 import json
 import os
@@ -13,8 +7,8 @@ from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from django.conf import settings
 
-from djangocodemirror.manifest import CodeMirrorManifest
-from djangocodemirror.exceptions import CodeMirrorFieldBundleError
+from ..manifest import CodeMirrorManifest
+from ..exceptions import CodeMirrorFieldBundleError
 
 
 register = template.Library()

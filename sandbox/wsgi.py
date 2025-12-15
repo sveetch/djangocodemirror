@@ -1,5 +1,5 @@
 """
-WSGI config for DjangoPalette project.
+WSGI config for Sandbox.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 """

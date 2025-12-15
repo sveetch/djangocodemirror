@@ -1,0 +1,16 @@
+{% extends "skeleton.html" %}
+
+{% block content %}
+    <h1>Hello world!</h1>
+
+    <div class="row">
+        <div class="col">
+
+            <ul>
+                <li><a href="{% url 'demo:raw' %}">Usage on a HTML element</a></li>
+                <li><a href="{% url 'demo:form' %}">Basic form usage</a></li>
+                <li><a href="{% url 'demo:mode-index' %}">Testing modes configurations</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

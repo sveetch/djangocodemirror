@@ -1,16 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Form field widget
-=================
-
-"""
 import json
 
 from django import forms
 from django.conf import settings
 from django.utils.text import slugify
 
-from djangocodemirror.manifest import CodeMirrorManifest
+from .manifest import CodeMirrorManifest
 
 
 class CodeMirrorWidget(forms.Textarea):
@@ -94,13 +88,13 @@ class CodeMirrorWidget(forms.Textarea):
 
         # Widget allways need an id to be able to set CodeMirror Javascript
         # config
-        if 'id' not in context['widget']['attrs']:
-            context['widget']['attrs']['id'] = 'id_{}'.format(name)
+        if "id" not in context["widget"]["attrs"]:
+            context["widget"]["attrs"]["id"] = "id_{}".format(name)
 
         # Append HTML for CodeMirror Javascript config just below the textarea
         if self.embed_config:
-            context['widget'].update({
-                'script': self.codemirror_script(context['widget']['attrs']['id']),  # noqa: E501
+            context["widget"].update({
+                "script": self.codemirror_script(context["widget"]["attrs"]["id"]),
             })
 
         return context
@@ -113,7 +107,7 @@ class CodeMirrorWidget(forms.Textarea):
             self.editor_manifest = self.init_manifest(self.config_name)
 
         config = self.editor_manifest.get_config(self.config_name)
-        if config.get('embed_config'):
+        if config.get("embed_config"):
             self.embed_config = True
 
         context = self.get_context(name, value, attrs)
@@ -145,5 +139,5 @@ class CodeMirrorAdminWidget(CodeMirrorWidget):
     Act like CodeMirrorWidget but allways embed Codemirror Javascript config.
     """
     def __init__(self, *args, **kwargs):
-        kwargs['embed_config'] = True
+        kwargs["embed_config"] = True
         super(CodeMirrorAdminWidget, self).__init__(*args, **kwargs)

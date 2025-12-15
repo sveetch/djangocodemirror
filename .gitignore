@@ -1,25 +1,22 @@
 # virtualenv
 .venv
-venv
 
 # Packaging
 build
 dist
 *.egg-info
 
-# sqlite DB
-db.sqlite3
-*.db
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 
-# Site media
-/data/
+# Site media and built statics
+/var/
+/sandbox/static-sources/
+/frontend/package-lock.json
 
 # Settings
-local.py
+localsettings.py
 
 # Unit test / coverage reports
 htmlcov/
@@ -28,6 +25,13 @@ htmlcov/
 .pytest_cache
 nosetests.xml
 coverage.xml
+.tox
+
+# VS Code
+.vscode
+
+# Mac Os
+.DS_Store
 
 # Temp files
 *~
@@ -36,17 +40,5 @@ coverage.xml
 # Swap files
 *.sw[po]
 
-# JS dependencies
-node_modules
-
-# SASS
-.sass-cache
-
-# logs
-yarn-error.log
-
-# Exported strings & generated translation templates
-*.pot
-
-# Tests
-.tox
+# Logging files
+*.log

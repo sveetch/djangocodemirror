@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 CodeMirror manifest
 ===================
@@ -35,13 +34,13 @@ class CodeMirrorManifest(object):
             exluded from CodeMirror parameters.
     """
     default_internal_config = {
-        'modes': [],  # Enabled modes
-        'addons': [],  # Addons filepaths to load
-        'themes': [],  # Themes filepaths to load
+        "modes": [],  # Enabled modes
+        "addons": [],  # Addons filepaths to load
+        "themes": [],  # Themes filepaths to load
     }
 
-    _internal_only = ['modes', 'addons', 'themes', 'css_bundle_name',
-                      'js_bundle_name', 'extra_css']
+    _internal_only = ["modes", "addons", "themes", "css_bundle_name",
+                      "js_bundle_name", "extra_css"]
 
     def __init__(self):
         self.registry = {}
@@ -72,14 +71,14 @@ class CodeMirrorManifest(object):
         ))
 
         # Add asset bundles name
-        if 'css_bundle_name' not in parameters:
+        if "css_bundle_name" not in parameters:
             css_template_name = settings.CODEMIRROR_BUNDLE_CSS_NAME
-            parameters['css_bundle_name'] = css_template_name.format(
+            parameters["css_bundle_name"] = css_template_name.format(
                 settings_name=name
             )
-        if 'js_bundle_name' not in parameters:
+        if "js_bundle_name" not in parameters:
             js_template_name = settings.CODEMIRROR_BUNDLE_JS_NAME
-            parameters['js_bundle_name'] = js_template_name.format(
+            parameters["js_bundle_name"] = js_template_name.format(
                 settings_name=name
             )
 
@@ -238,14 +237,14 @@ class CodeMirrorManifest(object):
         # Addons first
         for name in names:
             opts = configs[name]
-            for item in opts.get('addons', []):
+            for item in opts.get("addons", []):
                 if item not in filepaths:
                     filepaths.append(item)
 
         # Process modes
         for name in names:
             opts = configs[name]
-            for item in opts['modes']:
+            for item in opts["modes"]:
                 resolved = self.resolve_mode(item)
                 if resolved not in filepaths:
                     filepaths.append(resolved)
@@ -267,8 +266,8 @@ class CodeMirrorManifest(object):
 
         names = []
         for k, v in configs.items():
-            if v.get('js_bundle_name'):
-                names.append(v['js_bundle_name'])
+            if v.get("js_bundle_name"):
+                names.append(v["js_bundle_name"])
 
         return sorted(names)
 
@@ -291,7 +290,7 @@ class CodeMirrorManifest(object):
         # Process themes
         for name in names:
             opts = configs[name]
-            for item in opts.get('themes', []):
+            for item in opts.get("themes", []):
                 resolved = self.resolve_theme(item)
                 if resolved not in filepaths:
                     filepaths.append(resolved)
@@ -299,7 +298,7 @@ class CodeMirrorManifest(object):
         # Then process extra CSS files
         for name in names:
             opts = configs[name]
-            for item in opts.get('extra_css', []):
+            for item in opts.get("extra_css", []):
                 if item not in filepaths:
                     filepaths.append(item)
 
@@ -320,7 +319,7 @@ class CodeMirrorManifest(object):
 
         names = []
         for k, v in configs.items():
-            if v.get('css_bundle_name'):
-                names.append(v['css_bundle_name'])
+            if v.get("css_bundle_name"):
+                names.append(v["css_bundle_name"])
 
         return sorted(names)

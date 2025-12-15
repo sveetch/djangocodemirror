@@ -13,7 +13,7 @@ class SampleForm(forms.Form):
     foo = CodeMirrorField(label="Foo",
                           required=True,
                           config_name="basic",
-                          initial='Hello World!')
+                          initial="Hello World!")
 
 
 class ManyFieldsSampleForm(forms.Form):
@@ -23,15 +23,15 @@ class ManyFieldsSampleForm(forms.Form):
     foo = CodeMirrorField(label="Foo",
                           required=True,
                           config_name="basic",
-                          initial='Hello World!')
+                          initial="Hello World!")
     pika = CodeMirrorField(label="Pika",
                           required=True,
                           config_name="basic",
-                          initial='Catch them all')
+                          initial="Catch them all")
     ping = CodeMirrorField(label="Ping",
                           required=True,
                           config_name="with-all",
-                          initial='Zouip')
+                          initial="Zouip")
 
 
 class NoBundleForm(forms.Form):
@@ -41,4 +41,4 @@ class NoBundleForm(forms.Form):
     foo = CodeMirrorField(label="Foo",
                           required=True,
                           config_name="without-bundle",
-                          initial='Hello World!')
+                          initial="Hello World!")

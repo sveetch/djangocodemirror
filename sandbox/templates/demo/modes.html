@@ -1,0 +1,44 @@
+{% extends "skeleton.html" %}
+{% load djangocodemirror_tags %}
+
+{% block head_title %}{% if codemirror_mode %}{{ codemirror_mode }}{% else %}Available modes{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h1>Testing modes configurations</h1>
+        </div>
+    </div>
+
+    {% if codemirror_mode %}
+        <div class="row">
+            <div class="col">
+                <h2>{{ codemirror_mode }}</h2>
+
+                <form action="." method="post">
+                    {% csrf_token %}
+                    {{ form.as_div }}
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
+
+        {% codemirror_instance codemirror_mode "foo_codemirror" form.foo.id_for_label %}
+    {% else %}
+        <div class="row">
+            <div class="col">
+                <h2>Available modes</h2>
+
+                <ul>
+                    <li><a href="javascript/">javascript</a></li>
+                    <li><a href="restructuredtext/">restructuredtext</a></li>
+                    <li><a href="html/">html</a></li>
+                    <li><a href="django/">django</a></li>
+                    <li><a href="css/">css</a></li>
+                    <li><a href="scss/">scss</a></li>
+                    <li><a href="python/">python</a></li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

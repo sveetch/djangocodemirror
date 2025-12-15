@@ -1,32 +1,28 @@
-# -*- coding: utf-8 -*-
-"""
-Sample views
-"""
-import io, os
+from pathlib import Path
 
 from django.conf import settings
-
 from django.views.generic.edit import FormView
 from django.urls import reverse
 
-from sandbox.forms import SampleForm
+from .forms import SampleForm
 
 
 class BasicSampleFormView(FormView):
-    template_name = 'form.html'
+    template_name = "demo/form.html"
     form_class = SampleForm
 
     def get_success_url(self):
-        return reverse('home')
+        return reverse("demo:home")
 
 
 class ModesSampleFormView(BasicSampleFormView):
-    template_name = 'modes.html'
+    template_name = "demo/modes.html"
+    demo_data_dir = settings.PROJECT_PATH / "demo/data"
 
     def get_context_data(self, **kwargs):
         context = super(ModesSampleFormView, self).get_context_data(**kwargs)
         context.update({
-            'codemirror_mode': self.codemirror_mode,
+            "codemirror_mode": self.codemirror_mode,
         })
         return context
 
@@ -37,19 +33,17 @@ class ModesSampleFormView(BasicSampleFormView):
         """
         initial = {}
 
-        if self.kwargs.get('mode', None):
-            filename = "{}.txt".format(self.kwargs['mode'])
-            filepath = os.path.join(settings.BASE_DIR, 'demo_datas', filename)
-            if os.path.exists(filepath):
-                with io.open(filepath, 'r', encoding='utf-8') as fp:
-                    initial['foo'] = fp.read()
+        if self.kwargs.get("mode", None):
+            filepath = self.demo_data_dir / "{}.txt".format(self.kwargs["mode"])
+            if filepath.exists():
+                initial["foo"] = filepath.read_text()
 
         return initial
 
     def get(self, request, *args, **kwargs):
-        self.codemirror_mode = kwargs.get('mode', None)
+        self.codemirror_mode = kwargs.get("mode", None)
         return super(ModesSampleFormView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.codemirror_mode = kwargs.get('mode', None)
+        self.codemirror_mode = kwargs.get("mode", None)
         return super(ModesSampleFormView, self).post(request, *args, **kwargs)

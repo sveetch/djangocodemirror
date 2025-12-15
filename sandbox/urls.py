@@ -1,37 +1,23 @@
 """
-Sandbox URL Configuration
+URL Configuration for sandbox
 """
 from django.conf import settings
-from django.conf.urls import url
-
-from django.views.generic.base import TemplateView
-
-from sandbox.views import BasicSampleFormView, ModesSampleFormView
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import include, path
 
 
 urlpatterns = [
-    # Dummy homepage to list demo views
-    url(r'^$', TemplateView.as_view(
-        template_name="homepage.html"
-    ), name='home'),
-
-    # Sample with codemirror in the raw way
-    url(r'^raw/$', TemplateView.as_view(
-        template_name="raw.html"
-    ), name='raw'),
-
-    # Basic form sample
-    url(r'^form/$', BasicSampleFormView.as_view(
-        template_name="form.html"
-    ), name='form'),
-
-    # Mode index list
-    url(r'^modes/$', ModesSampleFormView.as_view(
-        template_name="modes.html"
-    ), name='mode-index'),
-
-    # Basic form sample with specific mode
-    url(r'^modes/(?P<mode>[-\w]+)/$', ModesSampleFormView.as_view(
-        template_name="modes.html"
-    ), name='basic'),
+    path("admin/", admin.site.urls),
+    path("", include("sandbox.demo.urls")),
+    
 ]
+
+# This is only needed when using runserver with settings "DEBUG" enabled
+if settings.DEBUG:
+    urlpatterns = (
+        urlpatterns
+        + staticfiles_urlpatterns()
+        + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    )

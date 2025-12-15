@@ -1,0 +1,47 @@
+{
+    "name": "Django CodeMirror frontend",
+    "version": "3.0.0",
+    "description": "The project frontend.",
+    "author": "David Thenon <sveetch@gmail.com>",
+    "private": true,
+    "scripts": {
+        "css": "sass --load-path=./node_modules --silence-deprecation=color-functions --silence-deprecation=global-builtin --silence-deprecation=import --silence-deprecation=if-function ./scss/:../sandbox/static-sources/css/",
+        "css-prod": "sass --style compressed --load-path=./node_modules ./scss/:../sandbox/static-sources/css/",
+        "watch-css": "nodemon --watch scss/ --ext scss --exec \"npm run-script css\"",
+        "js": "webpack --mode development --progress",
+        "js-prod": "webpack --mode production --progress",
+        "watch-js": "nodemon --watch js/ --ext js --exec \"npm run-script js\""
+    },
+    "dependencies": {
+        "@popperjs/core": "^2.11.8",
+        "bootstrap": "5.3.8",
+        "sass-embedded": "1.95.1"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.27.0",
+        "@babel/core": "^7.26.10",
+        "@babel/preset-env": "^7.26.9",
+        "autoprefixer": "^10.4.21",
+        "babel-loader": "^8.2.2",
+        "nodemon": "^3.1.9",
+        "npm-run-all": "^4.1.5",
+        "webpack": "^5.91.0",
+        "webpack-bundle-tracker": "^3.1.0",
+        "webpack-cli": "^5.1.4"
+    },
+    "engines": {
+        "node": ">=18.14.0",
+        "npm": ">=10.0.0"
+    },
+    "browserslist": [
+        ">= 0.5%",
+        "last 2 major versions",
+        "not dead",
+        "Chrome >= 60",
+        "Firefox >= 60",
+        "Firefox ESR",
+        "iOS >= 12",
+        "Safari >= 12",
+        "not Explorer <= 11"
+    ]
+}

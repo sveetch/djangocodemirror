@@ -1,23 +1,23 @@
 """
-Django settings for project demonstration (will not work for unittests)
+Django settings for demonstration
 
-Actually inherits from settings for Django 1.6. Intended to be used with
-``make server``.
+Intended to be used with ``make run``.
 """
-import os, copy
+from sandbox.settings.base import *  # noqa: F403
 
-from sandbox.settings.base import *
+DEBUG = True
 
-#
-# DjangoCodemirror settings
-#
-from djangocodemirror.settings import *
+TEMPLATES[0]['OPTIONS']['debug'] = DEBUG  # noqa: F405
 
-# Keep default shipped configs
-old = copy.deepcopy(CODEMIRROR_SETTINGS)
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": VAR_PATH / "db" / "db.sqlite3",  # noqa: F405
+    }
+}
 
-# Install tests required settings
-from sandbox.settings.djangocodemirror_app import *
-
-# Restore default shipped configs additionaly to the tests ones
-CODEMIRROR_SETTINGS.update(old)
+# Import local settings if any
+try:
+    from .local import *  # noqa: F401,F403
+except ImportError:
+    pass

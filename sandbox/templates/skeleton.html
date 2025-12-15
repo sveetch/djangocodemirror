@@ -1,10 +1,27 @@
-<!DOCTYPE html><html>{% spaceless %}
-<head>
-    <meta charset="utf-8">
-    <title>{% block head_title %}Sample site{% endblock %}</title>{% block head_assets %}
-{% endblock %}
-</head>
+{% load static i18n %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+    <head>{% spaceless %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block head_title %}Django CodeMirror{% endblock head_title %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    {% endspaceless %}
+    </head>
 
-{% endspaceless %}<body>
-{% block base_content %}{% endblock %}</body>{% spaceless %}
-</html>{% endspaceless %}
+    <body>
+    {% spaceless %}
+        <div id="page-body" class="d-grid gap-3 p-3">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/">Django CodeMirror</a>
+                </div>
+            </nav>
+            <div id="page-content" class="container-xxl">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        
+        <script src="{% static "js/main.js" %}"></script>
+    {% endspaceless %}</body>
+</html>
+

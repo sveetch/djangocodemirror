@@ -6,10 +6,7 @@ recursive-include djangocodemirror/templates *
 recursive-include djangocodemirror/static *
 recursive-include djangocodemirror/locale *
 
-recursive-exclude data *
-recursive-exclude docs *
-recursive-exclude sandbox *
 recursive-exclude tests *
+recursive-exclude sandbox *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
-

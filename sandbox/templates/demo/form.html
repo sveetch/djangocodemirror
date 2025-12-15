@@ -1,0 +1,24 @@
+{% extends "skeleton.html" %}
+{% load djangocodemirror_tags %}
+
+{% block head_title %}Basic form usage{% endblock %}
+
+{% block content %}
+    <h1>Basic form usage</h1>
+
+    <div class="row">
+        <form action="." method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit">
+        </form>
+    </div>
+
+    {% codemirror_field_css_assets form.foo %}
+    {% codemirror_field_js_assets form.foo %}
+    <script>
+        var foo_codemirror = CodeMirror.fromTextArea(
+            document.getElementById("id_foo"),
+            {{ form.foo|codemirror_parameters }}
+        );
+    </script>
+{% endblock content %}

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Default app settings
 ====================
@@ -11,81 +10,83 @@ Note:
 
 """
 # Template string for HTML Code to instanciate CodeMirror for a field.
-CODEMIRROR_FIELD_INIT_JS = (u"""<script>var {varname} = """
-                            """CodeMirror.fromTextArea("""
-                            """document.getElementById("{inputid}"),"""
-                            """{settings});</script>""")
+CODEMIRROR_FIELD_INIT_JS = (
+    "<script>"
+    "var {varname} = "
+    "CodeMirror.fromTextArea(document.getElementById(\"{inputid}\"), {settings});"
+    "</script>"
+)
 
 # Available CodeMirror configurations.
 CODEMIRROR_SETTINGS = {
-    'empty': {},
+    "empty": {},
 
-    'javascript': {
-        'modes': ['javascript'],
-        'matchBrackets': True,
-        'continueComments': "Enter",
-        'extraKeys': {"Ctrl-Q": "toggleComment"},
-        'addons': [
+    "javascript": {
+        "modes": ["javascript"],
+        "matchBrackets": True,
+        "continueComments": "Enter",
+        "extraKeys": {"Ctrl-Q": "toggleComment"},
+        "addons": [
             "CodeMirror/addon/edit/matchbrackets.js",
             "CodeMirror/addon/comment/continuecomment.js",
             "CodeMirror/addon/comment/comment.js",
         ],
     },
 
-    'restructuredtext': {
-        'mode': 'rst',
-        'modes': ['python', 'stex', 'rst'],
-        'addons': [
+    "restructuredtext": {
+        "mode": "rst",
+        "modes": ["python", "stex", "rst"],
+        "addons": [
             "CodeMirror/addon/mode/overlay.js",
         ],
     },
 
-    'html': {
-        'mode': 'htmlmixed',
-        'modes': ['xml', 'javascript', 'css', 'vbscript', 'htmlmixed'],
+    "html": {
+        "mode": "htmlmixed",
+        "modes": ["xml", "javascript", "css", "vbscript", "htmlmixed"],
     },
 
-    'django': {
-        'mode': 'django',
-        'modes': ['xml', 'javascript', 'css', 'vbscript', 'htmlmixed',
-                  'django'],
-        'addons': [
+    "django": {
+        "mode": "django",
+        "modes": ["xml", "javascript", "css", "vbscript", "htmlmixed",
+                  "django"],
+        "addons": [
             "CodeMirror/addon/mode/overlay.js",
         ],
     },
 
-    'css': {
-        'modes': ['css'],
-        'matchBrackets': True,
-        'extraKeys': {"Ctrl-Space": "autocomplete"},
-        'addons': [
+    "css": {
+        "modes": ["css"],
+        "matchBrackets": True,
+        "extraKeys": {"Ctrl-Space": "autocomplete"},
+        "addons": [
             "CodeMirror/addon/edit/matchbrackets.js",
             "CodeMirror/addon/hint/show-hint.js",
             "CodeMirror/addon/hint/css-hint.js",
         ],
-        'extra_css': [
+        "extra_css": [
             "CodeMirror/addon/hint/show-hint.css",
         ],
     },
 
-    'scss': {
-        'mode': 'text/x-scss',
-        'modes': ['css'],
-        'matchBrackets': True,
-        'addons': [
+    "scss": {
+        "mode": "text/x-scss",
+        "modes": ["css"],
+        "matchBrackets": True,
+        "addons": [
             "CodeMirror/addon/edit/matchbrackets.js",
         ],
     },
 
-    'python': {
-        'mode': {
-            'name': "python",
-            'version': 3,
-            'singleLineStringErrors': False,
+    "python": {
+        "mode": {
+            "name": "python",
+            "version": 3,
+            "singleLineStringErrors": False,
         },
-        'modes': ['python'],
-        'matchBrackets': True,
-        'addons': [
+        "modes": ["python"],
+        "matchBrackets": True,
+        "addons": [
             "CodeMirror/addon/edit/matchbrackets.js",
         ],
     },
@@ -117,11 +118,10 @@ CODEMIRROR_MODES = {
 }
 
 # HTML element to load a Javascript asset
-CODEMIRROR_JS_ASSET_TAG = (u'<script type="text/javascript" '
-                           'src="{url}"></script>')
+CODEMIRROR_JS_ASSET_TAG = "<script src=\"{url}\"></script>"
 
 # HTML element to load a CSS asset
-CODEMIRROR_CSS_ASSET_TAG = u'<link rel="stylesheet" href="{url}">'
+CODEMIRROR_CSS_ASSET_TAG = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{url}\">"
 
 # Template string for Javascript bundle names
 CODEMIRROR_BUNDLE_CSS_NAME = "dcm-{settings_name}_css"
@@ -131,12 +131,12 @@ CODEMIRROR_BUNDLE_JS_NAME = "dcm-{settings_name}_js"
 
 # Option arguments used to build CSS bundles with ``django-assets``.
 CODEMIRROR_BUNDLE_CSS_OPTIONS = {
-    'filters': 'yui_css',
-    'output': 'css/dcm-{settings_name}.min.css',
+    "filters": "yui_css",
+    "output": "css/dcm-{settings_name}.min.css",
 }
 
 # Option arguments used to build Javascript bundles with ``django-assets``.
 CODEMIRROR_BUNDLE_JS_OPTIONS = {
-    'filters': 'yui_js',
-    'output': 'js/dcm-{settings_name}.min.js',
+    "filters": "yui_js",
+    "output": "js/dcm-{settings_name}.min.js",
 }
