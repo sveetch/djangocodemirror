@@ -1,36 +1,35 @@
-.. _django-assets: http://pypi.python.org/pypi/django-assets
-
-.. _install-intro:
+.. _install_intro:
 
 =======
 Install
 =======
 
-::
+Install package in your environment : ::
 
     pip install djangocodemirror
 
+For development usage see :ref:`development_install`.
 
-#. In your *settings* file add **djangocodemirror** to your installed apps:
+Configuration
+*************
 
-    .. sourcecode:: python
+Add it to your installed Django apps in settings : ::
 
-        INSTALLED_APPS = (
-            ...
-            'djangocodemirror',
-            ...
-        )
+    INSTALLED_APPS = (
+        ...
+        "djangocodemirror",
+    )
 
-#. Import default settings:
+Then load default application settings in your settings file: ::
 
-    .. sourcecode:: python
+    from djangocodemirror.settings import *
 
-        from djangocodemirror.settings import *
+There is no URL to mount or database migrations to apply.
 
-#. Optionally install `django-assets`_ to use asset bundles;
+.. _install_settings:
 
-Finally you may want to change available CodeMirror configurations from ``settings.CODEMIRROR_SETTINGS``:
+Settings
+********
 
-* If you need to add your own new configuration see :ref:`configurations-intro`;
-* If you just need to  add/change some parameters from configurations see :ref:`helper-intro`.
-
+.. automodule:: djangocodemirror.settings
+   :members:

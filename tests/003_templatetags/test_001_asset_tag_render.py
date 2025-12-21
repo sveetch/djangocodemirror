@@ -1,13 +1,9 @@
-"""
-Tests against template tags for Codemirror config
-"""
-import json
 import pytest
 
 from djangocodemirror.widgets import CodeMirrorWidget
 from djangocodemirror.templatetags.djangocodemirror_tags import CodemirrorAssetTagRender
 
-from sandbox.forms import SampleForm, ManyFieldsSampleForm
+from sandbox.demo.forms import SampleForm, ManyFieldsSampleForm
 
 
 def test_resolve_widget():
@@ -20,9 +16,9 @@ def test_resolve_widget():
     """
     f = SampleForm()
 
-    w = CodemirrorAssetTagRender().resolve_widget(f.fields['foo'])
+    w = CodemirrorAssetTagRender().resolve_widget(f.fields["foo"])
 
-    assert isinstance(w, CodeMirrorWidget) == True
+    assert isinstance(w, CodeMirrorWidget) is True
 
 
 def test_register_from_fields(settings):
@@ -32,26 +28,30 @@ def test_register_from_fields(settings):
     f.as_p()
 
     configs = manifesto.register_from_fields(
-        f.fields['foo'],
-        f.fields['pika'],
-        f.fields['ping']
+        f.fields["foo"],
+        f.fields["pika"],
+        f.fields["ping"]
     )
 
-    assert configs == ['basic', 'with-all']
+    assert configs == ["basic", "with-all"]
 
 
 def test_render_asset_html(settings):
     manifesto = CodemirrorAssetTagRender()
 
-    css = manifesto.render_asset_html("foo/bar.css",
-                               settings.CODEMIRROR_CSS_ASSET_TAG)
+    css = manifesto.render_asset_html(
+        "foo/bar.css",
+        settings.CODEMIRROR_CSS_ASSET_TAG
+    )
 
-    js = manifesto.render_asset_html("foo/plop/bar.js",
-                              settings.CODEMIRROR_JS_ASSET_TAG)
+    js = manifesto.render_asset_html(
+        "foo/plop/bar.js",
+        settings.CODEMIRROR_JS_ASSET_TAG
+    )
 
     assert css == """<link rel="stylesheet" href="/static/foo/bar.css">"""
 
-    assert js == """<script type="text/javascript" src="/static/foo/plop/bar.js"></script>"""
+    assert js == """<script src="/static/foo/plop/bar.js"></script>"""
 
 
 def test_css_html(settings):
@@ -60,61 +60,72 @@ def test_css_html(settings):
     f = SampleForm()
     f.as_p()
 
-    manifesto.register_from_fields(
-        f.fields['foo'],
-    )
+    manifesto.register_from_fields(f.fields["foo"])
 
     assets = manifesto.css_html()
 
-    assert assets == '<link rel="stylesheet" href="/static/CodeMirror/lib/codemirror.css">'
+    assert assets == (
+        "<link rel=\"stylesheet\" href=\"/static/CodeMirror/lib/codemirror.css\">"
+    )
 
 
-@pytest.mark.parametrize('name,attempted', [
-    (
-        'foo',
-        """<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>"""
-    ),
-    (
-        'ping',
-        ("""<script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>"""
-         """<script type="text/javascript" src="/static/CodeMirror/lib/util/dialog.js"></script>"""
-         """<script type="text/javascript" src="/static/CodeMirror/mode/rst/rst.js"></script>"""
-         """<script type="text/javascript" src="/static/CodeMirror/mode/python/python.js"></script>""")
-    ),
-], ids=["foo-basic", "ping-with-all"])
+@pytest.mark.parametrize(
+    "name, attempted",
+    [
+        (
+            "foo",
+            """<script src="/static/CodeMirror/lib/codemirror.js"></script>"""
+        ),
+        (
+            "ping",
+            (
+                """<script src="/static/CodeMirror/lib/codemirror.js"></script>"""
+                """<script src="/static/CodeMirror/lib/util/dialog.js"></script>"""
+                """<script src="/static/CodeMirror/mode/rst/rst.js"></script>"""
+                """<script src="/static/CodeMirror/mode/python/python.js"></script>"""
+            )
+        ),
+    ],
+    ids=["foo-basic", "ping-with-all"]
+)
 def test_js_html(settings, name, attempted):
     manifesto = CodemirrorAssetTagRender()
 
     f = ManyFieldsSampleForm()
     f.as_p()
 
-    manifesto.register_from_fields(
-        f.fields[name],
-    )
+    manifesto.register_from_fields(f.fields[name])
 
     assets = manifesto.js_html()
 
     assert assets == attempted
 
 
-@pytest.mark.parametrize('name,attempted', [
-    (
-        'foo',
-        ("""<script>var plop_codemirror = CodeMirror.fromTextArea("""
-         """document.getElementById("plop"),"""
-         """{"mode": "rst"});"""
-         """</script>""")
-    ),
-    (
-        'ping',
-        ("""<script>var plop_codemirror = CodeMirror.fromTextArea("""
-         """document.getElementById("plop"),"""
-         """{"lineNumbers": true, "lineWrapping": true, "mode": "rst", """
-         """"theme": "neat"});</script>""")
-    ),
-], ids=["foo-basic", "ping-with-all"])
+@pytest.mark.parametrize(
+    "name, attempted",
+    [
+        (
+            "foo",
+            (
+                """<script>var plop_codemirror = CodeMirror.fromTextArea("""
+                """document.getElementById("plop"), """
+                """{"mode": "rst"});"""
+                """</script>"""
+            )
+        ),
+        (
+            "ping",
+            (
+                """<script>var plop_codemirror = CodeMirror.fromTextArea("""
+                """document.getElementById("plop"), """
+                """{"lineNumbers": true, "lineWrapping": true, "mode": "rst", """
+                """"theme": "neat"});</script>"""
+            )
+        ),
+    ],
+    ids=["foo-basic", "ping-with-all"]
+)
 def test_instance_html(settings, name, attempted):
-    # manifesto.
     manifesto = CodemirrorAssetTagRender()
 
     f = ManyFieldsSampleForm()

@@ -7,54 +7,54 @@ from djangocodemirror.helper import codemirror_settings_update
 
 
 SAMPLE_DICT = {
-    'empty': {},
-    'basic': {
-        'mode': 'rst',
+    "empty": {},
+    "basic": {
+        "mode": "rst",
     },
-    'with-options': {
-        'mode': 'rst',
-        'lineWrapping': True,
+    "with-options": {
+        "mode": "rst",
+        "lineWrapping": True,
     },
-    'with-all': {
-        'mode': 'rst',
-        'lineWrapping': True,
-        'modes': ['rst', 'python'],
+    "with-all": {
+        "mode": "rst",
+        "lineWrapping": True,
+        "modes": ["rst", "python"],
     },
 }
 
 
 SAMPLE_PARAMETERS = {
-    'foo': 'bar',
-    'css_bundle_name': None,
-    'lineWrapping': False,
-    'modes': ['rst'],
+    "foo": "bar",
+    "css_bundle_name": None,
+    "lineWrapping": False,
+    "modes": ["rst"],
 }
 
 
-@pytest.mark.parametrize('on,names,attempted', [
+@pytest.mark.parametrize("on,names,attempted", [
     # On some configs and unfiltered
     (
-        ['basic', 'with-all'],
+        ["basic", "with-all"],
         None,
         {
-            'empty': {},
-            'basic': {
-                'mode': 'rst',
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "empty": {},
+            "basic": {
+                "mode": "rst",
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
-            'with-options': {
-                'mode': 'rst',
-                'lineWrapping': True,
+            "with-options": {
+                "mode": "rst",
+                "lineWrapping": True,
             },
-            'with-all': {
-                'mode': 'rst',
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "with-all": {
+                "mode": "rst",
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
         }
     ),
@@ -62,42 +62,42 @@ SAMPLE_PARAMETERS = {
     # On every configs and filtered
     (
         None,
-        ['basic', 'with-all'],
+        ["basic", "with-all"],
         {
-            'basic': {
-                'mode': 'rst',
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "basic": {
+                "mode": "rst",
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
-            'with-all': {
-                'mode': 'rst',
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "with-all": {
+                "mode": "rst",
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
         }
     ),
 
     # On some configs and filtered
     (
-        ['basic'],
-        ['empty', 'basic', 'with-all'],
+        ["basic"],
+        ["empty", "basic", "with-all"],
         {
-            'empty': {},
-            'basic': {
-                'mode': 'rst',
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "empty": {},
+            "basic": {
+                "mode": "rst",
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
-            'with-all': {
-                'mode': 'rst',
-                'lineWrapping': True,
-                'modes': ['rst', 'python'],
+            "with-all": {
+                "mode": "rst",
+                "lineWrapping": True,
+                "modes": ["rst", "python"],
             },
         }
     ),
@@ -107,40 +107,46 @@ SAMPLE_PARAMETERS = {
         None,
         None,
         {
-            'empty': {
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "empty": {
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
-            'basic': {
-                'mode': 'rst',
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "basic": {
+                "mode": "rst",
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
-            'with-options': {
-                'mode': 'rst',
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "with-options": {
+                "mode": "rst",
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
-            'with-all': {
-                'mode': 'rst',
-                'foo': 'bar',
-                'css_bundle_name': None,
-                'lineWrapping': False,
-                'modes': ['rst'],
+            "with-all": {
+                "mode": "rst",
+                "foo": "bar",
+                "css_bundle_name": None,
+                "lineWrapping": False,
+                "modes": ["rst"],
             },
         }
     ),
 ])
 def test_config_helper(on, names, attempted):
-    """Helper to update parameters from selected config and with filtered
-       returned dict"""
-    result = codemirror_settings_update(SAMPLE_DICT, SAMPLE_PARAMETERS, on=on,
-                                        names=names)
+    """
+    Helper to update parameters from selected config and with filtered
+    returned dict
+    """
+    result = codemirror_settings_update(
+        SAMPLE_DICT,
+        SAMPLE_PARAMETERS,
+        on=on,
+        names=names
+    )
 
     assert result == attempted

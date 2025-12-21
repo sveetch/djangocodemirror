@@ -83,5 +83,7 @@ def tests_settings():
 
 @pytest.fixture(scope="function")
 def manifesto():
-    """Return a CodeMirrorManifest instance"""
+    """
+    Return a CodeMirrorManifest instance
+    """
     return CodeMirrorManifest()

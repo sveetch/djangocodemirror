@@ -1,91 +1,94 @@
-"""
-Tests against manifest for Javascript assets
-"""
 import pytest
-
-from django.conf import settings
 
 from djangocodemirror.exceptions import UnknowConfigError
 
 
 def test_registry_empty(settings, manifesto):
-    """Empty registry"""
+    """
+    Empty registry
+    """
     assert manifesto.get_configs() == {}
 
 
-@pytest.mark.parametrize('name,options', [
+@pytest.mark.parametrize("name,options", [
     (
-        'empty',
+        "empty",
         {
-            'modes': [],
-            'addons': [],
-            'themes': [],
-            'css_bundle_name': 'dcm-empty_css',
-            'js_bundle_name': 'dcm-empty_js',
+            "modes": [],
+            "addons": [],
+            "themes": [],
+            "css_bundle_name": "dcm-empty_css",
+            "js_bundle_name": "dcm-empty_js",
         },
     ),
     (
-        'basic',
+        "basic",
         {
-            'mode': 'rst',
-            'modes': [],
-            'addons': [],
-            'themes': [],
-            'css_bundle_name': 'dcm-basic_css',
-            'js_bundle_name': 'dcm-basic_js',
+            "mode": "rst",
+            "modes": [],
+            "addons": [],
+            "themes": [],
+            "css_bundle_name": "dcm-basic_css",
+            "js_bundle_name": "dcm-basic_js",
         },
     ),
     (
-        'without-bundle',
+        "without-bundle",
         {
-            'modes': ['rst', 'python'],
-            'addons': [],
-            'themes': ['eclipse', 'elegant'],
-            'css_bundle_name': None,
-            'js_bundle_name': None,
+            "modes": ["rst", "python"],
+            "addons": [],
+            "themes": ["eclipse", "elegant"],
+            "css_bundle_name": None,
+            "js_bundle_name": None,
         },
     ),
 ])
 def test_register(settings, manifesto, name, options):
-    """Register a config"""
-    registred = manifesto.register(name)
-
-    assert registred == options
+    """
+    Register a config
+    """
+    assert manifesto.register(name) == options
 
 
 def test_register_many(manifesto):
-    """Register many config"""
-    registred = manifesto.register_many('empty', 'basic')
+    """
+    Register many config
+    """
+    registred = manifesto.register_many("empty", "basic")
 
     assert registred == [
         {
-            'modes': [],
-            'addons': [],
-            'themes': [],
-            'css_bundle_name': 'dcm-empty_css',
-            'js_bundle_name': 'dcm-empty_js',
+            "modes": [],
+            "addons": [],
+            "themes": [],
+            "css_bundle_name": "dcm-empty_css",
+            "js_bundle_name": "dcm-empty_js",
         },
         {
-            'mode': 'rst',
-            'modes': [],
-            'addons': [],
-            'themes': [],
-            'css_bundle_name': 'dcm-basic_css',
-            'js_bundle_name': 'dcm-basic_js',
+            "mode": "rst",
+            "modes": [],
+            "addons": [],
+            "themes": [],
+            "css_bundle_name": "dcm-basic_css",
+            "js_bundle_name": "dcm-basic_js",
         },
     ]
 
 
 def test_autoregister(manifesto):
-    """Auto register every config from settings"""
+    """
+    Auto register every config from settings
+    """
     manifesto.autoregister()
     # Check only about some names, not all
-    assert ('empty' in manifesto.registry) == True
-    assert ('basic' in manifesto.registry) == True
-    assert ('with-all' in manifesto.registry) == True
+    assert ("empty" in manifesto.registry) is True
+    assert ("basic" in manifesto.registry) is True
+    assert ("with-all" in manifesto.registry) is True
 
 
 def test_register_nonexistent(settings, manifesto):
-    """Try to register a config name that does not exist"""
+    """
+    Try to register a config name that does not exist
+    """
     with pytest.raises(UnknowConfigError):
-        registred = manifesto.register('nope')
+        manifesto.register("nope")

@@ -34,7 +34,7 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
         """
         # When filter is used within template we have to reach the field
         # instance through the BoundField.
-        if hasattr(field, 'field'):
+        if hasattr(field, "field"):
             widget = field.field.widget
         # When used out of template, we have a direct field instance
         else:
@@ -79,7 +79,7 @@ class CodemirrorAssetTagRender(CodeMirrorManifest):
 
     def css_html(self):
         """
-        Render HTML tags for Javascript assets.
+        Render HTML tags for CSS assets.
 
         Returns:
             string: HTML for CSS assets from every registered config.
@@ -205,7 +205,7 @@ def codemirror_field_js_bundle(field):
     try:
         bundle_name = manifesto.js_bundle_names()[0]
     except IndexError:
-        msg = ("Given field with configuration name '{}' does not have a "
+        msg = ("Given field with configuration name \"{}\" does not have a "
                "Javascript bundle name")
         raise CodeMirrorFieldBundleError(msg.format(field.config_name))
 
@@ -239,7 +239,7 @@ def codemirror_field_css_bundle(field):
     try:
         bundle_name = manifesto.css_bundle_names()[0]
     except IndexError:
-        msg = ("Given field with configuration name '{}' does not have a "
+        msg = ("Given field with configuration name \"{}\" does not have a "
                "Javascript bundle name")
         raise CodeMirrorFieldBundleError(msg.format(field.config_name))
 
@@ -289,7 +289,7 @@ def codemirror_instance(config_name, varname, element_id, assets=True):
         ::
 
             {% load djangocodemirror_tags %}
-            {% codemirror_instance 'a-config-name' 'foo_codemirror' 'foo' %}
+            {% codemirror_instance "a-config-name" "foo_codemirror" "foo" %}
 
     Arguments:
         config_name (string): A registred config name.

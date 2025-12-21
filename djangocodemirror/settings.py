@@ -1,23 +1,22 @@
 """
-Default app settings
-====================
+Default application settings
+----------------------------
 
-Note:
-    Every file paths (as in ``settings.CODEMIRROR_BASE_JS``,
-    ``settings.CODEMIRROR_BASE_CSS``, ``settings.CODEMIRROR_THEMES``,
-    ``settings.CODEMIRROR_MODES``, etc..) must be relative to the static
-    directory.
+These are the default settings you can override in your own project settings
+right after the line which load the default app settings.
 
 """
-# Template string for HTML Code to instanciate CodeMirror for a field.
+
 CODEMIRROR_FIELD_INIT_JS = (
     "<script>"
     "var {varname} = "
     "CodeMirror.fromTextArea(document.getElementById(\"{inputid}\"), {settings});"
     "</script>"
 )
+"""
+Template string for HTML Code to instanciate CodeMirror for a field.
+"""
 
-# Available CodeMirror configurations.
 CODEMIRROR_SETTINGS = {
     "empty": {},
 
@@ -91,20 +90,28 @@ CODEMIRROR_SETTINGS = {
         ],
     },
 }
+"""
+Available CodeMirror configurations.
+"""
 
-# List of CodeMirror Javascript base files that will be loaded before every
-# other CodeMirror Javascript components.
 CODEMIRROR_BASE_JS = ["CodeMirror/lib/codemirror.js"]
+"""
+List of CodeMirror Javascript base files that will be loaded before every
+other CodeMirror Javascript components.
+"""
 
-# List of CodeMirror CSS base files that will be loaded before themes.
 CODEMIRROR_BASE_CSS = ["CodeMirror/lib/codemirror.css"]
+"""
+List of CodeMirror CSS base files that will be loaded before themes.
+"""
 
-# Available CodeMirror CSS Theme files.
 CODEMIRROR_THEMES = {
     "ambiance": "CodeMirror/theme/ambiance.css",
 }
+"""
+Available CodeMirror CSS Theme files.
+"""
 
-# Available CodeMirror Javascript mode files.
 CODEMIRROR_MODES = {
     "css": "CodeMirror/mode/css/css.js",
     "django": "CodeMirror/mode/django/django.js",
@@ -116,27 +123,42 @@ CODEMIRROR_MODES = {
     "vbscript": "CodeMirror/mode/vbscript/vbscript.js",
     "xml": "CodeMirror/mode/xml/xml.js",
 }
+"""
+Available CodeMirror Javascript mode files.
+"""
 
-# HTML element to load a Javascript asset
 CODEMIRROR_JS_ASSET_TAG = "<script src=\"{url}\"></script>"
+"""
+HTML element to load a Javascript asset
+"""
 
-# HTML element to load a CSS asset
-CODEMIRROR_CSS_ASSET_TAG = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{url}\">"
+CODEMIRROR_CSS_ASSET_TAG = "<link rel=\"stylesheet\" href=\"{url}\">"
+"""
+HTML element to load a CSS asset
+"""
 
-# Template string for Javascript bundle names
 CODEMIRROR_BUNDLE_CSS_NAME = "dcm-{settings_name}_css"
+"""
+Template string for Javascript bundle names
+"""
 
-# Template string for CSS bundle names
 CODEMIRROR_BUNDLE_JS_NAME = "dcm-{settings_name}_js"
+"""
+Template string for CSS bundle names
+"""
 
-# Option arguments used to build CSS bundles with ``django-assets``.
 CODEMIRROR_BUNDLE_CSS_OPTIONS = {
     "filters": "yui_css",
     "output": "css/dcm-{settings_name}.min.css",
 }
+"""
+Option arguments used to build CSS bundles with ``django-assets``.
+"""
 
-# Option arguments used to build Javascript bundles with ``django-assets``.
 CODEMIRROR_BUNDLE_JS_OPTIONS = {
     "filters": "yui_js",
     "output": "js/dcm-{settings_name}.min.js",
 }
+"""
+Option arguments used to build Javascript bundles with ``django-assets``.
+"""

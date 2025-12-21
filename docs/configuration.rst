@@ -1,7 +1,7 @@
-.. _configurations-intro:
+.. _configuration_intro:
 
-CodeMirror configurations
-=========================
+CodeMirror configuration
+========================
 
 A CodeMirror configuration is a set of parameters for a CodeMirror instance.
 Some of them are internal ones reserved to the manifest to control some
@@ -21,13 +21,11 @@ modes
     CodeMirror will assume to use the last loaded mode if you don't explicitely
     enable one using ``mode`` parameter.
 css_bundle_name
-    Bundle name for this configuration CSS assets, it will be used from
-    :ref:`lib-assets-intro`. Automatically filled from configuration name if
-    not defined.
+    Bundle name for this configuration CSS assets. Automatically filled from
+    configuration name if not defined.
 js_bundle_name
-    Bundle name for this configuration Javascript assets, it will be used from
-    :ref:`lib-assets-intro`. Automatically filled from configuration name if
-    not defined.
+    Bundle name for this configuration Javascript assets. Automatically filled from
+    configuration name if not defined.
 
 For available configuration parameters, see the
 `CodeMirror documentation <http://codemirror.net/doc/manual.html#config>`_.

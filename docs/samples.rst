@@ -1,8 +1,10 @@
-========
-Examples
-========
+.. _samples_intro:
 
-This will assume you have followed :ref:`install-intro` document.
+=======
+Samples
+=======
+
+This will assume you have followed :ref:`install_intro` document.
 
 For a HTML element
 ------------------
