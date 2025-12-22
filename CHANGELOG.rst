@@ -6,12 +6,16 @@ Changelog
 Development
 -----------
 
-* Upgraded Python support to 3.11;
+* Upgraded Python support to 3.12;
 * Dropped Python support for <3.10;
-* Upgraded Django support to 5.2;
+* Upgraded Django support to 6.0;
 * Dropped Django support for <4.2;
+* Dropped support for 'django-assets' that is unmaintained and incompatible with recent
+  Django;
 * Fixed package to correctly install with recent Pip and Setuptools;
 * Added proper demo frontend stack with Node ~22 and Bootstrap 5.3.8;
+* Updated documentation;
+* Added a logo;
 
 
 Version 2.1.0 - 2019/05/05
