@@ -3,15 +3,20 @@
 Changelog
 =========
 
-Development
------------
+Version 3.0.0 - 2025/12/22
+--------------------------
 
+**Major upgrade to modernize package and update Python and Django supports.**
+
+Nothing has changed in its usage however some libraries supports have been dropped, see
+below.
+
+* Dropped support for 'django-assets' that is unmaintained and incompatible with recent
+  Django;
 * Upgraded Python support to 3.12;
 * Dropped Python support for <3.10;
 * Upgraded Django support to 6.0;
 * Dropped Django support for <4.2;
-* Dropped support for 'django-assets' that is unmaintained and incompatible with recent
-  Django;
 * Fixed package to correctly install with recent Pip and Setuptools;
 * Added proper demo frontend stack with Node ~22 and Bootstrap 5.3.8;
 * Updated documentation;
