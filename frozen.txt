@@ -1,4 +1,4 @@
-# Frozen requirement versions for 'djangocodemirror==3.0.0' installation
+# Frozen requirement versions for 'djangocodemirror==3.0.1' installation
 Django==5.2.9
 # From extra requirements 'dev'
 pytest==9.0.2

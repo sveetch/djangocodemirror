@@ -3,6 +3,14 @@
 Changelog
 =========
 
+Version 3.0.1 - 2026/03/19
+--------------------------
+
+This is a release fix for package that was missing templatetags directory.
+
+Upgrade from v3.0.0 to this version is totally safe.
+
+
 Version 3.0.0 - 2025/12/22
 --------------------------
 
